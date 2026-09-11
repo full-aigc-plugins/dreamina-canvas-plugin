@@ -1,12 +1,18 @@
 # Codex Dreamina Canvas 插件
 
-> 面向 Dreamina Canvas CLI 编排的 Codex 插件，目前处于设计阶段。
+<img src="assets/logo.png" alt="Dreamina Canvas Logo" width="128">
+
+> 面向 Dreamina Canvas CLI 编排的 Codex 兼容基础。
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 ## 状态与定位
 
-当前仓库只有文档和可检查计划。`codex-dreamina-canvas` 将编排用户已安装的 `dreamina-canvas` CLI，覆盖画布、节点、时间轴、模型/音色发现、报价、积分批准、异步恢复和产物下载。
+当前仓库已具备经过验证的兼容 manifest、Marketplace 元数据、品牌资产、Legal 文档、测试和实施目录。计划中的 13 个 Canvas Skills 与 CLI 运行适配器仍属于后续实现。
+
+## 许可证
+
+Apache-2.0，见 [LICENSE](LICENSE)。
 
 ```text
 Codex -> 发现能力 -> 规划画布/节点 -> 保存（不扣费）

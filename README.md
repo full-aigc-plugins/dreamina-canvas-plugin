@@ -1,12 +1,18 @@
 # Codex Dreamina Canvas Plugin
 
-> Design-stage Codex workflows for Dreamina Canvas CLI orchestration.
+<img src="assets/logo.png" alt="Dreamina Canvas logo" width="128">
+
+> Compatibility foundation for Dreamina Canvas CLI orchestration in Codex.
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 ## Status and purpose
 
-This repository contains documentation and a checkable plan only. `codex-dreamina-canvas` will orchestrate the user-installed `dreamina-canvas` CLI for canvas, node, timeline, model/voice discovery, quotation, explicit credit approval, asynchronous recovery, and artifact download.
+This repository now includes a validated compatibility manifest, marketplace metadata, brand assets, legal documents, tests, and implementation directories. The thirteen planned Canvas Skills and CLI runtime adapter remain implementation work.
+
+## License
+
+Apache-2.0 — see [LICENSE](LICENSE).
 
 ```text
 Codex -> capability discovery -> canvas/node plan -> save(no charge)

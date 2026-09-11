@@ -24,6 +24,10 @@
 - Secrets and ephemeral credit tokens are excluded from logs, schemas, fixtures, journals, and artifacts.
 - Every task follows RED → GREEN → regression → review → commit.
 
+## Foundation baseline completed 2026-09-12
+
+Task 1's compatibility foundation is now materially present as `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, Apache-2.0/legal files, three transparent PNG assets, implementation directories, `scripts/validate_distribution.py`, and `tests/test_distribution.py`. The files pass their RED/GREEN foundation tests and the system plugin validator. Later tasks must modify this baseline rather than scaffold it again; the thirteen Canvas Skills and CLI adapter remain unimplemented.
+
 ---
 
 ### Task 1: Convert the documentation-only repository into a valid plugin scaffold
