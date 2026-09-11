@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Dreamina Canvas">
+  <path d="M38 128c26-47 56-47 90 0s64 47 90 0" fill="none" stroke="#06B6D4" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="38" cy="128" r="18" fill="#06B6D4"/>
+  <circle cx="128" cy="128" r="18" fill="#06B6D4"/>
+  <circle cx="218" cy="128" r="18" fill="#06B6D4"/>
+</svg>
