@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-dreamina-canvas/schemas/operation_receipt.schema.json",
+  "title": "OperationReceipt",
+  "description": "Non-secret record of a paid Canvas submission. Persisted to <root>/operations/<profile>/<submitId>.json with mode 0600.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["projectId", "nodeId", "submitId", "lastKnownState", "resubmittable", "requiredAction", "fetchedAt"],
+  "properties": {
+    "projectId": {"type": "string", "pattern": "^[0-9a-f-]{36}$"},
+    "nodeId": {"type": "string"},
+    "submitId": {"type": "string", "pattern": "^[0-9a-f-]{36}$"},
+    "lastKnownState": {
+      "type": "string",
+      "enum": ["absent", "in_progress", "completed"]
+    },
+    "resubmittable": {
+      "type": "boolean",
+      "description": "True only when lastKnownState == 'absent'. Treat a missing field as 'accepted by server'."
+    },
+    "requiredAction": {
+      "type": "string",
+      "enum": ["none", "login", "confirm", "retry", "resume", "upgrade", "human_intervention", "contact_support"]
+    },
+    "operationRef": {"type": "string"},
+    "fetchedAt": {"type": "string", "format": "date-time"}
+  }
+}

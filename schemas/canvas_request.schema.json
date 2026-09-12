@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-dreamina-canvas/schemas/canvas_request.schema.json",
+  "title": "CanvasRequest",
+  "description": "Structured argv built from caller intent for a Canvas CLI command.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["binary", "argv", "timeout_seconds", "profile"],
+  "properties": {
+    "binary": {
+      "type": "string",
+      "const": "dreamina-canvas"
+    },
+    "argv": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "description": "argv list passed to the CLI. Always starts with --format json."
+    },
+    "timeout_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "profile": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "environment": {
+      "type": "string"
+    }
+  }
+}

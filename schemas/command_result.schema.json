@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-dreamina-canvas/schemas/command_result.schema.json",
+  "title": "CommandResult",
+  "description": "Adapter return value for a single dreamina-canvas invocation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["exit_code", "payload", "error", "required_action", "partial_data"],
+  "properties": {
+    "exit_code": {
+      "type": "integer",
+      "description": "Original numeric exit code from the CLI; preserved as-is."
+    },
+    "payload": {
+      "type": ["object", "null"],
+      "description": "Successful payload data; null on failure."
+    },
+    "error": {
+      "type": ["object", "null"],
+      "description": "Failure envelope (when exit_code != 0).",
+      "properties": {
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "requiredAction": {
+          "type": "string",
+          "enum": ["none", "login", "confirm", "retry", "resume", "upgrade", "human_intervention", "contact_support"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "required_action": {
+      "type": "string",
+      "enum": ["none", "login", "confirm", "retry", "resume", "upgrade", "human_intervention", "contact_support"]
+    },
+    "partial_data": {
+      "type": ["object", "null"],
+      "description": "Per-item data when the call partially succeeded."
+    }
+  }
+}

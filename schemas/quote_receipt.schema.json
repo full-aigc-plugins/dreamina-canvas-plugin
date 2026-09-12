@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-dreamina-canvas/schemas/quote_receipt.schema.json",
+  "title": "QuoteReceipt",
+  "description": "Output of dreamina-canvas node quote.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["projectId", "orderedNodeIds", "items", "totalMaxCredits", "confirmable"],
+  "properties": {
+    "projectId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "orderedNodeIds": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Same length and order as the request."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["nodeId"],
+        "properties": {
+        "nodeId": {"type": "string", "pattern": "^[a-z0-9_:.-]+$"},
+        "submitId": {"type": "string", "pattern": "^[0-9a-f-]{36}$"},
+        "maxCredits": {"type": "integer", "minimum": 0},
+        "confirmable": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "totalMaxCredits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "confirmable": {
+      "type": "boolean",
+      "description": "False means at least one node is un-quotable."
+    },
+    "confirmationRequired": {
+      "type": "boolean"
+    },
+    "creditConfirmation": {
+      "type": "object",
+      "properties": {
+        "minimumCreditCeiling": {"type": ["integer", "null"], "minimum": 0}
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-dreamina-canvas/schemas/artifact_receipt.schema.json",
+  "title": "ArtifactReceipt",
+  "description": "Output of dreamina-canvas resource download, after the atomic-write completes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resourceId", "canonicalPath", "byteCount", "sha256", "media"],
+  "properties": {
+    "resourceId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$",
+      "description": "Lowercase canonical UUID; rejects uppercase / urn:uuid: / hyphen-stripped / resource_ prefix."
+    },
+    "canonicalPath": {"type": "string"},
+    "byteCount": {"type": "integer", "minimum": 0},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "media": {
+      "type": "object",
+      "description": "Media metadata; presence required by the artifact guard.",
+      "minProperties": 1
+    }
+  }
+}

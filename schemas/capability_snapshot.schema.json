@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-dreamina-canvas/schemas/capability_snapshot.schema.json",
+  "title": "CapabilitySnapshot",
+  "description": "Snapshot of the installed dreamina-canvas CLI capabilities.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cliVersion", "cliCommit", "cliEdition", "cliDistribution", "schemaHash", "fetchedAt"],
+  "properties": {
+    "cliVersion": {
+      "type": "string",
+      "description": "Semantic version reported by dreamina-canvas version."
+    },
+    "cliCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$",
+      "description": "40-character lowercase hex commit SHA reported by dreamina-canvas version."
+    },
+    "cliEdition": {
+      "type": "string",
+      "description": "Distribution edition (e.g. public, internal)."
+    },
+    "cliDistribution": {
+      "type": "string",
+      "description": "Distribution channel (e.g. cn, oversea)."
+    },
+    "cliBuildTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "schemaHash": {
+      "type": "string",
+      "description": "Hash of the current command contract; non-secret."
+    },
+    "profile": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "region": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "fetchedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
