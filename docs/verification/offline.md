@@ -1,9 +1,9 @@
 # Offline distribution gate evidence
 
-Upstream SHA: `f1f894d0374c4ca99d11a40fb09eb4b8aaa89d3c`
+Upstream SHA: `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7`
 Upstream branch: `feat/canvas-skills`
 Plugin branch: `feat/canvas-plugin-pin`
-Local plugin HEAD: `6ea56fe88ca45e19af5d5e6bb4318111205ec89d` (final after this session's evidence commit; immediate prior commit `b0b54e7a45f56cdd86848ca3dd2e2ed9d654bc1b` contained the runtime + contract + adapter + router changes)
+Local plugin HEAD: `6638fe3b4afe7411a5a2747cbf9a7ed943da106c`
 Remote `origin/main` (last known pre-session): `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe`
 
 ## Commands and exit codes
