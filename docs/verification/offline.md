@@ -104,6 +104,7 @@ atomic_skill_scenarios               = 7/7 PASS
 domain_skill_scenarios               = 4/4 PASS
 orchestration_skill_scenarios        = 2/2 PASS
 skill_trace                          = 13/13 PASS
+fresh_codex_installation             = PASS      (13 names discovered, only use implicit; see fresh-installation.md)
 distribution_and_secret_scan         = PASS
 read_only_cli_runtime                = PASS
 paid_canary                          = PASS      (5 credits vs 100 ceiling)
