@@ -4,7 +4,7 @@
 
 通过严格 argv 适配器封装已安装 CLI。只解析 JSON 模式，统一退出码和 `requiredAction`，并在插件数据目录保存最小操作台账。
 
-## 目标目录
+## 仓库目录
 
 ```text
 .codex-plugin/plugin.json

@@ -8,7 +8,7 @@
 
 ## 状态与定位
 
-当前仓库已具备经过验证的兼容 manifest、Marketplace 元数据、品牌资产、Legal 文档、测试和实施目录。计划中的 13 个 Canvas Skills 与 CLI 运行适配器仍属于后续实现。
+当前仓库包含经过验证的兼容 manifest、Marketplace 元数据、品牌资产、Legal 文档，以及 Canvas 实现：13 个 Agent Skill、严格 CLI 适配器、操作台账，以及审批与产物守卫。
 
 ## 许可证
 
@@ -36,4 +36,4 @@ Codex -> 发现能力 -> 规划画布/节点 -> 保存（不扣费）
 
 ## 证据
 
-目标行为来自 2026-09-11 查阅的 Dreamina Canvas CLI 指南；仓库尚未验证实际 CLI 版本和命令兼容性。
+目标行为来自 2026-09-11 查阅的 Dreamina Canvas CLI 指南；CLI 运行期、版本与命令兼容性已在本地验证，记录见 [docs/verification/dreamina-canvas-runtime.md](docs/verification/dreamina-canvas-runtime.md)；账号认证与付费生成金丝雀为 `NOT_RUN`，因为本次未提供凭据。

@@ -8,7 +8,7 @@
 
 ## Status and purpose
 
-This repository now includes a validated compatibility manifest, marketplace metadata, brand assets, legal documents, tests, and implementation directories. The thirteen planned Canvas Skills and CLI runtime adapter remain implementation work.
+This repository contains a validated compatibility manifest, marketplace metadata, brand assets, legal documents, and the Canvas implementation: thirteen Agent Skills, a strict CLI adapter, an operation ledger, and approval and artifact guards.
 
 ## License
 
@@ -36,4 +36,4 @@ Codex -> capability discovery -> canvas/node plan -> save(no charge)
 
 ## Evidence
 
-The target behavior derives from the Dreamina Canvas CLI guide inspected on 2026-09-11. CLI runtime/version/command compatibility is not yet verified in this repository.
+The target behavior derives from the Dreamina Canvas CLI guide inspected on 2026-09-11. CLI runtime, version, and command compatibility are verified locally and recorded in [docs/verification/dreamina-canvas-runtime.md](docs/verification/dreamina-canvas-runtime.md); account authentication and the paid generation canary are `NOT_RUN` because no credentials were supplied.

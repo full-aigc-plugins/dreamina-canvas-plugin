@@ -4,7 +4,7 @@
 
 Wrap the installed CLI through a strict argv adapter. Parse only JSON mode, normalize exit codes and `requiredAction`, and persist a minimal operation ledger under plugin data.
 
-## Planned layout
+## Repository layout
 
 ```text
 .codex-plugin/plugin.json

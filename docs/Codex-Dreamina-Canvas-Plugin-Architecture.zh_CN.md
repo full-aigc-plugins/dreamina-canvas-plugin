@@ -1,6 +1,6 @@
 # Codex Dreamina Canvas 插件架构
 
-> 目标架构，尚未实现。更新日期 2026-09-11。
+> 已实现。更新日期 2026-09-12。运行期证据记录在 `docs/verification/`。
 
 ## 系统上下文
 
@@ -51,4 +51,4 @@ stateDiagram-v2
 
 ## 依赖
 
-Skill 事实源是计划迁移后的 `full-aigc-skills/dreamina-skills`。本插件只打包 Canvas 子集和插件专属 Guardrails。
+Skill 事实源是 `full-aigc-skills/dreamina-skills` 仓库，并按提交固定在 `upstream/dreamina-skills.lock.json`。本插件只打包 Canvas 子集和插件专属 Guardrails。

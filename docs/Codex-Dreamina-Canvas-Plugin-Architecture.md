@@ -1,6 +1,6 @@
 # Codex Dreamina Canvas Plugin Architecture
 
-> Target architecture, not implemented. Updated 2026-09-11.
+> Implemented. Updated 2026-09-12. Runtime evidence is recorded in `docs/verification/`.
 
 ## Context
 
@@ -51,4 +51,4 @@ Authentication belongs to the CLI. The plugin stores no token, never prints acco
 
 ## Dependency
 
-The Skill source of truth is the planned `full-aigc-skills/dreamina-skills` repository. This plugin packages only the Canvas subset and plugin-specific guardrails.
+The Skill source of truth is the `full-aigc-skills/dreamina-skills` repository, pinned by commit in `upstream/dreamina-skills.lock.json`. This plugin packages only the Canvas subset and plugin-specific guardrails.
