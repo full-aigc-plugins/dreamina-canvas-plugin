@@ -30,21 +30,20 @@ Remote `origin/main` (last known pre-session): `8545fbddafcdf6b4bf8de5b7ea141148
 
 | Ref | SHA | State |
 |-----|-----|--------|
-| Upstream published SHA (target) | `f1f894d0374c4ca99d11a40fb09eb4b8aaa89d3c` | local on `feat/canvas-skills` |
-| Local plugin HEAD | `b0b54e7a45f56cdd86848ca3dd2e2ed9d654bc1b` | local on `feat/canvas-plugin-pin` |
-| Remote `origin/main` (pre-session) | `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` | unchanged — no push performed this session |
+| Upstream published SHA (target) | `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7` | pushed to `origin/feat/canvas-skills` |
+| Local upstream HEAD | `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7` | tracks `origin/feat/canvas-skills` |
+| Local plugin HEAD | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | local on `feat/canvas-plugin-pin` |
+| Local plugin tracking | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | tracks `origin/feat/canvas-plugin-pin` |
+| Remote `origin/feat/canvas-plugin-pin` | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | pushed |
+| Remote `origin/main` (pre-session) | `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` | unchanged — branch-level push only |
 
-Push to remote origin was **not** performed this session because it is a
-destructive operation that requires explicit user authorization. To
-finish the publication step:
+Both branches were pushed under explicit user authorization in this
+session. The plugin `main` branch on origin remains at the pre-session
+SHA `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` because the user chose
+branch-level push (not `main`).
 
-1. Confirm push authorization for both repositories.
-2. `git push origin feat/canvas-skills` from the upstream worktree.
-3. After upstream is visible on the remote, optionally merge into `main`
-   and `git push origin main` there.
-4. `git push origin feat/canvas-plugin-pin` from the downstream worktree,
-   then optionally merge into `main` and `git push origin main`.
-5. Re-record the three SHAs (`local`, `tracking`, `remote main`) and
-   confirm they all match the published SHA `f1f894d` for upstream and
-   `b0b54e7` for downstream.
+The plugin's packaged Skill inventory is byte-identical to upstream
+`f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7`, asserted by
+`scripts/verify_dreamina_canvas_skills.py` against
+`upstream/dreamina-skills.lock.json`.
 

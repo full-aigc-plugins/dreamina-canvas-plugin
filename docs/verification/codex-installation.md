@@ -64,20 +64,24 @@ To re-validate in a fresh Codex task:
 
 | Ref | SHA | State |
 |-----|-----|--------|
-| Local plugin `HEAD` (this branch) | `6ea56fe88ca45e19af5d5e6bb4318111205ec89d` | local on `feat/canvas-plugin-pin` |
-| Tracking upstream (when pushed) | not yet set (no push this session) | pending authorization |
-| Remote `origin/main` (pre-session) | `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` | unchanged |
+| Local plugin `HEAD` (this branch) | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | local on `feat/canvas-plugin-pin` |
+| Tracking upstream (this branch) | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | tracks `origin/feat/canvas-plugin-pin` |
+| Remote `origin/feat/canvas-plugin-pin` | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | pushed this session |
+| Remote `origin/main` (pre-session) | `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` | unchanged — branch-level push only |
 
-A successful "fresh Codex installation" is the case where all three
-SHAs are identical 40-character hex strings matching `b0b54e7…`.
+All three plugin-branch SHAs (`local`, `tracking`, `remote`) are
+identical: `ec656374817c0b8fec9b9a2f95597da903e8e9c3`. This satisfies
+the "three-end SHA equality" check that the plan requires for a
+successful fresh Codex installation on this branch.
 
-This branch has **not** been pushed to `origin/main`. Local SHA is the
-single source of truth for the packaged plugin until a push is performed
-under separate authorization.
+The user explicitly chose branch-level push over `main`; the plugin's
+`origin/main` therefore remains at the pre-session SHA until a
+separate merge-and-push to `main` is authorised.
 
 ## Upstream SHA pin
 
 The plugin references the upstream `dreamina-skills` repository at
-commit `f1f894d0374c4ca99d11a40fb09eb4b8aaa89d3c`, recorded in
+commit `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7`, recorded in
 `upstream/dreamina-skills.lock.json` and verified byte-for-byte by
-`scripts/verify_dreamina_canvas_skills.py`.
+`scripts/verify_dreamina_canvas_skills.py`. The upstream
+`feat/canvas-skills` branch is also pushed to origin at this SHA.
