@@ -22,9 +22,23 @@ Remote `origin/main` (last known pre-session): `8545fbddafcdf6b4bf8de5b7ea141148
   `dreamina-canvas version` returns `1.0.0` / commit `ae2c968` / edition `public`
   / distribution `cn` / build `2026-09-05T08:54:32Z`.
 - `auth`: NOT_RUN — User-supplied credentials were not provided this session.
-- `paid_canary`: NOT_RUN — Paid generation requires separate action-time approval.
-- `cli_runtime` and `auth` checks were performed; `auth account` was not invoked because no
-  credentials were provided; `paid_canary` is intentionally independent of this gate.
+  Per plan Task 15 Step 3 / upstream plan §21, `auth account` is run only when
+  authentication/account access is separately authorized. The user did not
+  supply credentials or a `auth wait --device-code <code>` value within this
+  session. Recording `NOT_RUN` here is the documented compliance behaviour,
+  not a gap.
+- `paid_canary`: NOT_RUN — Paid generation requires separate action-time
+  approval. Per plan Task 15 Step 4, a canary proceeds only after the user
+  supplies a `--credit-ceiling` and explicit approval. No canary was
+  performed; no `submitId` was minted against a paid batch.
+
+To flip these gates to PASS in a future session, the user must supply:
+
+1. Either a fresh `dreamina-canvas auth login` device-code (so the agent
+   can resume `auth wait --device-code <code> --timeout 10m`), OR
+   credentials that the agent can pass to `auth login` itself.
+2. An explicit `--credit-ceiling <integer>` value and a one-line media
+   prompt for the canary draft.
 
 ## Publication status
 
