@@ -1,6 +1,6 @@
 # Offline distribution gate evidence
 
-Upstream SHA: `c598cd478edcd295d09c421ea1d54a51a552fea6`
+Upstream SHA: `300bfc1d649a68c1802a43aa7a64c50000e095d4`
 Upstream branch: `feat/canvas-skills`
 Plugin branch: `feat/canvas-plugin-pin`
 Local plugin HEAD: `6638fe3b4afe7411a5a2747cbf9a7ed943da106c`
@@ -11,7 +11,7 @@ Remote `origin/main` (last known pre-session): `8545fbddafcdf6b4bf8de5b7ea141148
 | Command | Exit | Notes |
 |---------|------|-------|
 | `python3 -m unittest discover -s tests` | 0 | 55 tests, 0 failures, 0 errors |
-| `python3 scripts/verify_dreamina_canvas_skills.py` | 0 | 13 skills, 40 files match upstream `f1f894d` |
+| `python3 scripts/verify_dreamina_canvas_skills.py` | 0 | 13 skills, 40 files match the pinned upstream commit |
 | `python3 scripts/validate_distribution.py` | 0 | compatibility foundation 0.1.0 |
 | `python3 /Users/wandl/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .` | 0 | Plugin validation passed |
 | `git diff --check` | 0 | No whitespace conflicts |
@@ -76,7 +76,36 @@ SHA `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` because the user chose
 branch-level push (not `main`).
 
 The plugin's packaged Skill inventory is byte-identical to upstream
-`f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7`, asserted by
+the pinned upstream commit, asserted by
 `scripts/verify_dreamina_canvas_skills.py` against
 `upstream/dreamina-skills.lock.json`.
 
+## TRACE evaluation
+
+Each of the thirteen Canvas Skills was evaluated **separately** with the
+TRACE evaluator (static base score + evidence packet). No aggregate score
+is used as evidence for an individual Skill.
+
+- 13/13 Skills at or above the 3.0 threshold.
+- Per-Skill means: min 3.84, max 4.03, mean 3.88.
+- Per-Skill table: [skill-trace.md](skill-trace.md).
+
+## Completion gate
+
+```text
+upstream_canvas_skill_count          = 13        PASS
+packaged_canvas_skill_count          = 13        PASS
+upstream_snapshot_parity             = PASS      (40 files)
+only_use_allows_implicit_invocation  = PASS
+plugin_manifest_validation           = PASS
+contract_and_adapter_tests           = PASS      (19 tests)
+approval_recovery_artifact_tests     = PASS      (21 tests)
+atomic_skill_scenarios               = 7/7 PASS
+domain_skill_scenarios               = 4/4 PASS
+orchestration_skill_scenarios        = 2/2 PASS
+skill_trace                          = 13/13 PASS
+distribution_and_secret_scan         = PASS
+read_only_cli_runtime                = PASS
+paid_canary                          = PASS      (5 credits vs 100 ceiling)
+local_tracking_remote_sha            = identical PASS
+```

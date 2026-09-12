@@ -19,7 +19,7 @@ same artifacts via the plugin-creator cachebuster flow.
 ## Skill inventory (13)
 
 The marketplace and plugin manifest reference 13 Canvas Skills, exactly
-matching the upstream `dreamina-skills` repository at SHA `f1f894d`:
+matching the pinned upstream `dreamina-skills` snapshot:
 
 - `dreamina-canvas-cli`
 - `dreamina-canvas-auth`
@@ -94,12 +94,12 @@ separate merge-and-push to `main` is authorised.
 ## Upstream SHA pin
 
 The plugin references the upstream `dreamina-skills` repository at
-commit `c598cd478edcd295d09c421ea1d54a51a552fea6`, recorded in
+commit `300bfc1d649a68c1802a43aa7a64c50000e095d4`, recorded in
 `upstream/dreamina-skills.lock.json` and verified byte-for-byte by
 `scripts/verify_dreamina_canvas_skills.py` (13 skills, 40 files). The
 upstream `feat/canvas-skills` branch is also pushed to origin at this SHA.
 
-The pinned commit moved from `f1f894d…` to `c598cd4…` when the runtime
-boundary evidence was recorded upstream. The `skills/` tree is
+The pinned commit advanced from `f1f894d…` to `c598cd4…` (runtime boundary
+evidence) and then to `300bfc1…` (per-Skill TRACE evidence). The `skills/` tree is
 byte-identical between the two commits — only `verification/` and
 `tests/` changed — which the byte-parity verifier confirms.
