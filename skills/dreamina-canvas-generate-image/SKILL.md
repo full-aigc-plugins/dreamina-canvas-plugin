@@ -1,6 +1,6 @@
 ---
 name: dreamina-canvas-generate-image
-description: Use when an agent or script must save or run a Dreamina Canvas image node (t2i or i2i), compose ordered node: and res: references, separate generation edits from sparse metadata edits, and hand off paid execution to dreamina-canvas-quote-and-run.
+description: "Use when an agent or script must save or run a Dreamina Canvas image node (t2i or i2i), compose ordered node: and res: references, separate generation edits from sparse metadata edits, and hand off paid execution to dreamina-canvas-quote-and-run."
 license: Complete terms in LICENSE
 ---
 
@@ -135,3 +135,23 @@ never:
 - Edit generation as a partial update; missing flags are treated as cleared.
 - Pass `multi_modal` (or other server-internal aliases) where the public
   mode is `m2v` / `t2i` / etc.
+
+## Policy
+
+Invocation requires:
+- Confirmed installation of dreamina-canvas
+- Live model discovery result for image
+- For paid execution: explicit handoff to dreamina-canvas-quote-and-run
+
+Forbids:
+- Calling --run from this Skill
+- Supplying --credit-ceiling or --credit-token
+- Persisting credit-approval token, signed URLs, cookies, or OAuth tokens
+- Treating generation edit as a sparse update
+
+Default prompt:
+
+> Save image drafts via node create/edit image. Generation edits replace
+> the full block; metadata edits are sparse. Hand off paid execution to
+> dreamina-canvas-quote-and-run; never pass --run from this Skill.
+>
