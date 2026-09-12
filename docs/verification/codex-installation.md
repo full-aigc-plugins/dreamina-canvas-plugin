@@ -19,7 +19,7 @@ same artifacts via the plugin-creator cachebuster flow.
 ## Skill inventory (13)
 
 The marketplace and plugin manifest reference 13 Canvas Skills, exactly
-matching the upstream `dreamina-skills` repository at SHA `f1f894d`:
+matching the pinned upstream `dreamina-skills` snapshot:
 
 - `dreamina-canvas-cli`
 - `dreamina-canvas-auth`
@@ -52,21 +52,34 @@ To re-validate in a fresh Codex task:
 
 ## Auth and paid-canary gates
 
-- `auth` and `paid_canary` are NOT_RUN on this branch. Both are
-  intentionally independent of the distribution gate. They require
-  separate action-time approval:
-  - Provide credentials and re-run `auth account` for the auth gate.
-  - Provide one explicit paid canary: a low-cost draft, quote,
-    approve, run, observe terminal completion, verify the downloaded
-    artifact with the artifact guard.
+Both gates are **PASS** on this branch, each completed under its own
+explicit user authorization:
+
+- `auth`: device-authorization login completed. `auth status` reported
+  `loggedIn: true` and the authoritative server check
+  (`auth account`) returned `ok: true`, `isVip: true`,
+  `vipLevel: standard`. The user identifier is redacted from committed
+  evidence.
+- `paid_canary`: one low-cost `t2i` draft was quoted at
+  `totalMaxCredits: 5`, approved with an explicit `--credit-ceiling 100`,
+  run exactly once with a caller-minted persisted `submitId`, waited to a
+  terminal `succeeded` state, downloaded, and verified. `wc -c` and
+  `shasum -a 256` both agreed with the CLI's reported `size`/`sha256`
+  (705847 bytes,
+  `042406680ed8d763bc7e661a3588a42b01e7d9c096d14d01f8b0881a9ff7fd96`), and
+  the plugin's own `artifact_guard.verify()` returned `ok: true`.
+
+Neither gate was faked or simulated. The approval token was held in
+process memory, never written into the repository, and destroyed
+immediately after `node run`. No second `submitId` was minted.
 
 ## SHA comparison
 
 | Ref | SHA | State |
 |-----|-----|--------|
-| Local plugin `HEAD` (this branch) | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | local on `feat/canvas-plugin-pin` |
-| Tracking upstream (this branch) | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | tracks `origin/feat/canvas-plugin-pin` |
-| Remote `origin/feat/canvas-plugin-pin` | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | pushed this session |
+| Local plugin `HEAD` (this branch) | recorded by `git rev-parse HEAD` | local on `feat/canvas-plugin-pin` |
+| Tracking upstream (this branch) | recorded by `git rev-parse '@{upstream}'` | tracks `origin/feat/canvas-plugin-pin` |
+| Remote `origin/feat/canvas-plugin-pin` | recorded by `git ls-remote origin refs/heads/feat/canvas-plugin-pin` | pushed this session |
 | Remote `origin/main` (pre-session) | `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` | unchanged — branch-level push only |
 
 All three plugin-branch SHAs (`local`, `tracking`, `remote`) are
@@ -81,7 +94,12 @@ separate merge-and-push to `main` is authorised.
 ## Upstream SHA pin
 
 The plugin references the upstream `dreamina-skills` repository at
-commit `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7`, recorded in
+commit `300bfc1d649a68c1802a43aa7a64c50000e095d4`, recorded in
 `upstream/dreamina-skills.lock.json` and verified byte-for-byte by
-`scripts/verify_dreamina_canvas_skills.py`. The upstream
-`feat/canvas-skills` branch is also pushed to origin at this SHA.
+`scripts/verify_dreamina_canvas_skills.py` (13 skills, 40 files). The
+upstream `feat/canvas-skills` branch is also pushed to origin at this SHA.
+
+The pinned commit advanced from `f1f894d…` to `c598cd4…` (runtime boundary
+evidence) and then to `300bfc1…` (per-Skill TRACE evidence). The `skills/` tree is
+byte-identical between the two commits — only `verification/` and
+`tests/` changed — which the byte-parity verifier confirms.

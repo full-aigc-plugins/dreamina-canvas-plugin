@@ -55,8 +55,14 @@ class DistributionTests(unittest.TestCase):
             self.assertTrue((ROOT / directory).is_dir(), directory)
         for filename in ("LICENSE", "NOTICE", "PRIVACY.md", "TERMS.md", "THIRD_PARTY_NOTICES.md", ".gitignore", "docs/portable-migration.md", "scripts/validate_distribution.py"):
             self.assertTrue((ROOT / filename).is_file(), filename)
-        self.assertFalse((ROOT / "plugin.json").exists())
-        self.assertFalse((ROOT / "mcp.json").exists())
+        # The canonical portable manifest now ships alongside the
+        # compatibility fallback; parity is covered by test_portable_parity.py.
+        self.assertTrue((ROOT / "plugin.json").is_file())
+        self.assertTrue((ROOT / ".codex-plugin" / "plugin.json").is_file())
+        # This plugin bundles no MCP servers and no apps, so neither
+        # companion file may exist.
+        for forbidden in ("mcp.json", ".mcp.json", ".app.json", "app.json"):
+            self.assertFalse((ROOT / forbidden).exists(), forbidden)
         self.assertEqual(png_shape("assets/logo.png"), (1024, 1024, 6))
         self.assertEqual(png_shape("assets/logo-dark.png"), (1024, 1024, 6))
         self.assertEqual(png_shape("assets/composer-icon.png"), (256, 256, 6))
