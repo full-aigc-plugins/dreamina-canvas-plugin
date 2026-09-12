@@ -102,9 +102,11 @@ divergence rather than a defect in this repository.
 - **Toolchain lag.** The installed `plugin-creator` scaffold still emits only
   the compatibility manifest. If a future scaffold starts emitting a portable
   root manifest, re-run the parity tests rather than hand-editing.
-- **Public marketplace install.** The in-repo marketplace pins
-  `ref: "main"`. The Canvas Skills live on `feat/canvas-plugin-pin`, so a
-  public-marketplace install resolves an empty Skill set until the branch is
-  merged to `main`. The fresh-installation gate was therefore verified via
-  the local marketplace against the same byte-verified checkout. This is a
-  branch-state dependency, not a packaging defect.
+- **Public marketplace install — resolved.** The in-repo marketplace pins
+  `ref: "main"`, so the public path requires `main` to carry the Skills.
+  After `feat/canvas-plugin-pin` was merged to `main` and pushed, the public
+  flow was executed end-to-end: `codex plugin marketplace add
+  https://github.com/partme-ai/codex-dreamina-canvas-plugin.git` resolved the
+  plugin, and `codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas`
+  installed it with 13 Skills discovered and only `dreamina-canvas-use`
+  implicit. See `docs/verification/fresh-installation.md`.

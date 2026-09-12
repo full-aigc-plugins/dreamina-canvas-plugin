@@ -62,21 +62,43 @@ Invocation policy per discovered Skill:
 Only `dreamina-canvas-use` is implicitly invokable. The other twelve remain
 explicit building blocks, exactly as the design requires.
 
-## Marketplace-source note
+## Public repository marketplace install (primary evidence)
 
 The plan's step describes installing *from the public repository
-marketplace*. That variant depends on the plugin's `origin/main` carrying
-the Canvas Skills, because the in-repo marketplace entry
-(`.agents/plugins/marketplace.json`) pins `ref: "main"`. The user
-authorised branch-level push only, so `origin/main` does not yet carry the
-skills and a public-marketplace install would resolve an empty Skill set.
+marketplace*. That path was executed end-to-end after the feature branch was
+merged to `main` and pushed:
 
-This gate was therefore verified end-to-end via the **local** marketplace
-against the same byte-verified checkout. The verification is substantive:
-the Codex CLI performed the real install, materialised the cache, wrote the
-config entry, and the resulting discovery is exactly thirteen names with a
-single implicit Skill. No manifest or Skill byte differs between the local
-checkout and the pushed branch.
+```bash
+$ codex plugin marketplace add https://github.com/partme-ai/codex-dreamina-canvas-plugin.git
+Added marketplace `partme-ai-dreamina-canvas` from https://github.com/partme-ai/codex-dreamina-canvas-plugin.git.
+Installed marketplace root: ~/.codex/.tmp/marketplaces/partme-ai-dreamina-canvas
 
-To repeat the *public* variant, merge the branch into `main` and push, then
-install from the repository URL instead of the local path.
+$ codex plugin list
+codex-dreamina-canvas@partme-ai-dreamina-canvas  not installed  https://github.com/partme-ai/codex-dreamina-canvas-plugin.git, ref `main`
+
+$ codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas
+Added plugin `codex-dreamina-canvas` from marketplace `partme-ai-dreamina-canvas`.
+Installed plugin root: ~/.codex/plugins/cache/partme-ai-dreamina-canvas/codex-dreamina-canvas/0.1.0
+```
+
+Verification of the publicly installed copy:
+
+- Skills discovered: **13**
+- `allow_implicit_invocation` true for **`dreamina-canvas-use` only**
+- Installed under the Git marketplace's own cache namespace
+  (`partme-ai-dreamina-canvas`), separate from the local `personal` one
+
+This confirms the in-repo marketplace entry (`.agents/plugins/marketplace.json`)
+resolves correctly through the documented Git repo-root `"url"` + `ref`
+source variant, and that the packaged Skills are reachable from the public
+repository.
+
+## Local marketplace install (secondary evidence)
+
+The same plugin was also installed from the local `personal` marketplace,
+against the worktree rather than the pushed `main`. That path produced the
+identical result (13 Skills, only `dreamina-canvas-use` implicit), which is
+what allowed the packaging to be validated before the merge.
+
+Both installs are retained so the discovery result can be reproduced without
+network access.
