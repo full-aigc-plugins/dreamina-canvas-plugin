@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "error": {
+    "code": "cli.node_run_unknown",
+    "requiredAction": "resume",
+    "message": "operation accepted but not converged",
+    "submission": {
+      "state": "in_progress",
+      "resubmittable": false
+    },
+    "operationRef": "submit_b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6"
+  }
+}

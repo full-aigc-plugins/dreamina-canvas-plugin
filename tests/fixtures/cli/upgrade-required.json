@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "error": {
+    "code": "cli.upgrade_required",
+    "requiredAction": "upgrade",
+    "message": "current CLI version is below the minimum supported version",
+    "clientUpgrade": {
+      "upgradeUrl": "https://jimeng.jianying.com/canvas-cli",
+      "currentVersion": "1.0.0",
+      "minimumVersion": "1.1.0"
+    }
+  }
+}
