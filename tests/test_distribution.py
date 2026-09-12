@@ -25,6 +25,40 @@ def png_shape(relative: str) -> tuple[int, int, int]:
     return width, height, data[25]
 
 class DistributionTests(unittest.TestCase):
+    def test_production_readiness_files(self) -> None:
+        requirements = (ROOT / "requirements-dev.txt").read_text(encoding="utf-8")
+        self.assertIn("jsonschema>=4.21,<5", requirements)
+        self.assertIn("PyYAML>=6,<7", requirements)
+
+        workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        for expected in (
+            "python -m unittest discover -s tests -v",
+            "python -m unittest discover -s tests/scenarios -v",
+            "python scripts/verify_dreamina_canvas_skills.py",
+            "python scripts/validate_distribution.py",
+        ):
+            self.assertIn(expected, workflow)
+        self.assertNotIn("uses: actions/checkout@v", workflow)
+        self.assertNotIn("uses: actions/setup-python@v", workflow)
+
+        for filename in ("SECURITY.md", "CONTRIBUTING.md"):
+            self.assertTrue((ROOT / filename).is_file(), filename)
+
+    def test_status_documents_match_verified_runtime_evidence(self) -> None:
+        for filename in ("README.md", "README.zh-CN.md"):
+            content = (ROOT / filename).read_text(encoding="utf-8")
+            self.assertNotIn("`NOT_RUN`", content, filename)
+            self.assertIn("PASS", content, filename)
+
+        plan = (
+            ROOT
+            / "docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md"
+        ).read_text(encoding="utf-8")
+        self.assertFalse(
+            any(line.startswith("- [ ]") for line in plan.splitlines())
+        )
+        self.assertNotIn("remain unimplemented", plan)
+
     def test_validator_accepts_distribution(self) -> None:
         result = subprocess.run([sys.executable, str(ROOT / "scripts/validate_distribution.py"), str(ROOT)], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

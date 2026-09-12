@@ -26,7 +26,7 @@
 
 ## Foundation baseline completed 2026-09-12
 
-Task 1's compatibility foundation is now materially present as `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, Apache-2.0/legal files, three transparent PNG assets, implementation directories, `scripts/validate_distribution.py`, and `tests/test_distribution.py`. The files pass their RED/GREEN foundation tests and the system plugin validator. Later tasks must modify this baseline rather than scaffold it again; the thirteen Canvas Skills and CLI adapter remain unimplemented.
+Task 1's compatibility foundation is now materially present as `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, Apache-2.0/legal files, three transparent PNG assets, implementation directories, `scripts/validate_distribution.py`, and `tests/test_distribution.py`. Tasks 2–10 are implemented and their evidence is recorded under `docs/verification/`. Production hardening adds a reproducible development dependency set, an offline CI matrix, and security/contribution guidance.
 
 ---
 
@@ -44,7 +44,7 @@ Task 1's compatibility foundation is now materially present as `.codex-plugin/pl
 - Consumes: repository identity `partme-ai/codex-dreamina-canvas-plugin` and the existing bilingual architecture/spec documents.
 - Produces: a validator-compatible plugin manifest and repo-local marketplace entry.
 
-- [ ] **Step 1: Write the failing manifest test**
+- [x] **Step 1: Write the failing manifest test**
 
 ```python
 def test_manifest_identity_and_skill_root():
@@ -54,17 +54,17 @@ def test_manifest_identity_and_skill_root():
     assert manifest["repository"] == "https://github.com/partme-ai/codex-dreamina-canvas-plugin"
 ```
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Run: `python3 -m unittest tests/test_plugin_manifest.py -v`
 
 Expected: FAIL because `.codex-plugin/plugin.json` is absent.
 
-- [ ] **Step 3: Scaffold the manifest without placeholders**
+- [x] **Step 3: Scaffold the manifest without placeholders**
 
 Use the system `plugin-creator` scaffold rules. The manifest must include strict semver, author, repository, Apache-2.0 license, `skills: "./skills/"`, and an interface block with display name “Dreamina Canvas”. Do not declare apps or MCP servers until companion files exist.
 
-- [ ] **Step 4: Add the repository marketplace entry**
+- [x] **Step 4: Add the repository marketplace entry**
 
 ```json
 {
@@ -81,7 +81,7 @@ Use the system `plugin-creator` scaffold rules. The manifest must include strict
 
 Validate the URL source and resolved `main` commit before relying on the marketplace entry. Installation evidence must record the resolved commit rather than treating a moving branch name as immutable proof.
 
-- [ ] **Step 5: Run validator and commit**
+- [x] **Step 5: Run validator and commit**
 
 ```bash
 python3 tests/test_plugin_manifest.py
@@ -106,7 +106,7 @@ git commit -m "feat: scaffold Dreamina Canvas Codex plugin"
 - Consumes: the CLI guide's identifiers, exit codes, required actions, per-item batch behavior, and secret exclusions.
 - Produces: closed JSON contracts consumed by the adapter, guards, ledger, downloader, and packaged Skill scenarios.
 
-- [ ] **Step 1: Write failing schema tests**
+- [x] **Step 1: Write failing schema tests**
 
 ```python
 def test_all_contracts_are_closed_and_reject_secrets():
@@ -118,19 +118,19 @@ def test_all_contracts_are_closed_and_reject_secrets():
             assert forbidden not in serialized
 ```
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Expected: FAIL because the schemas are missing.
 
-- [ ] **Step 3: Define exact receipt relationships**
+- [x] **Step 3: Define exact receipt relationships**
 
 `CapabilitySnapshot` includes CLI version/commit/edition/distribution, schema hash, profile/region/environment, and fetched-at time. `ApprovalReceipt` binds quote ID, project ID, ordered node IDs, ceiling, currency/unit, expiry, and request fingerprint but never stores the confirmation token. `OperationReceipt` contains project/node/submit IDs, last known submission state, resubmittable fact, required action, and timestamps. `ArtifactReceipt` contains resource ID, canonical local path, byte count, SHA-256, and media metadata.
 
-- [ ] **Step 4: Validate positive and negative fixtures**
+- [x] **Step 4: Validate positive and negative fixtures**
 
 Tests must reject additional properties, uppercase/noncanonical UUIDs where the contract requires lowercase UUIDs, empty submit IDs, approval for a different ordered node set, and artifact receipts without checksum evidence.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add schemas tests/test_contracts.py
@@ -153,7 +153,7 @@ git commit -m "feat: define Dreamina Canvas runtime contracts"
 - Consumes: argv list, timeout, environment/profile selection, stdout, stderr, and process exit code.
 - Produces: `CommandResult(exit_code, payload, error, required_action, partial_data)` and a typed next-action decision.
 
-- [ ] **Step 1: Write failing argv and stream tests**
+- [x] **Step 1: Write failing argv and stream tests**
 
 ```python
 def test_adapter_uses_argv_and_json_mode():
@@ -164,21 +164,21 @@ def test_adapter_uses_argv_and_json_mode():
 
 Also baseline missing executable, malformed JSON, output-size limit, timeout, stdout-on-error contamination, and stderr-on-success diagnostics.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Run: `python3 -m unittest tests/test_dreamina_canvas_adapter.py tests/test_error_router.py -v`
 
 Expected: FAIL because adapter functions are undefined.
 
-- [ ] **Step 3: Implement argv-only execution**
+- [x] **Step 3: Implement argv-only execution**
 
 Never invoke a shell or interpolate user content. Force `--format json`, cap stdout/stderr, parse a single error object from stderr when nonzero, and retain the original numeric exit code.
 
-- [ ] **Step 4: Implement stable error routing**
+- [x] **Step 4: Implement stable error routing**
 
 Map 2 to caller correction, 10 to approval pause, 11 to login, 12 to permission stop, 13 to upgrade, 20 to resume, 21 to bounded backoff, and 22 to human intervention. Localized `message` is display-only; branching uses exit code and `error.requiredAction`.
 
-- [ ] **Step 5: Run tests and commit**
+- [x] **Step 5: Run tests and commit**
 
 ```bash
 python3 -m unittest tests/test_dreamina_canvas_adapter.py tests/test_error_router.py -v
@@ -199,7 +199,7 @@ git commit -m "feat: add strict Dreamina Canvas CLI adapter"
 - Consumes: a published `full-aigc-skills/dreamina-skills` SHA that passed its 13-Skill source plan.
 - Produces: thirteen byte-identical packaged Skill directories plus a per-file SHA-256 ledger.
 
-- [ ] **Step 1: Write the failing lock and parity test**
+- [x] **Step 1: Write the failing lock and parity test**
 
 ```python
 def test_packaged_skills_match_locked_source():
@@ -209,19 +209,19 @@ def test_packaged_skills_match_locked_source():
     assert verify_locked_files(lock) == []
 ```
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Expected: FAIL because the lock, sync script, and packaged Skills are absent.
 
-- [ ] **Step 3: Implement deterministic sync**
+- [x] **Step 3: Implement deterministic sync**
 
 Require an explicit 40-character commit SHA; fetch that commit into an isolated temporary directory; copy only the declared `dreamina-canvas-*` directories; reject symlinks, caches, hidden credential files, and undeclared Skill identities; record sorted relative paths and SHA-256 values.
 
-- [ ] **Step 4: Pin the verified source commit**
+- [x] **Step 4: Pin the verified source commit**
 
 Do not pin `main`, a tag without resolved commit evidence, or the pre-Canvas migration SHA `b9d11ac`. Record the new published SHA produced by the source plan's final task.
 
-- [ ] **Step 5: Verify and commit**
+- [x] **Step 5: Verify and commit**
 
 ```bash
 python3 scripts/sync_dreamina_canvas_skills.py --lock upstream/dreamina-skills.lock.json
@@ -247,7 +247,7 @@ git commit -m "build: pin Dreamina Canvas Skill source"
 - Consumes: the pinned source snapshot and adapter fixture API.
 - Produces: seven independently validated atomic Skill entries.
 
-- [ ] **Step 1: Baseline atomic routing failures**
+- [x] **Step 1: Baseline atomic routing failures**
 
 ```python
 def test_exit_20_routes_to_resume_not_run():
@@ -258,19 +258,19 @@ def test_exit_20_routes_to_resume_not_run():
 
 Add separate scenarios for local status versus account identity, out-of-catalog models, concurrent canvas creation, exit-10 approval pause, and verified download receipts.
 
-- [ ] **Step 2: Run RED against an empty/unpackaged snapshot**
+- [x] **Step 2: Run RED against an empty/unpackaged snapshot**
 
 Expected: FAIL because the seven Skill entries are not yet packaged.
 
-- [ ] **Step 3: Sync the exact upstream files**
+- [x] **Step 3: Sync the exact upstream files**
 
 Do not edit packaged Skill prose. Any issue found during validation must be fixed and published in `dreamina-skills`, followed by updating the lock SHA and re-syncing.
 
-- [ ] **Step 4: Validate each Skill independently**
+- [x] **Step 4: Validate each Skill independently**
 
 Run quick validation, strict TRACE, and its own retrieval/application scenario for each of the seven names. Preserve seven separate results in `docs/verification/atomic-skills.md`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add skills upstream docs/verification tests/scenarios
@@ -291,23 +291,23 @@ git commit -m "feat: package atomic Dreamina Canvas Skills"
 - Consumes: closed receipts and `CommandResult` from Task 3.
 - Produces: request fingerprints, one-use approval decisions, atomic non-secret journals, conservative recovery decisions, and verified artifact receipts.
 
-- [ ] **Step 1: Write failing approval-scope tests**
+- [x] **Step 1: Write failing approval-scope tests**
 
 Test no quote, `confirmable=false`, ceiling below total, changed project/ordered node set, expiry, replay, and a latest quote above the approved ceiling.
 
-- [ ] **Step 2: Write failing recovery tests**
+- [x] **Step 2: Write failing recovery tests**
 
 Test process restart, empty submit ID, `in_progress`, `completed`, `absent + resubmittable=true`, missing submission fact, batch partial data, and exit-code 21 bounded retry. No test may accept generation of a new submit ID during recovery.
 
-- [ ] **Step 3: Write failing artifact tests**
+- [x] **Step 3: Write failing artifact tests**
 
 Test approved path containment, atomic-write evidence, byte-count mismatch, SHA-256 mismatch, missing media metadata, and secret-field rejection.
 
-- [ ] **Step 4: Implement the guards**
+- [x] **Step 4: Implement the guards**
 
 Use canonical sorted-key JSON for lowercase SHA-256 fingerprints. Persist operation receipts through temporary-file plus atomic replacement with restrictive permissions. Keep credit confirmation tokens in process memory only.
 
-- [ ] **Step 5: Run tests and commit**
+- [x] **Step 5: Run tests and commit**
 
 ```bash
 python3 -m unittest tests/test_approval_guard.py tests/test_operation_ledger.py tests/test_artifact_guard.py -v
@@ -329,7 +329,7 @@ git commit -m "feat: enforce Canvas approval recovery and artifact guards"
 - Consumes: atomic Skills, adapter fixtures, approval/recovery/artifact guards, and the pinned source lock.
 - Produces: four independently verified media/timeline Skill entries.
 
-- [ ] **Step 1: Baseline domain failures**
+- [x] **Step 1: Baseline domain failures**
 
 ```python
 def test_video_rejects_nonexistent_i2v_mode():
@@ -340,15 +340,15 @@ def test_video_rejects_nonexistent_i2v_mode():
 
 Also test image generation replacement versus sparse metadata edit, TTS/music exclusivity, timeline full-track replacement warning, out-of-catalog values, and draft-only default behavior.
 
-- [ ] **Step 2: Run RED, then sync the four Skills**
+- [x] **Step 2: Run RED, then sync the four Skills**
 
 No packaged file may be patched locally. Upstream corrections require a new source commit and lock update.
 
-- [ ] **Step 3: Validate each Skill independently**
+- [x] **Step 3: Validate each Skill independently**
 
 Run four quick validations, four strict TRACE evaluations, and four separate forward scenarios. Record exact upstream SHA and scenario result in `docs/verification/domain-skills.md`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills upstream docs/verification tests/scenarios
@@ -367,7 +367,7 @@ git commit -m "feat: package Dreamina Canvas media Skills"
 - Consumes: all eleven previously packaged Skills and runtime guards.
 - Produces: non-charging graph composition and the only implicitly invoked end-to-end Canvas workflow.
 
-- [ ] **Step 1: Write failing orchestration tests**
+- [x] **Step 1: Write failing orchestration tests**
 
 ```python
 def test_use_is_the_only_implicit_canvas_skill():
@@ -378,11 +378,11 @@ def test_use_is_the_only_implicit_canvas_skill():
 
 Add scenarios for building a graph without spending, explicit topological run batches, quote rejection, resumed video, per-item batch reporting, timeline replacement warning, and downloaded artifact verification.
 
-- [ ] **Step 2: Run RED, then sync `compose` and `use`**
+- [x] **Step 2: Run RED, then sync `compose` and `use`**
 
 The `use` Skill must route to lower-level Skills and must not duplicate global flags, exit-code tables, model catalogs, or node schemas.
 
-- [ ] **Step 3: Validate and commit**
+- [x] **Step 3: Validate and commit**
 
 Run both quick validators, strict TRACE checks, orchestration scenarios, and the upstream parity verifier.
 
@@ -406,15 +406,15 @@ git commit -m "feat: package Dreamina Canvas orchestration Skills"
 - Consumes: all manifests, schemas, scripts, tests, assets, 13 packaged Skills, and the upstream lock.
 - Produces: a distributable plugin archive with reproducible offline evidence.
 
-- [ ] **Step 1: Write failing distribution tests**
+- [x] **Step 1: Write failing distribution tests**
 
 Assert repository URL, plugin ID, strict semver, exact 13-Skill inventory, source SHA, byte parity, explicit/implicit policies, executable bits, license presence, valid local links, no symlinks/caches, and zero secret-pattern matches.
 
-- [ ] **Step 2: Run RED and fix only evidenced failures**
+- [x] **Step 2: Run RED and fix only evidenced failures**
 
 Do not add apps/MCP fields, screenshots, or runtime claims unless corresponding files and verification exist.
 
-- [ ] **Step 3: Run the complete offline gate**
+- [x] **Step 3: Run the complete offline gate**
 
 ```bash
 python3 -m unittest discover -s tests -v
@@ -424,7 +424,7 @@ python3 /Users/wandl/.codex/skills/.system/plugin-creator/scripts/validate_plugi
 git diff --check
 ```
 
-- [ ] **Step 4: Record evidence and commit**
+- [x] **Step 4: Record evidence and commit**
 
 `docs/verification/offline.md` must include command, timestamp, exit status, test count, plugin validator result, source SHA, and explicit `cli_runtime=NOT_RUN` / `paid_canary=NOT_RUN` when those checks were not authorized.
 
@@ -444,11 +444,11 @@ git commit -m "test: verify Dreamina Canvas plugin distribution"
 - Consumes: a separately authorized CLI installation/authentication state and the completed plugin package.
 - Produces: read-only CLI contract evidence and a fresh Codex task discovery result; paid canary remains independent.
 
-- [ ] **Step 1: Stop for installation authorization when CLI is absent**
+- [x] **Step 1: Stop for installation authorization when CLI is absent**
 
 Present the reviewed installation source `https://jimeng.jianying.com/canvas-cli`, expected install directory, files it may modify, and verification commands. Do not execute the installer based only on this plan.
 
-- [ ] **Step 2: Capture read-only runtime evidence after authorization**
+- [x] **Step 2: Capture read-only runtime evidence after authorization**
 
 ```bash
 dreamina-canvas --format json version
@@ -460,15 +460,15 @@ dreamina-canvas --format json voice list --language zh-CN --offset 0 --count 50
 
 Run `auth account` only when authentication/account access was also authorized. Redact user identifiers from committed evidence.
 
-- [ ] **Step 3: Install from the public repository marketplace**
+- [x] **Step 3: Install from the public repository marketplace**
 
 Follow the current plugin-creator cachebuster/reinstall flow. Open a fresh Codex task and verify discovery of exactly thirteen names, with only `dreamina-canvas-use` available for implicit invocation.
 
-- [ ] **Step 4: Keep paid canary independent**
+- [x] **Step 4: Keep paid canary independent**
 
 Without a separate action-time approval, write `paid_canary=NOT_RUN`. If approved, create one low-cost draft, quote it, show the exact maximum credits, obtain approval again, run once with a persisted submit ID, wait to terminal state, and verify the downloaded artifact.
 
-- [ ] **Step 5: Commit, push, and prove remote equality**
+- [x] **Step 5: Commit, push, and prove remote equality**
 
 ```bash
 git add docs/verification upstream/dreamina-skills.lock.json

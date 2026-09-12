@@ -33,7 +33,17 @@ Codex -> capability discovery -> canvas/node plan -> save(no charge)
 - [Technical solution](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md) / [中文](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
 - [Design spec](docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md)
 - [Implementation plan](docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Production-readiness evidence](docs/verification/production-readiness.md)
+
+## Development verification
+
+Create an isolated Python 3.11+ environment, install
+`requirements-dev.txt`, and run the offline gate documented in
+[CONTRIBUTING.md](CONTRIBUTING.md). CI repeats the same non-charging checks on
+Python 3.11, 3.12, and 3.13.
 
 ## Evidence
 
-The target behavior derives from the Dreamina Canvas CLI guide inspected on 2026-09-11. CLI runtime, version, and command compatibility are verified locally and recorded in [docs/verification/dreamina-canvas-runtime.md](docs/verification/dreamina-canvas-runtime.md); account authentication and the paid generation canary are `NOT_RUN` because no credentials were supplied.
+The target behavior derives from the Dreamina Canvas CLI guide inspected on 2026-09-11. CLI runtime, version, command compatibility, explicitly authorized account authentication, and a separately approved paid canary are recorded as **PASS** in [the runtime evidence](docs/verification/dreamina-canvas-runtime.md). Normal CI remains offline, unauthenticated, and non-charging.

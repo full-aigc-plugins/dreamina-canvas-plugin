@@ -33,7 +33,16 @@ Codex -> 发现能力 -> 规划画布/节点 -> 保存（不扣费）
 - [Technical solution](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md) / [中文](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
 - [设计规格](docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md)
 - [实施计划](docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md)
+- [贡献指南](CONTRIBUTING.md)
+- [安全策略](SECURITY.md)
+- [生产就绪证据](docs/verification/production-readiness.md)
+
+## 开发验证
+
+使用 Python 3.11+ 创建隔离环境，安装 `requirements-dev.txt`，然后执行
+[CONTRIBUTING.md](CONTRIBUTING.md) 中的离线门禁。CI 会在 Python 3.11、3.12、
+3.13 上重复相同的无扣费检查。
 
 ## 证据
 
-目标行为来自 2026-09-11 查阅的 Dreamina Canvas CLI 指南；CLI 运行期、版本与命令兼容性已在本地验证，记录见 [docs/verification/dreamina-canvas-runtime.md](docs/verification/dreamina-canvas-runtime.md)；账号认证与付费生成金丝雀为 `NOT_RUN`，因为本次未提供凭据。
+目标行为来自 2026-09-11 查阅的 Dreamina Canvas CLI 指南。CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以及单独批准的付费金丝雀均在[运行期证据](docs/verification/dreamina-canvas-runtime.md)中记录为 **PASS**。常规 CI 仍保持离线、无认证、无扣费。
