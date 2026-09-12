@@ -62,15 +62,22 @@ To re-validate in a fresh Codex task:
 
 ## SHA comparison
 
-| Ref | SHA |
-|-----|-----|
-| Local plugin `HEAD` (this branch) | captured by `git rev-parse HEAD` |
-| Tracking upstream (when pushed) | captured by `git rev-parse '@{upstream}'` |
-| Remote `origin/main` | captured by `git ls-remote origin refs/heads/main` |
+| Ref | SHA | State |
+|-----|-----|--------|
+| Local plugin `HEAD` (this branch) | `6ea56fe88ca45e19af5d5e6bb4318111205ec89d` | local on `feat/canvas-plugin-pin` |
+| Tracking upstream (when pushed) | not yet set (no push this session) | pending authorization |
+| Remote `origin/main` (pre-session) | `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` | unchanged |
 
 A successful "fresh Codex installation" is the case where all three
-SHAs are identical 40-character hex strings.
+SHAs are identical 40-character hex strings matching `b0b54e7…`.
 
 This branch has **not** been pushed to `origin/main`. Local SHA is the
 single source of truth for the packaged plugin until a push is performed
 under separate authorization.
+
+## Upstream SHA pin
+
+The plugin references the upstream `dreamina-skills` repository at
+commit `f1f894d0374c4ca99d11a40fb09eb4b8aaa89d3c`, recorded in
+`upstream/dreamina-skills.lock.json` and verified byte-for-byte by
+`scripts/verify_dreamina_canvas_skills.py`.
