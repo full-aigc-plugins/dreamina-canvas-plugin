@@ -40,6 +40,9 @@ class DistributionTests(unittest.TestCase):
             self.assertIn(expected, workflow)
         self.assertNotIn("uses: actions/checkout@v", workflow)
         self.assertNotIn("uses: actions/setup-python@v", workflow)
+        self.assertIn("actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5", workflow)
+        self.assertIn("actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6", workflow)
+        self.assertIn("cache-dependency-path: requirements-dev.txt", workflow)
 
         for filename in ("SECURITY.md", "CONTRIBUTING.md"):
             self.assertTrue((ROOT / filename).is_file(), filename)
