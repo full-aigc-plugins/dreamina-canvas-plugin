@@ -1,0 +1,49 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "codex-dreamina-canvas",
+  "version": "0.1.0",
+  "description": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
+  "author": {
+    "name": "Full Stack Skills / PartMe.AI",
+    "url": "https://github.com/partme-ai"
+  },
+  "homepage": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",
+  "repository": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "dreamina",
+    "canvas",
+    "creative-workflow",
+    "timeline",
+    "codex"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Dreamina Canvas",
+        "shortDescription": "Build and run structured Dreamina canvases",
+        "longDescription": "Build Dreamina canvases from typed nodes and timelines, discover live capabilities, separate free saves from quoted runs, resume stable operations, and download verified assets.",
+        "developerName": "Full Stack Skills / PartMe.AI",
+        "category": "Creativity",
+        "capabilities": [
+          "Interactive",
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",
+        "privacyPolicyURL": "https://github.com/partme-ai/codex-dreamina-canvas-plugin/blob/main/PRIVACY.md",
+        "termsOfServiceURL": "https://github.com/partme-ai/codex-dreamina-canvas-plugin/blob/main/TERMS.md",
+        "defaultPrompt": [
+          "Create a Dreamina canvas and save a draft without spending credits",
+          "Compose image video and audio nodes into a timeline",
+          "Quote this canvas run and wait for my approval"
+        ],
+        "brandColor": "#06B6D4",
+        "composerIcon": "./assets/composer-icon.png",
+        "logo": "./assets/logo.png",
+        "logoDark": "./assets/logo-dark.png",
+        "screenshots": []
+      }
+    }
+  }
+}

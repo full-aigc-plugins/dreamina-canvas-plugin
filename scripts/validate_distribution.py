@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""Validate a compatibility-first Codex plugin foundation."""
+"""Validate the Codex plugin distribution.
+
+The repository ships two manifests:
+  - `plugin.json`                canonical portable manifest
+  - `.codex-plugin/plugin.json`  compatibility fallback
+
+Both must agree on identity and interface, the portable one must satisfy the
+published schema (required `$schema` + `name`, `additionalProperties: false`
+at top level so no top-level `skills` / `interface`), and every declared
+component must actually exist.
+"""
 
 from __future__ import annotations
 
@@ -10,6 +20,29 @@ import sys
 from pathlib import Path
 
 NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+PORTABLE_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+PORTABLE_TOP_LEVEL_FIELDS = {
+    "$schema",
+    "name",
+    "version",
+    "description",
+    "author",
+    "homepage",
+    "repository",
+    "license",
+    "keywords",
+    "extensions",
+}
+IDENTITY_FIELDS = (
+    "name",
+    "version",
+    "description",
+    "author",
+    "homepage",
+    "repository",
+    "license",
+    "keywords",
+)
 SECRET_PATTERNS = (
     re.compile(rb"AIza[0-9A-Za-z_-]{20,}"),
     re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
@@ -86,8 +119,53 @@ def validate(root: Path) -> list[str]:
     for filename in REQUIRED_FILES:
         if not (root / filename).is_file():
             errors.append(f"missing required file: {filename}")
-    if (root / "plugin.json").exists() or (root / "mcp.json").exists():
-        errors.append("portable manifests must remain inactive during compatibility-first scaffolding")
+
+    # --- portable manifest (canonical) -----------------------------------
+    portable_path = root / "plugin.json"
+    if not portable_path.is_file():
+        errors.append("missing canonical portable manifest: plugin.json")
+    else:
+        portable = load_json(portable_path)
+        allowed = PORTABLE_TOP_LEVEL_FIELDS
+        unknown = sorted(set(portable) - allowed)
+        if unknown:
+            errors.append(
+                f"portable plugin.json has fields outside the published schema: {unknown}"
+            )
+        if portable.get("$schema") != PORTABLE_SCHEMA:
+            errors.append(f"portable plugin.json $schema must be {PORTABLE_SCHEMA}")
+        if portable.get("name") != plugin_id:
+            errors.append("portable plugin.json name must match the compat manifest")
+        author = portable.get("author", {})
+        unknown_author = sorted(set(author) - {"name", "email", "url"})
+        if unknown_author:
+            errors.append(f"portable author has unsupported fields: {unknown_author}")
+        # additionalProperties:false means these must NOT be top-level here
+        for forbidden in ("skills", "interface", "mcpServers", "apps"):
+            if forbidden in portable:
+                errors.append(
+                    f"portable plugin.json must not declare top-level `{forbidden}`"
+                )
+        extension = (portable.get("extensions") or {}).get("com.openai") or {}
+        portable_interface = extension.get("interface")
+        if not isinstance(portable_interface, dict):
+            errors.append("portable manifest must declare extensions.com.openai.interface")
+        else:
+            if set(portable_interface) != set(interface):
+                errors.append("portable and compat interface field sets differ")
+            for field, value in interface.items():
+                if portable_interface.get(field) != value:
+                    errors.append(f"interface parity mismatch on `{field}`")
+        for field in IDENTITY_FIELDS:
+            if portable.get(field) != manifest.get(field):
+                errors.append(f"identity parity mismatch on `{field}`")
+
+    # This plugin ships no MCP servers and no apps. Declaring either without
+    # its companion file would be an untruthful claim.
+    if (root / "mcp.json").exists() or (root / ".mcp.json").exists():
+        errors.append("MCP configuration is forbidden until an MCP server exists")
+    if (root / ".app.json").exists() or (root / "app.json").exists():
+        errors.append("app configuration is forbidden until an app exists")
 
     expected_assets = {
         "assets/logo.png": (1024, 1024, 6),
@@ -118,7 +196,10 @@ def main() -> int:
         print("\n".join(errors), file=sys.stderr)
         return 1
     manifest = load_json(root / ".codex-plugin" / "plugin.json")
-    print(f"validated {manifest['name']} compatibility foundation {manifest['version']}")
+    print(
+        f"validated {manifest['name']} {manifest['version']} "
+        "(portable + compatibility manifests, identity parity confirmed)"
+    )
     return 0
 
 
