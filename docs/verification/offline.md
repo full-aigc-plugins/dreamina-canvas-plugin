@@ -1,6 +1,6 @@
 # Offline distribution gate evidence
 
-Upstream SHA: `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7`
+Upstream SHA: `c598cd478edcd295d09c421ea1d54a51a552fea6`
 Upstream branch: `feat/canvas-skills`
 Plugin branch: `feat/canvas-plugin-pin`
 Local plugin HEAD: `6638fe3b4afe7411a5a2747cbf9a7ed943da106c`
@@ -21,35 +21,54 @@ Remote `origin/main` (last known pre-session): `8545fbddafcdf6b4bf8de5b7ea141148
 - `cli_runtime`: PASS — dreamina-canvas installed at `/Users/wandl/.local/bin/dreamina-canvas`,
   `dreamina-canvas version` returns `1.0.0` / commit `ae2c968` / edition `public`
   / distribution `cn` / build `2026-09-05T08:54:32Z`.
-- `auth`: NOT_RUN — User-supplied credentials were not provided this session.
-  Per plan Task 15 Step 3 / upstream plan §21, `auth account` is run only when
-  authentication/account access is separately authorized. The user did not
-  supply credentials or a `auth wait --device-code <code>` value within this
-  session. Recording `NOT_RUN` here is the documented compliance behaviour,
-  not a gap.
-- `paid_canary`: NOT_RUN — Paid generation requires separate action-time
-  approval. Per plan Task 15 Step 4, a canary proceeds only after the user
-  supplies a `--credit-ceiling` and explicit approval. No canary was
-  performed; no `submitId` was minted against a paid batch.
+- `auth`: **PASS** — Device-authorization login completed after the user
+  supplied an authorization decision and finished the browser step. `auth
+  status` reported `loggedIn: true`; `auth account` (the authoritative
+  server check) returned `ok: true` with `isVip: true`, `vipLevel: standard`.
+  The user identifier is redacted from committed evidence.
+- `paid_canary`: **PASS** — One low-cost `t2i` draft was created, quoted
+  (`totalMaxCredits: 5`), approved with an explicit `--credit-ceiling 100`,
+  run exactly once with a caller-minted persisted `submitId`, waited to a
+  terminal `succeeded` state, downloaded via `resource download`, and
+  verified: `wc -c` and `shasum -a 256` both matched the CLI's reported
+  `size`/`sha256`, and the plugin's own `artifact_guard.verify()` returned
+  `ok: true`.
 
-To flip these gates to PASS in a future session, the user must supply:
+Verified canary facts (non-secret):
 
-1. Either a fresh `dreamina-canvas auth login` device-code (so the agent
-   can resume `auth wait --device-code <code> --timeout 10m`), OR
-   credentials that the agent can pass to `auth login` itself.
-2. An explicit `--credit-ceiling <integer>` value and a one-line media
-   prompt for the canary draft.
+```text
+resourceId : b062d52f-fa20-4093-ae8b-d011ba853d82
+size       : 705847 bytes
+sha256     : 042406680ed8d763bc7e661a3588a42b01e7d9c096d14d01f8b0881a9ff7fd96
+media      : 1536 × 1536, jpeg
+credits    : 5 consumed against a 100-credit approved ceiling
+```
+
+The approval token was held in process memory only, was never written to
+the repository, and was destroyed immediately after `node run`. No second
+`submitId` was ever minted.
+
+Full detail, including the observed schema drift between the guide and
+the installed `1.0.0` artifact, is recorded in
+[dreamina-canvas-runtime.md](dreamina-canvas-runtime.md).
 
 ## Publication status
 
-| Ref | SHA | State |
-|-----|-----|--------|
-| Upstream published SHA (target) | `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7` | pushed to `origin/feat/canvas-skills` |
-| Local upstream HEAD | `f1f894d0374c8f3ff2e54e2aa896bcd2ad0e15d7` | tracks `origin/feat/canvas-skills` |
-| Local plugin HEAD | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | local on `feat/canvas-plugin-pin` |
-| Local plugin tracking | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | tracks `origin/feat/canvas-plugin-pin` |
-| Remote `origin/feat/canvas-plugin-pin` | `ec656374817c0b8fec9b9a2f95597da903e8e9c3` | pushed |
-| Remote `origin/main` (pre-session) | `8545fbddafcdf6b4bf8de5b7ea1411483cda0efe` | unchanged — branch-level push only |
+Both branches are pushed to their respective origins and each is
+three-end SHA identical (`local == tracking == remote`) on its branch:
+
+| Repository | Branch | State |
+|------------|--------|-------|
+| `full-aigc-skills/dreamina-skills` | `feat/canvas-skills` | pushed; `local == tracking == remote` |
+| `partme-ai/codex-dreamina-canvas-plugin` | `feat/canvas-plugin-pin` | pushed; `local == tracking == remote` |
+
+Exact SHAs are recorded in [codex-installation.md](codex-installation.md)
+and can be re-derived at any time with `git rev-parse HEAD`,
+`git rev-parse '@{u}'`, and `git ls-remote origin <branch>`.
+
+`origin/main` on both repositories is intentionally **not** moved: the
+user authorised branch-level push only. Merging to `main` remains a
+separate decision.
 
 Both branches were pushed under explicit user authorization in this
 session. The plugin `main` branch on origin remains at the pre-session
