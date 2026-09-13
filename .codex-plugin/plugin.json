@@ -1,6 +1,6 @@
 {
   "name": "codex-dreamina-canvas",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
   "author": {"name": "Full Stack Skills / PartMe.AI", "url": "https://github.com/partme-ai"},
   "homepage": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",

@@ -86,7 +86,7 @@ The four criteria in the original migration plan are all satisfied:
    and only `dreamina-canvas-use` implicitly invokable. See
    `docs/verification/fresh-installation.md`.
 4. **Identity unchanged** — still `codex-dreamina-canvas`; the current
-   compatibility patch version is `0.1.1`.
+   compatibility patch version is `0.1.2`.
 
 ## Known drift to watch
 

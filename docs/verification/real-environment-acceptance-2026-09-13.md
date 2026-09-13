@@ -8,7 +8,9 @@ CLI: `1.0.0`, commit `ae2c968`, edition `public`, distribution `cn`
 
 Plugin source under acceptance: `main@945975c97e89014cc14a2997b0487b0dafec8a13`.
 The runtime findings were then incorporated into upstream Skills at
-`397eb1f2b7d91930e3cddd93735706b4941fc447` and plugin version `0.1.1`.
+`397eb1f2b7d91930e3cddd93735706b4941fc447`, then extended with complete
+official-command ownership at `e8ae5880fb36f71c4e60ef854060ab9cadd9edc4` and
+plugin version `0.1.2`.
 
 ## Scope and authorization
 

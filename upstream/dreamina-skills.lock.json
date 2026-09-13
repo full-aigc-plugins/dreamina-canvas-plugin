@@ -1,5 +1,5 @@
 {
-  "commit": "397eb1f2b7d91930e3cddd93735706b4941fc447",
+  "commit": "e8ae5880fb36f71c4e60ef854060ab9cadd9edc4",
   "repository": "https://github.com/full-aigc-skills/dreamina-skills",
   "schemaVersion": "1.0",
   "skills": {
@@ -9,13 +9,14 @@
       "references/auth-state.md": "5004b863962e2b225b1ca12cc443e4e758e1ff8518ce19754654c3387a4eb7da"
     },
     "dreamina-canvas-cli": {
-      "SKILL.md": "f0960721c2e1dc3b6423858f8636ddf588830657db8aa7bf8a78e0618fc4c6f0",
+      "SKILL.md": "5fa3f95190650bd5d7f0cfbd07e3497ef99f85644aca1a486f4fe0287521b182",
       "agents/openai.yaml": "febb47a4f53b1e456cc0b518735775679136236c5c471d957c021fcd85038d3c",
       "references/cli-contract.md": "91dc1aa35293cc01324c96cef9dd4a30048573c818940ae930343f1bc4a3bf84",
-      "references/error-routing.md": "f0a2177aa86d35fa6c2bc275bdfb665e364aca89cf40ad435e7784a9772fd995"
+      "references/error-routing.md": "f0a2177aa86d35fa6c2bc275bdfb665e364aca89cf40ad435e7784a9772fd995",
+      "references/install-to-use.md": "e355c5628478e18f287454c069c776357655c8872d168ac052ac354101926662"
     },
     "dreamina-canvas-compose": {
-      "SKILL.md": "a9d1d298ae893f941d8dd1faade6e331a7e6872c8929f2e42c9d671a97940dfe",
+      "SKILL.md": "761b2b67e5dbc672e62ca31d414d2db065892519f12e6931e4142b92695abef9",
       "agents/openai.yaml": "bdc14c10ec6dc8439578217874253fac720e7c52e3f195284d755642374c899b",
       "references/composition-dag.md": "077ac59a922ba38324944ddb252b8dc2db0d8d98a14e7e72085da4dd0ce0b37f"
     },
@@ -35,12 +36,12 @@
       "references/artifact-verification.md": "672ad40c9dc9df5db4f99f02e902e1e0ff155e848fb4a54fbbbcf236896fca62"
     },
     "dreamina-canvas-generate-audio": {
-      "SKILL.md": "d56c7c6bbf9b8b0942d1f69c43147bb8fa63a0b91cfc1c973fa61c0465c31f66",
+      "SKILL.md": "659623a9a7a00aa73c64db87b40619b5efb5492d79dc99d5b0f499d9c68eb4b2",
       "agents/openai.yaml": "a8938d9d02c06f6c07ec9aa40c23e04d89dc11a502f90a504a571062e80a1edf",
       "references/audio-node-contract.md": "b31f5b03629b133610cf034bd2c43908d80b71e70869726dcf22c113b8ec20aa"
     },
     "dreamina-canvas-generate-image": {
-      "SKILL.md": "fc7c3ceb554acce5b19d10ec011b85e9a43eaff86645f2f5947b4585baf0af1b",
+      "SKILL.md": "28c744d963fbcc0f8ba3c30ec8eb00722a0a055c08d39e8b31fd770e491a433f",
       "agents/openai.yaml": "f854848452819e7e2e657e14d716141db8141ff8fed739dc69f1f0c8a6cd5e00",
       "references/image-node-contract.md": "17679017571a79c5ac3d419276e6b9ef15a87878062524286b504b4b98501f55"
     },
