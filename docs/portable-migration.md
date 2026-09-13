@@ -85,7 +85,8 @@ The four criteria in the original migration plan are all satisfied:
    materialises with `plugin.json` present, all thirteen Skills discovered,
    and only `dreamina-canvas-use` implicitly invokable. See
    `docs/verification/fresh-installation.md`.
-4. **Identity unchanged** — still `codex-dreamina-canvas`, version `0.1.0`.
+4. **Identity unchanged** — still `codex-dreamina-canvas`; the current
+   compatibility patch version is `0.1.1`.
 
 ## Known drift to watch
 

@@ -8,18 +8,15 @@ this lock to enforce byte parity.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import subprocess
 import sys
 from pathlib import Path
 
-UPSTREAM_REPO = Path(
-    "/Users/wandl/workspaces/workspace-agent-skills/"
-    "full-aigc-skills-repositories/dreamina-skills/.worktrees/canvas-skills"
-)
 DOWNSTREAM_ROOT = Path(__file__).resolve().parents[1]
-LOCK = DOWNSTREAM_ROOT / "upstream" / "dreamina-skills.lock.json"
+DEFAULT_LOCK = DOWNSTREAM_ROOT / "upstream" / "dreamina-skills.lock.json"
 
 CANVAS_SKILLS = [
     "dreamina-canvas-cli",
@@ -44,15 +41,32 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def git(*args: str) -> str:
-    return subprocess.check_output(["git", *args], cwd=UPSTREAM_REPO).decode().strip()
+def git(upstream_repo: Path, *args: str) -> str:
+    return subprocess.check_output(["git", *args], cwd=upstream_repo).decode().strip()
 
 
 def main() -> None:
-    commit = git("rev-parse", "HEAD")
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--upstream-path",
+        required=True,
+        help="Checked-out dreamina-skills repository at the commit to lock",
+    )
+    parser.add_argument("--lock", default=str(DEFAULT_LOCK))
+    args = parser.parse_args()
+    upstream_repo = Path(args.upstream_path).resolve()
+    lock_path = Path(args.lock).resolve()
+    if not (upstream_repo / ".git").exists():
+        # Linked worktrees use a .git file; normal repositories use a directory.
+        print(f"FAIL: not a Git checkout: {upstream_repo}", file=sys.stderr)
+        sys.exit(1)
+    commit = git(upstream_repo, "rev-parse", "HEAD")
+    if len(commit) != 40 or any(ch not in "0123456789abcdef" for ch in commit):
+        print(f"FAIL: upstream HEAD is not a canonical commit SHA: {commit}", file=sys.stderr)
+        sys.exit(1)
     skills: dict[str, dict[str, str]] = {}
     for name in CANVAS_SKILLS:
-        skill_dir = UPSTREAM_REPO / "skills" / name
+        skill_dir = upstream_repo / "skills" / name
         if not skill_dir.is_dir():
             print(f"FAIL: missing skill dir: {skill_dir}", file=sys.stderr)
             sys.exit(1)
@@ -71,9 +85,9 @@ def main() -> None:
         "sourceContract": "verification/dreamina-canvas-guide-contract.json",
         "suiteReport": "verification/dreamina-canvas-skill-suite.json",
     }
-    LOCK.parent.mkdir(parents=True, exist_ok=True)
-    LOCK.write_text(json.dumps(lock, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"OK: wrote {LOCK} (commit {commit[:12]}, {sum(len(v) for v in skills.values())} files)")
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    lock_path.write_text(json.dumps(lock, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(f"OK: wrote {lock_path} (commit {commit[:12]}, {sum(len(v) for v in skills.values())} files)")
 
 
 if __name__ == "__main__":

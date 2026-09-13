@@ -36,6 +36,7 @@ Codex -> 发现能力 -> 规划画布/节点 -> 保存（不扣费）
 - [贡献指南](CONTRIBUTING.md)
 - [安全策略](SECURITY.md)
 - [生产就绪证据](docs/verification/production-readiness.md)
+- [真实环境验收](docs/verification/real-environment-acceptance-2026-09-13.md)
 
 ## 开发验证
 

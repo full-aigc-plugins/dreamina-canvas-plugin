@@ -46,6 +46,7 @@ class DistributionTests(unittest.TestCase):
 
         for filename in ("SECURITY.md", "CONTRIBUTING.md"):
             self.assertTrue((ROOT / filename).is_file(), filename)
+        self.assertIn("out/", (ROOT / ".gitignore").read_text(encoding="utf-8"))
 
     def test_status_documents_match_verified_runtime_evidence(self) -> None:
         for filename in ("README.md", "README.zh-CN.md"):
@@ -69,7 +70,7 @@ class DistributionTests(unittest.TestCase):
     def test_manifest_and_marketplace(self) -> None:
         manifest = load_json(".codex-plugin/plugin.json")
         self.assertEqual(manifest["name"], PLUGIN_ID)
-        self.assertEqual(manifest["version"], "0.1.0")
+        self.assertEqual(manifest["version"], "0.1.1")
         self.assertEqual(manifest["repository"], REPOSITORY)
         self.assertEqual(manifest["skills"], "./skills/")
         self.assertNotIn("mcpServers", manifest)

@@ -9,6 +9,12 @@ SKILLS = ROOT / "skills"
 
 
 class SkillSyncTests(unittest.TestCase):
+    def test_sync_tools_are_portable_and_require_explicit_sources(self) -> None:
+        for name in ("build_skill_lock.py", "sync_dreamina_canvas_skills.py"):
+            text = (ROOT / "scripts" / name).read_text(encoding="utf-8")
+            self.assertNotIn("/Users/", text, name)
+            self.assertIn("--upstream-path", text, name)
+
     def test_packaged_skills_match_locked_source(self) -> None:
         lock = json.loads(LOCK.read_text(encoding="utf-8"))
         self.assertEqual(

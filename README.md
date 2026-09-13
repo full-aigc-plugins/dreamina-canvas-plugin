@@ -36,6 +36,7 @@ Codex -> capability discovery -> canvas/node plan -> save(no charge)
 - [Contributing](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
 - [Production-readiness evidence](docs/verification/production-readiness.md)
+- [Real-environment acceptance](docs/verification/real-environment-acceptance-2026-09-13.md)
 
 ## Development verification
 

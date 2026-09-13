@@ -1,5 +1,5 @@
 {
-  "commit": "300bfc1d649a68c1802a43aa7a64c50000e095d4",
+  "commit": "397eb1f2b7d91930e3cddd93735706b4941fc447",
   "repository": "https://github.com/full-aigc-skills/dreamina-skills",
   "schemaVersion": "1.0",
   "skills": {
@@ -25,9 +25,9 @@
       "references/canvas-context.md": "cfe2caf9e77f87bdb049b4adbe02f93af9405d039547a15f75a838c63f0ec8bc"
     },
     "dreamina-canvas-discover-models": {
-      "SKILL.md": "8d8d507c91fa6d1984a009279da07731ce910e4fca07a3f567d145a9346b28a5",
+      "SKILL.md": "29b5f8b9823b5f25187ee42c48a08c6ac52b306c1df78b709eecc9990653745d",
       "agents/openai.yaml": "ab8340e31f234885f49782ef5b128099276d7126a358ad238bd183859c02b854",
-      "references/capability-discovery.md": "ab8b8f849e8372e0ae7fcc392f7882fe4bbc6af1aeb94fc64d8a9e3de24a0334"
+      "references/capability-discovery.md": "5af2db3e7397bea8dd1e72dcbec6fab19f6bc264a1e964863129eab5fc4ed987"
     },
     "dreamina-canvas-download-assets": {
       "SKILL.md": "5f23238399df42b5865cb9336f7099aa67da87a1200b2ce2bfd26887f3046fbc",
@@ -35,19 +35,19 @@
       "references/artifact-verification.md": "672ad40c9dc9df5db4f99f02e902e1e0ff155e848fb4a54fbbbcf236896fca62"
     },
     "dreamina-canvas-generate-audio": {
-      "SKILL.md": "ffb418a10527175cd7cb93d9a4c3d74422e2a437df5462ea689e3883259f6ddd",
+      "SKILL.md": "d56c7c6bbf9b8b0942d1f69c43147bb8fa63a0b91cfc1c973fa61c0465c31f66",
       "agents/openai.yaml": "a8938d9d02c06f6c07ec9aa40c23e04d89dc11a502f90a504a571062e80a1edf",
-      "references/audio-node-contract.md": "149aa54bb1f8de954af8116dceae23d62f2150e81d612432a61721e1653f7204"
+      "references/audio-node-contract.md": "b31f5b03629b133610cf034bd2c43908d80b71e70869726dcf22c113b8ec20aa"
     },
     "dreamina-canvas-generate-image": {
-      "SKILL.md": "b03085622a6783381f99610a0e2a4bc86b6127e41d8e35db18f9b71f69a2310c",
+      "SKILL.md": "fc7c3ceb554acce5b19d10ec011b85e9a43eaff86645f2f5947b4585baf0af1b",
       "agents/openai.yaml": "f854848452819e7e2e657e14d716141db8141ff8fed739dc69f1f0c8a6cd5e00",
-      "references/image-node-contract.md": "2b81316a03ac3f06a26e6a97d21bb63d93ad99fc2037af2f45d588ac9bcc5990"
+      "references/image-node-contract.md": "17679017571a79c5ac3d419276e6b9ef15a87878062524286b504b4b98501f55"
     },
     "dreamina-canvas-generate-video": {
       "SKILL.md": "7aacf2601179a771388a11517bd8ced7535c13b57028e98971e2f16eae8dd6a7",
       "agents/openai.yaml": "16e3986840ea18d0a543d757fdc60ecf6439443cd50cc332aeaf0e17f8729092",
-      "references/video-node-contract.md": "fb7ccd43a63953dd337a7535a7e251ea45dc53a26e47d5eb8451a96efc9ecc68"
+      "references/video-node-contract.md": "6481119159a92000681015933dc4bf4df03af6e38b0defa4b92e5c1dc6e5dc42"
     },
     "dreamina-canvas-manage-timeline": {
       "SKILL.md": "66f49ee2977dc495d079afebf1acd2bade091fa6e68fd54b2e00f1e7be7db250",
@@ -55,9 +55,9 @@
       "references/timeline-contract.md": "2c73a1477736e10cb72c9fa26506cdc021b99bb933ac77cbaa759dd47e44acd2"
     },
     "dreamina-canvas-quote-and-run": {
-      "SKILL.md": "ac7668141cf1c3cc2e456e41fc5e38854a0ab055435214acdfcb4a0a594f584f",
+      "SKILL.md": "0d897c5f38cb9e348e4f7cafea5133d096314af852df69cd0edddc8f334bf3a9",
       "agents/openai.yaml": "c34c3a64aea36dc4ff762df03e275bf104be19c006d6f0d67af46f7c65a1ec37",
-      "references/credit-approval.md": "236368841463f036f3fa9321ca28ea6ef6cce4be21a78dfe122722477754c60e"
+      "references/credit-approval.md": "b9cb2a21146499334858fb7d8ef3052664980fc28fde4865f61a8f15661e21bd"
     },
     "dreamina-canvas-resume-operation": {
       "SKILL.md": "facc6d0eea14457a76a7d14eb052a125852dfa617ba8d6c24cadd3b02c365547",
