@@ -35,8 +35,8 @@ Task 1's compatibility foundation is now materially present as `.codex-plugin/pl
 **Files:**
 - Create: `.codex-plugin/plugin.json`
 - Create: `.agents/plugins/marketplace.json`
-- Create: `tests/test_plugin_manifest.py`
-- Create: `assets/icon.svg`
+- Create: `tests/test_plugin_manifest.py` — **delivered as `tests/test_distribution.py`**; the same identity assertions now live there alongside the full distribution gate (see Step 1 note below)
+- Create: `assets/icon.svg` — **delivered as `assets/logo.svg` plus the manifest-referenced PNGs** (`assets/logo.png`, `assets/logo-dark.png`, `assets/composer-icon.png`), which is what `interface.composerIcon` / `logo` / `logoDark` actually point at
 - Modify: `README.md`
 - Modify: `README.zh-CN.md`
 
@@ -54,9 +54,13 @@ def test_manifest_identity_and_skill_root():
     assert manifest["repository"] == "https://github.com/partme-ai/codex-dreamina-canvas-plugin"
 ```
 
+These three assertions are asserted verbatim in `tests/test_distribution.py`
+(`PLUGIN_ID`, `manifest["skills"]`, `REPOSITORY`), which absorbed the
+standalone manifest test when the distribution gate was added in Task 9.
+
 - [x] **Step 2: Run RED**
 
-Run: `python3 -m unittest tests/test_plugin_manifest.py -v`
+Run: `python3 -m unittest tests.test_distribution -v`
 
 Expected: FAIL because `.codex-plugin/plugin.json` is absent.
 
@@ -84,7 +88,7 @@ Validate the URL source and resolved `main` commit before relying on the marketp
 - [x] **Step 5: Run validator and commit**
 
 ```bash
-python3 tests/test_plugin_manifest.py
+python3 -m unittest tests.test_distribution -v
 python3 /Users/wandl/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
 git add .codex-plugin .agents assets tests README.md README.zh-CN.md
 git commit -m "feat: scaffold Dreamina Canvas Codex plugin"
