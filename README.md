@@ -1,5 +1,7 @@
 # Codex Dreamina Canvas Plugin
 
+![Codex × Dreamina Canvas — Shape ideas on an intelligent canvas](assets/dreamina-canvas-hero.png)
+
 <img src="assets/logo.png" alt="Dreamina Canvas logo" width="128">
 
 > Compatibility foundation for Dreamina Canvas CLI orchestration in Codex.

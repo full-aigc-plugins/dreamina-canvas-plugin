@@ -1,5 +1,7 @@
 # Codex Dreamina Canvas 插件
 
+![Codex × Dreamina Canvas — 在智能画布上塑造创意](assets/dreamina-canvas-hero.png)
+
 <img src="assets/logo.png" alt="Dreamina Canvas Logo" width="128">
 
 > 面向 Dreamina Canvas CLI 编排的 Codex 兼容基础。
