@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "package": "dreamina-skills",
+      "repo": "https://github.com/full-aigc-skills/dreamina-skills.git",
+      "ref": "v1.5.0",
+      "sha": "609f01b5ded768dc44dff17872d02c94495bf2f8",
+      "skills": [
+        "dreamina-canvas-auth",
+        "dreamina-canvas-cli",
+        "dreamina-canvas-compose",
+        "dreamina-canvas-create",
+        "dreamina-canvas-discover-models",
+        "dreamina-canvas-download-assets",
+        "dreamina-canvas-generate-audio",
+        "dreamina-canvas-generate-image",
+        "dreamina-canvas-generate-video",
+        "dreamina-canvas-manage-timeline",
+        "dreamina-canvas-quote-and-run",
+        "dreamina-canvas-resume-operation",
+        "dreamina-canvas-use"
+      ],
+      "dest": "skills/",
+      "sha256": {
+        "dreamina-canvas-auth": "b0de4b6012d84e3362a7e86eb1ff1a2a35991d1dda42f44b7fe4c1514a6b4732",
+        "dreamina-canvas-cli": "a5a76587af8824e9d2b6f9b7accffec026ab3ccbf3e0f35c96aca0f02fcc5b49",
+        "dreamina-canvas-compose": "f35a4b0809874dca74221d57a2d120697f96a2b5c81bc7a37b34ddb8ed8a13fe",
+        "dreamina-canvas-create": "bfb3e12e840f7fce1f761554dd259e7e39270f5b01b979d8055c6d92b7509cf8",
+        "dreamina-canvas-discover-models": "ce92c0f6511b462371c14f5220e9fb95ac85856f4eacbf9039ed7135195d174a",
+        "dreamina-canvas-download-assets": "51993d2633296e80086f28a49682eace98a3a7795778fe4037d83f94e35d2508",
+        "dreamina-canvas-generate-audio": "7fde457e7ab598fc785198ffdabeaa339522215fd6313ac0996d0ce6f59e90e4",
+        "dreamina-canvas-generate-image": "714cc6d34b0e5a17699e85babd1de000fee9583c3d82a126f0765c454bbe731a",
+        "dreamina-canvas-generate-video": "913209925c002221a674b2e9e1fae5944df43379263a5473c448d75be406f8de",
+        "dreamina-canvas-manage-timeline": "12e139633233a2f325cbaf045956b73bdcce925b076dcd4adeb726c4bb979452",
+        "dreamina-canvas-quote-and-run": "7252fb0d0024d487d11c151a2fe23774483ee1813f144893bab54ddbc535ab9c",
+        "dreamina-canvas-resume-operation": "32aab8311a63f3a175e6c79e253bb69a6a0dc58da9ff110403df1f67cc8ea49f",
+        "dreamina-canvas-use": "a9acd3f7f0dd36744569a69e95523ac72a4fcdfe6e60dfb94cf26e50ca9a8065"
+      }
+    }
+  ]
+}
