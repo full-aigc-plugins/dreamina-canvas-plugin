@@ -8,11 +8,11 @@
 
 **Tech Stack:** Codex plugin manifest, Agent Skills, Python 3, JSON Schema, `unittest`/`pytest`, `dreamina-canvas` CLI, GitHub public repository.
 
-**Spec:** `docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md`
+**Spec:** `docs/superpowers/specs/2026-09-11-partme-dreamina-canvas-design.md`
 
 ## Global Constraints
 
-- Plugin repository and directory remain `codex-dreamina-canvas-plugin`; manifest ID is `codex-dreamina-canvas`.
+- Plugin repository and directory remain `partme-dreamina-canvas`; manifest ID is `codex-dreamina-canvas`.
 - Source-of-truth repository is `https://github.com/full-aigc-skills/dreamina-skills`.
 - Packaging begins only after the Canvas Skill source plan publishes a verified SHA containing all 13 Canvas Skills.
 - The plugin packages exactly 13 Canvas Skills and records their upstream SHA and file hashes.
@@ -41,7 +41,7 @@ Task 1's compatibility foundation is now materially present as `.codex-plugin/pl
 - Modify: `README.zh-CN.md`
 
 **Interfaces:**
-- Consumes: repository identity `partme-ai/codex-dreamina-canvas-plugin` and the existing bilingual architecture/spec documents.
+- Consumes: repository identity `partme-ai/partme-dreamina-canvas` and the existing bilingual architecture/spec documents.
 - Produces: a validator-compatible plugin manifest and repo-local marketplace entry.
 
 - [x] **Step 1: Write the failing manifest test**
@@ -51,7 +51,7 @@ def test_manifest_identity_and_skill_root():
     manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
     assert manifest["name"] == "codex-dreamina-canvas"
     assert manifest["skills"] == "./skills/"
-    assert manifest["repository"] == "https://github.com/partme-ai/codex-dreamina-canvas-plugin"
+    assert manifest["repository"] == "https://github.com/partme-ai/partme-dreamina-canvas"
 ```
 
 These three assertions are asserted verbatim in `tests/test_distribution.py`
@@ -75,7 +75,7 @@ Use the system `plugin-creator` scaffold rules. The manifest must include strict
   "name": "codex-dreamina-canvas",
   "source": {
     "source": "url",
-    "url": "https://github.com/partme-ai/codex-dreamina-canvas-plugin.git",
+    "url": "https://github.com/partme-ai/partme-dreamina-canvas.git",
     "ref": "main"
   },
   "policy": {"installation": "AVAILABLE", "authentication": "ON_USE"},

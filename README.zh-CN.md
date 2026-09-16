@@ -6,7 +6,7 @@
 
 > 在 Codex 中构建、报价并运行结构化的 Dreamina 画布——免费步骤与付费步骤严格分离。
 
-[![版本](https://img.shields.io/badge/version-0.1.2-blue)](https://github.com/partme-ai/codex-dreamina-canvas-plugin)
+[![版本](https://img.shields.io/badge/version-0.1.2-blue)](https://github.com/partme-ai/partme-dreamina-canvas)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [安装](#安装) · [快速开始](#快速开始) · [操作契约](#操作契约) · [故障排查](#故障排查)
@@ -134,7 +134,7 @@ CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以�
 ### 从插件市场安装
 
 ```bash
-codex plugin marketplace add partme-ai/codex-dreamina-canvas-plugin --ref main
+codex plugin marketplace add partme-ai/partme-dreamina-canvas --ref main
 codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas
 ```
 
@@ -288,7 +288,7 @@ python scripts/validate_distribution.py
 ## 项目结构
 
 ```text
-codex-dreamina-canvas-plugin/
+partme-dreamina-canvas/
 ├── .codex-plugin/plugin.json   # 兼容清单
 ├── plugin.json                 # 便携清单
 ├── .agents/plugins/marketplace.json
@@ -303,13 +303,13 @@ codex-dreamina-canvas-plugin/
 
 - [Architecture](docs/Codex-Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Codex-Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
 - [Technical solution](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
-- [设计规格](docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md)
-- [实施计划](docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md)
+- [设计规格](docs/superpowers/specs/2026-09-11-partme-dreamina-canvas-design.md)
+- [实施计划](docs/superpowers/plans/2026-09-11-partme-dreamina-canvas-implementation.md)
 - [贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md)
 
 ## 贡献与支持
 
-功能问题请提交到 <https://github.com/partme-ai/codex-dreamina-canvas-plugin/issues>。提交变更前，请说明你验证所用的 CLI 版本、是否改动批准绑定或台账格式，并附上受影响的测试。
+功能问题请提交到 <https://github.com/partme-ai/partme-dreamina-canvas/issues>。提交变更前，请说明你验证所用的 CLI 版本、是否改动批准绑定或台账格式，并附上受影响的测试。
 
 ## 许可证
 

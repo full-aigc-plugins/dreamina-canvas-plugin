@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_ID = "codex-dreamina-canvas"
 DISPLAY_NAME = "Dreamina Canvas"
-REPOSITORY = "https://github.com/partme-ai/codex-dreamina-canvas-plugin"
+REPOSITORY = "https://github.com/partme-ai/partme-dreamina-canvas"
 BRAND_COLOR = "#06B6D4"
 
 def load_json(relative: str) -> dict:
@@ -56,7 +56,7 @@ class DistributionTests(unittest.TestCase):
 
         plan = (
             ROOT
-            / "docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md"
+            / "docs/superpowers/plans/2026-09-11-partme-dreamina-canvas-implementation.md"
         ).read_text(encoding="utf-8")
         self.assertFalse(
             any(line.startswith("- [ ]") for line in plan.splitlines())

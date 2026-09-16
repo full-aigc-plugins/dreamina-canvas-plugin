@@ -6,7 +6,7 @@
 
 > Build, quote, and run structured Dreamina canvases from Codex — with the free and paid steps kept apart.
 
-[![Version](https://img.shields.io/badge/version-0.1.2-blue)](https://github.com/partme-ai/codex-dreamina-canvas-plugin)
+[![Version](https://img.shields.io/badge/version-0.1.2-blue)](https://github.com/partme-ai/partme-dreamina-canvas)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Operation contract](#operation-contract) · [Troubleshooting](#troubleshooting)
@@ -134,7 +134,7 @@ CLI runtime, version, command compatibility, explicitly authorized account authe
 ### From the plugin marketplace
 
 ```bash
-codex plugin marketplace add partme-ai/codex-dreamina-canvas-plugin --ref main
+codex plugin marketplace add partme-ai/partme-dreamina-canvas --ref main
 codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas
 ```
 
@@ -288,7 +288,7 @@ Recorded evidence:
 ## Project structure
 
 ```text
-codex-dreamina-canvas-plugin/
+partme-dreamina-canvas/
 ├── .codex-plugin/plugin.json   # compatibility manifest
 ├── plugin.json                 # portable manifest
 ├── .agents/plugins/marketplace.json
@@ -303,13 +303,13 @@ codex-dreamina-canvas-plugin/
 
 - [Architecture](docs/Codex-Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Codex-Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
 - [Technical solution](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
-- [Design spec](docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md)
-- [Implementation plan](docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md)
+- [Design spec](docs/superpowers/specs/2026-09-11-partme-dreamina-canvas-design.md)
+- [Implementation plan](docs/superpowers/plans/2026-09-11-partme-dreamina-canvas-implementation.md)
 - [Contributing](CONTRIBUTING.md) · [Security policy](SECURITY.md)
 
 ## Contributing and support
 
-Open functional issues at <https://github.com/partme-ai/codex-dreamina-canvas-plugin/issues>. Before proposing a change, state the CLI version you verified against, whether it alters the approval binding or the ledger format, and include the affected tests.
+Open functional issues at <https://github.com/partme-ai/partme-dreamina-canvas/issues>. Before proposing a change, state the CLI version you verified against, whether it alters the approval binding or the ledger format, and include the affected tests.
 
 ## License
 

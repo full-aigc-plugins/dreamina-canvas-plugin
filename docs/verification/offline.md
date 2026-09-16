@@ -60,7 +60,7 @@ three-end SHA identical (`local == tracking == remote`) on its branch:
 | Repository | Branch | State |
 |------------|--------|-------|
 | `full-aigc-skills/dreamina-skills` | `feat/canvas-skills` | pushed; `local == tracking == remote` |
-| `partme-ai/codex-dreamina-canvas-plugin` | `feat/canvas-plugin-pin` | pushed; `local == tracking == remote` |
+| `partme-ai/partme-dreamina-canvas` | `feat/canvas-plugin-pin` | pushed; `local == tracking == remote` |
 
 Exact SHAs are recorded in [codex-installation.md](codex-installation.md)
 and can be re-derived at any time with `git rev-parse HEAD`,

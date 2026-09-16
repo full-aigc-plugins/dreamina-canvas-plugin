@@ -10,9 +10,9 @@ same artifacts via the plugin-creator cachebuster flow.
 
 - Plugin ID: `codex-dreamina-canvas`
 - Display name: `Dreamina Canvas`
-- Repository: `https://github.com/partme-ai/codex-dreamina-canvas-plugin`
+- Repository: `https://github.com/partme-ai/partme-dreamina-canvas`
 - Marketplace entry: `codex-dreamina-canvas`, source URL
-  `https://github.com/partme-ai/codex-dreamina-canvas-plugin.git`,
+  `https://github.com/partme-ai/partme-dreamina-canvas.git`,
   ref `main`, policy `installation=AVAILABLE`, `authentication=ON_USE`,
   category `Creativity`.
 
@@ -45,7 +45,7 @@ To re-validate in a fresh Codex task:
 
 1. Open a fresh Codex task on a clean workspace.
 2. Install from the marketplace: `codex plugins install
-   https://github.com/partme-ai/codex-dreamina-canvas-plugin`.
+   https://github.com/partme-ai/partme-dreamina-canvas`.
 3. Confirm the resolver sees exactly thirteen `dreamina-canvas-*` Skills.
 4. Confirm `allow_implicit_invocation == true` for `dreamina-canvas-use`
    only; the other twelve are explicit.

@@ -9,8 +9,8 @@
     "zh-CN": "即梦画布工作流：结构化节点、时间线编排、报价确认运行、断点恢复与资产管理。"
   },
   "author": { "name": "Full Stack Skills / PartMe.AI", "url": "https://github.com/partme-ai" },
-  "homepage": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",
-  "repository": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",
+  "homepage": "https://github.com/partme-ai/partme-dreamina-canvas",
+  "repository": "https://github.com/partme-ai/partme-dreamina-canvas",
   "license": "Apache-2.0",
   "keywords": ["dreamina", "canvas", "timeline", "nodes"],
   "skills": "skills",

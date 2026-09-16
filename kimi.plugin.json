@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
   "author": { "name": "Full Stack Skills / PartMe.AI" },
-  "homepage": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",
+  "homepage": "https://github.com/partme-ai/partme-dreamina-canvas",
   "license": "Apache-2.0",
   "keywords": ["dreamina", "canvas", "timeline"],
   "interface": {
@@ -11,7 +11,7 @@
     "shortDescription": "Structured node/timeline workflows for Dreamina Canvas",
     "longDescription": "Operate Dreamina Canvas from your coding agent: create canvases, compose node graphs, generate image/video/audio nodes, manage timelines, quote-and-run with approval, resume operations, and download verified assets.",
     "developerName": "Full Stack Skills / PartMe.AI",
-    "websiteURL": "https://github.com/partme-ai/codex-dreamina-canvas-plugin"
+    "websiteURL": "https://github.com/partme-ai/partme-dreamina-canvas"
   },
   "skills": "./skills/",
   "commands": "./commands/",

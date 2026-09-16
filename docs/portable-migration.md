@@ -57,7 +57,7 @@ without its companion file.
   "name": "codex-dreamina-canvas",
   "source": {
     "source": "url",
-    "url": "https://github.com/partme-ai/codex-dreamina-canvas-plugin.git",
+    "url": "https://github.com/partme-ai/partme-dreamina-canvas.git",
     "ref": "main"
   },
   "policy": { "installation": "AVAILABLE", "authentication": "ON_USE" },

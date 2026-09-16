@@ -69,12 +69,12 @@ marketplace*. That path was executed end-to-end after the feature branch was
 merged to `main` and pushed:
 
 ```bash
-$ codex plugin marketplace add https://github.com/partme-ai/codex-dreamina-canvas-plugin.git
-Added marketplace `partme-ai-dreamina-canvas` from https://github.com/partme-ai/codex-dreamina-canvas-plugin.git.
+$ codex plugin marketplace add https://github.com/partme-ai/partme-dreamina-canvas.git
+Added marketplace `partme-ai-dreamina-canvas` from https://github.com/partme-ai/partme-dreamina-canvas.git.
 Installed marketplace root: ~/.codex/.tmp/marketplaces/partme-ai-dreamina-canvas
 
 $ codex plugin list
-codex-dreamina-canvas@partme-ai-dreamina-canvas  not installed  https://github.com/partme-ai/codex-dreamina-canvas-plugin.git, ref `main`
+codex-dreamina-canvas@partme-ai-dreamina-canvas  not installed  https://github.com/partme-ai/partme-dreamina-canvas.git, ref `main`
 
 $ codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas
 Added plugin `codex-dreamina-canvas` from marketplace `partme-ai-dreamina-canvas`.

@@ -106,7 +106,7 @@ divergence rather than a defect in this repository.
   `ref: "main"`, so the public path requires `main` to carry the Skills.
   After `feat/canvas-plugin-pin` was merged to `main` and pushed, the public
   flow was executed end-to-end: `codex plugin marketplace add
-  https://github.com/partme-ai/codex-dreamina-canvas-plugin.git` resolved the
+  https://github.com/partme-ai/partme-dreamina-canvas.git` resolved the
   plugin, and `codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas`
   installed it with 13 Skills discovered and only `dreamina-canvas-use`
   implicit. See `docs/verification/fresh-installation.md`.
