@@ -1,0 +1,22 @@
+{
+  "name": "dreamina-canvas",
+  "version": "0.1.2",
+  "description": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
+  "author": { "name": "Full Stack Skills / PartMe.AI" },
+  "homepage": "https://github.com/partme-ai/codex-dreamina-canvas-plugin",
+  "license": "Apache-2.0",
+  "keywords": ["dreamina", "canvas", "timeline"],
+  "interface": {
+    "displayName": "Dreamina Canvas",
+    "shortDescription": "Structured node/timeline workflows for Dreamina Canvas",
+    "longDescription": "Operate Dreamina Canvas from your coding agent: create canvases, compose node graphs, generate image/video/audio nodes, manage timelines, quote-and-run with approval, resume operations, and download verified assets.",
+    "developerName": "Full Stack Skills / PartMe.AI",
+    "websiteURL": "https://github.com/partme-ai/codex-dreamina-canvas-plugin"
+  },
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "hooks": [
+    { "event": "SessionStart", "command": "python3 ./hooks/env_check.py", "timeout": 30 },
+    { "event": "UserPromptSubmit", "command": "python3 ./hooks/check_canvas_intent.py", "timeout": 15 }
+  ]
+}
