@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-dreamina-canvas/schemas/capability_snapshot.schema.json",
+  "$id": "dreamina-canvas/schemas/capability_snapshot.schema.json",
   "title": "CapabilitySnapshot",
   "description": "Snapshot of the installed dreamina-canvas CLI capabilities.",
   "type": "object",

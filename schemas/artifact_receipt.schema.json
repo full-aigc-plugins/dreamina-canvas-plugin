@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-dreamina-canvas/schemas/artifact_receipt.schema.json",
+  "$id": "dreamina-canvas/schemas/artifact_receipt.schema.json",
   "title": "ArtifactReceipt",
   "description": "Output of dreamina-canvas resource download, after the atomic-write completes.",
   "type": "object",

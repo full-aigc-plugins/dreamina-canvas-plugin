@@ -1,18 +1,29 @@
 {
   "name": "dreamina-canvas",
   "displayName": "Dreamina Canvas",
-  "displayName_i18n": { "en": "Dreamina Canvas", "zh-CN": "即梦画布" },
+  "displayName_i18n": {
+    "en": "Dreamina Canvas",
+    "zh-CN": "即梦画布"
+  },
   "version": "0.1.2",
-  "description": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
+  "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
   "description_i18n": {
     "en": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
     "zh-CN": "即梦画布工作流：结构化节点、时间线编排、报价确认运行、断点恢复与资产管理。"
   },
-  "author": { "name": "Full Stack Skills / PartMe.AI", "url": "https://github.com/partme-ai" },
+  "author": {
+    "name": "Full Stack Skills / PartMe.AI",
+    "url": "https://github.com/partme-ai"
+  },
   "homepage": "https://github.com/partme-ai/partme-dreamina-canvas",
   "repository": "https://github.com/partme-ai/partme-dreamina-canvas",
   "license": "Apache-2.0",
-  "keywords": ["dreamina", "canvas", "timeline", "nodes"],
+  "keywords": [
+    "dreamina",
+    "canvas",
+    "timeline",
+    "nodes"
+  ],
   "skills": "skills",
   "commands": "commands"
 }

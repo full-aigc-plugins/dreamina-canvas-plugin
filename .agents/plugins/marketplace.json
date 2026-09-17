@@ -1,1 +1,29 @@
-{"name":"partme-ai-dreamina-canvas","interface":{"displayName":"PartMe.AI Dreamina Canvas"},"plugins":[{"name":"codex-dreamina-canvas","source":{"source":"url","url":"https://github.com/partme-ai/partme-dreamina-canvas.git","ref":"main"},"policy":{"installation":"AVAILABLE","authentication":"ON_USE"},"category":"Creativity"}]}
+{
+  "name": "partme-ai-dreamina-canvas",
+  "interface": {
+    "displayName": "Dreamina Canvas"
+  },
+  "plugins": [
+    {
+      "name": "dreamina-canvas",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/partme-ai/partme-dreamina-canvas.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Creativity",
+      "version": "0.1.2",
+      "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
+      "icon": "https://raw.githubusercontent.com/partme-ai/partme-dreamina-canvas/main/assets/official-logo.png",
+      "interface": {
+        "displayName": "Dreamina Canvas",
+        "shortDescription": "Build and run structured Dreamina canvases",
+        "logo": "https://raw.githubusercontent.com/partme-ai/partme-dreamina-canvas/main/assets/official-logo.png"
+      }
+    }
+  ]
+}

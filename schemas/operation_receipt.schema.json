@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-dreamina-canvas/schemas/operation_receipt.schema.json",
+  "$id": "dreamina-canvas/schemas/operation_receipt.schema.json",
   "title": "OperationReceipt",
   "description": "Non-secret record of a paid Canvas submission. Persisted to <root>/operations/<profile>/<submitId>.json with mode 0600.",
   "type": "object",

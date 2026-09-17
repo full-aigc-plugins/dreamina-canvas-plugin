@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-dreamina-canvas/schemas/canvas_request.schema.json",
+  "$id": "dreamina-canvas/schemas/canvas_request.schema.json",
   "title": "CanvasRequest",
   "description": "Structured argv built from caller intent for a Canvas CLI command.",
   "type": "object",

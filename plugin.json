@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "codex-dreamina-canvas",
+  "name": "dreamina-canvas",
   "version": "0.1.2",
-  "description": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
+  "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
     "url": "https://github.com/partme-ai"
@@ -38,10 +38,10 @@
           "Compose image video and audio nodes into a timeline",
           "Quote this canvas run and wait for my approval"
         ],
-        "brandColor": "#06B6D4",
+        "brandColor": "#25E1FB",
         "composerIcon": "./assets/composer-icon.png",
-        "logo": "./assets/logo.png",
-        "logoDark": "./assets/logo-dark.png",
+        "logo": "./assets/official-logo.png",
+        "logoDark": "./assets/official-logo.png",
         "screenshots": []
       }
     }

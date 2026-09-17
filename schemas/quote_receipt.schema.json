@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-dreamina-canvas/schemas/quote_receipt.schema.json",
+  "$id": "dreamina-canvas/schemas/quote_receipt.schema.json",
   "title": "QuoteReceipt",
   "description": "Output of dreamina-canvas node quote.",
   "type": "object",

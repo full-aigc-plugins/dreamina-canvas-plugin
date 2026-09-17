@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-dreamina-canvas/schemas/command_result.schema.json",
+  "$id": "dreamina-canvas/schemas/command_result.schema.json",
   "title": "CommandResult",
   "description": "Adapter return value for a single dreamina-canvas invocation.",
   "type": "object",

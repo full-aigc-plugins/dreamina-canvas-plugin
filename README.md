@@ -13,7 +13,7 @@
 
 ## Positioning
 
-`codex-dreamina-canvas` turns an idea into a structured Dreamina canvas: typed nodes, a timeline, capability discovery at runtime, a free save step, then a quoted run that only executes after you approve it. Results are downloaded with byte counts and SHA-256 receipts.
+`dreamina-canvas` turns an idea into a structured Dreamina canvas: typed nodes, a timeline, capability discovery at runtime, a free save step, then a quoted run that only executes after you approve it. Results are downloaded with byte counts and SHA-256 receipts.
 
 The plugin is a strict wrapper around the installed `dreamina-canvas` CLI. It never hard-codes catalog values, never merges the save step with the run step, and never mints a replacement `submitId` to recover from a timeout.
 
@@ -39,7 +39,7 @@ Idea / brief
       │
       ▼
 ┌──────────────────────────────────────────────────────────┐
-│ codex-dreamina-canvas                                    │
+│ dreamina-canvas                                    │
 │  ① discover   live models, voices, ratios, resolutions   │
 │  ② compose    typed nodes and a timeline on the canvas   │
 │  ③ save       draft, no charge                           │
@@ -55,7 +55,7 @@ Canvas project + verified local assets
 
 | Property | Value |
 |---|---|
-| Plugin ID | `codex-dreamina-canvas` |
+| Plugin ID | `dreamina-canvas` |
 | Host | Codex CLI or ChatGPT desktop app |
 | Current version | `0.1.2` |
 | Plugin manifest | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
@@ -135,7 +135,7 @@ CLI runtime, version, command compatibility, explicitly authorized account authe
 
 ```bash
 codex plugin marketplace add partme-ai/partme-dreamina-canvas --ref main
-codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas
+codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 
 Restart Codex or the ChatGPT desktop app, then open a new task so the Skills load.
@@ -155,7 +155,7 @@ codex plugin list
 Expected entry:
 
 ```text
-codex-dreamina-canvas@partme-ai-dreamina-canvas  installed, enabled
+dreamina-canvas@partme-ai-dreamina-canvas  installed, enabled
 ```
 
 Then verify the packaged Skills still match their upstream lock file:

@@ -28,7 +28,7 @@ therefore carry a complete, identical interface block, and
   and `interface`:
   - `skills/` is auto-discovered at the root, so no `skills` field is needed.
   - `interface` lives at `extensions.com.openai.interface`.
-- `name` is a stable kebab-case identifier (`codex-dreamina-canvas`), used as
+- `name` is a stable kebab-case identifier (`dreamina-canvas`), used as
   the plugin's identifier and component namespace.
 - `$schema` is the exact published constant
   `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json`.
@@ -81,11 +81,11 @@ The four criteria in the original migration plan are all satisfied:
    interface fields are asserted equal. Negative tests in the distribution
    gate confirm tampering is caught.
 3. **Fresh local installation** — performed via the Codex CLI
-   (`codex plugin add codex-dreamina-canvas@personal`); the plugin
+   (`codex plugin add dreamina-canvas@personal`); the plugin
    materialises with `plugin.json` present, all thirteen Skills discovered,
    and only `dreamina-canvas-use` implicitly invokable. See
    `docs/verification/fresh-installation.md`.
-4. **Identity unchanged** — still `codex-dreamina-canvas`; the current
+4. **Identity unchanged** — still `dreamina-canvas`; the current
    compatibility patch version is `0.1.2`.
 
 ## Known drift to watch

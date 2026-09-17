@@ -28,7 +28,7 @@
 ```text
 .codex-plugin/plugin.json
 plugin.json
-skills/codex-dreamina-canvas-*/
+skills/dreamina-canvas-*/
 scripts/dreamina_canvas_adapter.py
 scripts/approval_guard.py
 scripts/artifact_guard.py

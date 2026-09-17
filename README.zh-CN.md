@@ -13,7 +13,7 @@
 
 ## 项目定位
 
-`codex-dreamina-canvas` 把想法变成结构化的 Dreamina 画布：带类型的节点、时间线、运行时能力发现、一次免费的保存，以及只有在你批准后才执行的报价运行。产物下载时附带字节数与 SHA-256 回执。
+`dreamina-canvas` 把想法变成结构化的 Dreamina 画布：带类型的节点、时间线、运行时能力发现、一次免费的保存，以及只有在你批准后才执行的报价运行。产物下载时附带字节数与 SHA-256 回执。
 
 插件是已安装 `dreamina-canvas` CLI 的严格包装：从不写死目录值，从不把保存与运行合并为一步，也从不为了从超时中恢复而重新生成 `submitId`。
 
@@ -39,7 +39,7 @@
       │
       ▼
 ┌──────────────────────────────────────────────────────────┐
-│ codex-dreamina-canvas                                    │
+│ dreamina-canvas                                    │
 │  ① discover   实时发现模型、音色、比例、分辨率           │
 │  ② compose    在画布上组合带类型的节点与时间线           │
 │  ③ save       保存草稿，不扣费                           │
@@ -55,7 +55,7 @@
 
 | 项目属性 | 值 |
 |---|---|
-| 插件 ID | `codex-dreamina-canvas` |
+| 插件 ID | `dreamina-canvas` |
 | 宿主 | Codex CLI 或 ChatGPT 桌面应用 |
 | 当前版本 | `0.1.2` |
 | 插件清单 | `.codex-plugin/plugin.json`（兼容）与 `plugin.json`（便携） |
@@ -135,7 +135,7 @@ CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以�
 
 ```bash
 codex plugin marketplace add partme-ai/partme-dreamina-canvas --ref main
-codex plugin add codex-dreamina-canvas@partme-ai-dreamina-canvas
+codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 
 重启 Codex 或 ChatGPT 桌面应用，然后新建任务以加载 Skills。
@@ -155,7 +155,7 @@ codex plugin list
 预期条目：
 
 ```text
-codex-dreamina-canvas@partme-ai-dreamina-canvas  installed, enabled
+dreamina-canvas@partme-ai-dreamina-canvas  installed, enabled
 ```
 
 再确认打包的 Skill 与上游锁文件一致：

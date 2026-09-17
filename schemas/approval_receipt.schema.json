@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-dreamina-canvas/schemas/approval_receipt.schema.json",
+  "$id": "dreamina-canvas/schemas/approval_receipt.schema.json",
   "title": "ApprovalReceipt",
   "description": "Output of dreamina-canvas node confirm. The short-lived approval credential is bound to the request and is NEVER persisted or journaled.",
   "type": "object",

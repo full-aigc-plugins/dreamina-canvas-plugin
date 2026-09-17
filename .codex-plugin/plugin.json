@@ -1,12 +1,21 @@
 {
-  "name": "codex-dreamina-canvas",
+  "name": "dreamina-canvas",
   "version": "0.1.2",
-  "description": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",
-  "author": {"name": "Full Stack Skills / PartMe.AI", "url": "https://github.com/partme-ai"},
+  "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
+  "author": {
+    "name": "Full Stack Skills / PartMe.AI",
+    "url": "https://github.com/partme-ai"
+  },
   "homepage": "https://github.com/partme-ai/partme-dreamina-canvas",
   "repository": "https://github.com/partme-ai/partme-dreamina-canvas",
   "license": "Apache-2.0",
-  "keywords": ["dreamina", "canvas", "creative-workflow", "timeline", "codex"],
+  "keywords": [
+    "dreamina",
+    "canvas",
+    "creative-workflow",
+    "timeline",
+    "codex"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Dreamina Canvas",
@@ -14,7 +23,11 @@
     "longDescription": "Build Dreamina canvases from typed nodes and timelines, discover live capabilities, separate free saves from quoted runs, resume stable operations, and download verified assets.",
     "developerName": "Full Stack Skills / PartMe.AI",
     "category": "Creativity",
-    "capabilities": ["Interactive", "Read", "Write"],
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
     "websiteURL": "https://github.com/partme-ai/partme-dreamina-canvas",
     "privacyPolicyURL": "https://github.com/partme-ai/partme-dreamina-canvas/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/partme-ai/partme-dreamina-canvas/blob/main/TERMS.md",
@@ -23,10 +36,10 @@
       "Compose image video and audio nodes into a timeline",
       "Quote this canvas run and wait for my approval"
     ],
-    "brandColor": "#06B6D4",
+    "brandColor": "#25E1FB",
     "composerIcon": "./assets/composer-icon.png",
-    "logo": "./assets/logo.png",
-    "logoDark": "./assets/logo-dark.png",
+    "logo": "./assets/official-logo.png",
+    "logoDark": "./assets/official-logo.png",
     "screenshots": []
   }
 }

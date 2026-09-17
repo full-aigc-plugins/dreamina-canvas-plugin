@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PORTABLE = ROOT / "plugin.json"
 COMPAT = ROOT / ".codex-plugin" / "plugin.json"
 
-PLUGIN_ID = "codex-dreamina-canvas"
+PLUGIN_ID = "dreamina-canvas"
 SCHEMA_URL = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 
 # Top-level fields allowed by the published portable schema
