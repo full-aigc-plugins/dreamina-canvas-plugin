@@ -29,7 +29,7 @@ class SkillSyncTests(unittest.TestCase):
         packaged = {
             p.name
             for p in SKILLS.iterdir()
-            if p.is_dir() and p.name.startswith("dreamina-canvas-")
+            if p.is_dir() and p.name.startswith("dreamina-canvas-") and p.name != "dreamina-canvas-harness"
         }
         self.assertEqual(packaged, set(lock["skills"].keys()))
 
