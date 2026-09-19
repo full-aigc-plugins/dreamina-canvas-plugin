@@ -9,7 +9,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/partme-ai/partme-dreamina-canvas.git",
-        "ref": "main"
+        "ref": "v0.1.4"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -18,11 +18,11 @@
       "category": "Creativity",
       "version": "0.1.4",
       "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
-      "icon": "https://raw.githubusercontent.com/partme-ai/partme-dreamina-canvas/main/assets/official-logo.png",
+      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.1.4/assets/official-logo.png",
       "interface": {
         "displayName": "Dreamina Canvas",
         "shortDescription": "Build and run structured Dreamina canvases",
-        "logo": "https://raw.githubusercontent.com/partme-ai/partme-dreamina-canvas/main/assets/official-logo.png"
+        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.1.4/assets/official-logo.png"
       }
     }
   ]
