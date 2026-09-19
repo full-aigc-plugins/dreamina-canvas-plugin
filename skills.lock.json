@@ -4,8 +4,8 @@
     {
       "package": "dreamina-skills",
       "repo": "https://github.com/full-aigc-skills/dreamina-skills.git",
-      "ref": "v1.6.1",
-      "sha": "b263ade8e3e3516baf8f67ddf586e242137c96e3",
+      "ref": "v1.6.2",
+      "sha": "f739b86fff342c1f75a179865356580dfb90b4c7",
       "skills": [
         "dreamina-canvas-auth",
         "dreamina-canvas-cli",
