@@ -1,12 +1,12 @@
 # Dreamina Canvas 插件
 
-![Codex × Dreamina Canvas — 在智能画布上塑造创意](assets/dreamina-canvas-hero.png)
+![Dreamina Canvas——在智能画布上塑造创意](assets/dreamina-canvas-hero.png)
 
 <img src="assets/logo.png" alt="Dreamina Canvas Logo" width="128">
 
-> 在 Codex 中构建、报价并运行结构化的 Dreamina 画布——免费步骤与付费步骤严格分离。
+> 在受支持的编码智能体中构建、报价并运行结构化的 Dreamina 画布——免费步骤与付费步骤严格分离。
 
-[![版本](https://img.shields.io/badge/version-0.1.5-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.5)
+[![版本](https://img.shields.io/badge/version-0.1.6-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.6)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [安装](#安装) · [快速开始](#快速开始) · [操作契约](#操作契约) · [故障排查](#故障排查)
@@ -57,7 +57,7 @@
 |---|---|
 | 插件 ID | `dreamina-canvas` |
 | 宿主 | Codex CLI 或 ChatGPT 桌面应用 |
-| 当前版本 | `0.1.5` |
+| 当前版本 | `0.1.6` |
 | 插件清单 | `.codex-plugin/plugin.json`（兼容）与 `plugin.json`（便携） |
 | MCP 配置 | 无——插件通过 Skills 驱动本地 CLI |
 | 主要语言 | Python 3.11+ |
@@ -125,7 +125,7 @@ flowchart LR
 
 | 插件版本 | 宿主 | CLI | Python | 状态 |
 |---|---|---|---|---|
-| `0.1.5` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 已验证 |
+| `0.1.6` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 已验证 |
 
 CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以及单独批准的付费金丝雀，均在[运行期证据](docs/verification/dreamina-canvas-runtime.md)中记录为 **PASS**。
 
@@ -134,7 +134,7 @@ CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以�
 ### 从插件市场安装
 
 ```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.1.5
+codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.1.6
 codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 

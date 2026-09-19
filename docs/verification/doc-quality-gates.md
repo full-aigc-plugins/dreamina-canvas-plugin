@@ -11,10 +11,10 @@ Audited set:
 ```text
 README.md
 README.zh-CN.md
-docs/Codex-Dreamina-Canvas-Plugin-Architecture.md
-docs/Codex-Dreamina-Canvas-Plugin-Architecture.zh_CN.md
-docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md
-docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md
+docs/Dreamina-Canvas-Plugin-Architecture.md
+docs/Dreamina-Canvas-Plugin-Architecture.zh_CN.md
+docs/Dreamina-Canvas-Plugin-Technical-Solution.md
+docs/Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md
 ```
 
 | # | Gate | Result | Evidence |
@@ -42,5 +42,5 @@ docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md
 - The wider 30-document deliverable (five plugins × six documents) is a
   separate program spanning five repositories and is tracked outside this
   repository. Its status at the time of writing: 26/30 — this repository 6/6,
-  `codex-maya-plugin` 6/6, `codex-dreamina-design-plugin` 6/6,
-  `codex-dreamina-3d-plugin` 6/6, `codex-blender-plugin` 2/6.
+  `maya-design-plugin` 6/6, `dreamina-design-plugin` 6/6,
+  `dreamina-3d-plugin` 6/6, `blender-design-plugin` 2/6.

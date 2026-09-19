@@ -1,12 +1,12 @@
 # Dreamina Canvas Plugin
 
-![Codex × Dreamina Canvas — Shape ideas on an intelligent canvas](assets/dreamina-canvas-hero.png)
+![Dreamina Canvas — Shape ideas on an intelligent canvas](assets/dreamina-canvas-hero.png)
 
 <img src="assets/logo.png" alt="Dreamina Canvas logo" width="128">
 
-> Build, quote, and run structured Dreamina canvases from Codex — with the free and paid steps kept apart.
+> Build, quote, and run structured Dreamina canvases from your supported coding agent — with the free and paid steps kept apart.
 
-[![Version](https://img.shields.io/badge/version-0.1.5-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.5)
+[![Version](https://img.shields.io/badge/version-0.1.6-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.6)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Operation contract](#operation-contract) · [Troubleshooting](#troubleshooting)
@@ -57,7 +57,7 @@ Canvas project + verified local assets
 |---|---|
 | Plugin ID | `dreamina-canvas` |
 | Host | Codex CLI or ChatGPT desktop app |
-| Current version | `0.1.5` |
+| Current version | `0.1.6` |
 | Plugin manifest | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | MCP configuration | none — the plugin drives the local CLI through Skills |
 | Primary language | Python 3.11+ |
@@ -119,13 +119,13 @@ flowchart LR
 | `scripts/approval_guard.py` | Quote binding, credit ceiling, replay rejection | Cost estimation |
 | `scripts/artifact_guard.py` | Download verification and receipts | Remote object lifetime |
 | `scripts/error_router.py` | Mapping CLI exit codes to typed next actions | Retry execution |
-| `skills/` (14) | Routing and per-capability instructions for Codex | Runtime enforcement |
+| `skills/` (14) | Routing and per-capability instructions for supported hosts | Runtime enforcement |
 
 ## Compatibility
 
 | Plugin version | Host | CLI | Python | Status |
 |---|---|---|---|---|
-| `0.1.5` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Verified |
+| `0.1.6` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Verified |
 
 CLI runtime, version, command compatibility, explicitly authorized account authentication, and the separately approved paid canary are recorded as **PASS** in the [runtime evidence](docs/verification/dreamina-canvas-runtime.md).
 
@@ -134,7 +134,7 @@ CLI runtime, version, command compatibility, explicitly authorized account authe
 ### From the plugin marketplace
 
 ```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.1.5
+codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.1.6
 codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 

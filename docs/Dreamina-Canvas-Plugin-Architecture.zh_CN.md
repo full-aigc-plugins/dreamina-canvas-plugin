@@ -188,7 +188,7 @@ stateDiagram-v2
 
 | 方面 | 立场 |
 |---|---|
-| 分发 | 指向本仓库、固定到不可变 `v0.1.5` 的跨宿主 marketplace 条目 |
+| 分发 | 指向本仓库、固定到不可变 `v0.1.6` 的跨宿主 marketplace 条目 |
 | 清单 | `.codex-plugin/plugin.json`（兼容）与 `plugin.json`（便携） |
 | Python | CI 矩阵覆盖 3.11、3.12 与 3.13 |
 | 上游 Skill | 由 `upstream/dreamina-skills.lock.json` 按提交固定并逐字节校验 |

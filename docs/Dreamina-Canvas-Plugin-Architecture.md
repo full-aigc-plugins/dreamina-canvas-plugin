@@ -5,7 +5,7 @@
 > | Field | Value |
 > |---|---|
 > | Status | Implemented and released as `0.1.2` |
-> | Scope | The Codex plugin in this repository: the CLI adapter, guards, ledger, and Skills |
+> | Scope | The cross-host plugin in this repository: the CLI adapter, guards, ledger, and Skills |
 > | Audience | Plugin maintainers, security reviewers, and integration engineers |
 > | Out of scope | The Dreamina Canvas service itself, the CLI's internals, and the upstream Skill library |
 > | Runtime evidence | `docs/verification/` |
@@ -13,7 +13,7 @@
 
 ## 1. Executive summary
 
-This repository packages the Dreamina Canvas CLI for Codex as a guarded extension. It does not implement generation, pricing, or authentication. It implements the contract that turns an open-ended creative request into a bounded, budgeted, resumable operation:
+This repository packages the Dreamina Canvas CLI for supported coding-agent hosts as a guarded extension. It does not implement generation, pricing, or authentication. It implements the contract that turns an open-ended creative request into a bounded, budgeted, resumable operation:
 
 - capability values are discovered at runtime, never hard-coded;
 - saving and running are separate operations;
@@ -188,7 +188,7 @@ Operations are executable rather than aspirational: `python -m unittest discover
 
 | Aspect | Position |
 |---|---|
-| Distribution | Cross-host marketplace entry pointing at this repository, pinned to immutable `v0.1.5` |
+| Distribution | Cross-host marketplace entry pointing at this repository, pinned to immutable `v0.1.6` |
 | Manifests | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | Python | 3.11, 3.12, and 3.13 in the CI matrix |
 | Upstream Skills | Pinned by commit in `upstream/dreamina-skills.lock.json` and byte-verified |
