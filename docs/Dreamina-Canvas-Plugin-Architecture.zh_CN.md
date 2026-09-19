@@ -1,4 +1,4 @@
-# Codex Dreamina Canvas 插件架构
+# Dreamina Canvas 插件架构
 
 > **文档信息**
 >

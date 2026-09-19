@@ -1,4 +1,4 @@
-# Codex Dreamina Canvas 插件技术方案
+# Dreamina Canvas 插件技术方案
 
 > **文档信息**
 >

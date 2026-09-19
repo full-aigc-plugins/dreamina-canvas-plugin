@@ -1,4 +1,4 @@
-# Codex Dreamina Canvas Plugin
+# Dreamina Canvas Plugin
 
 ![Codex × Dreamina Canvas — Shape ideas on an intelligent canvas](assets/dreamina-canvas-hero.png)
 
@@ -326,10 +326,10 @@ partme-dreamina-canvas/
 
 ## Deep links
 
-- [Architecture](docs/Codex-Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Codex-Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
-- [Technical solution](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
-- [Design spec](docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md)
-- [Implementation plan](docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md)
+- [Architecture](docs/Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
+- [Technical solution](docs/Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
+- [Design spec](docs/superpowers/specs/2026-09-11-dreamina-canvas-plugin-design.md)
+- [Implementation plan](docs/superpowers/plans/2026-09-11-dreamina-canvas-plugin-implementation.md)
 - [Contributing](CONTRIBUTING.md) · [Security policy](SECURITY.md)
 
 ## Contributing and support

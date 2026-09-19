@@ -14,12 +14,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 ARCHITECTURE = (
-    ROOT / "docs" / "Codex-Dreamina-Canvas-Plugin-Architecture.md",
-    ROOT / "docs" / "Codex-Dreamina-Canvas-Plugin-Architecture.zh_CN.md",
+    ROOT / "docs" / "Dreamina-Canvas-Plugin-Architecture.md",
+    ROOT / "docs" / "Dreamina-Canvas-Plugin-Architecture.zh_CN.md",
 )
 TECHNICAL = (
-    ROOT / "docs" / "Codex-Dreamina-Canvas-Plugin-Technical-Solution.md",
-    ROOT / "docs" / "Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md",
+    ROOT / "docs" / "Dreamina-Canvas-Plugin-Technical-Solution.md",
+    ROOT / "docs" / "Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md",
 )
 READMES = (ROOT / "README.md", ROOT / "README.zh-CN.md")
 ALL_DOCS = READMES + ARCHITECTURE + TECHNICAL

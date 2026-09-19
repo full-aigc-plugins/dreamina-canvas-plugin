@@ -54,7 +54,7 @@ without its companion file.
 
 ```json
 {
-  "name": "codex-dreamina-canvas",
+  "name": "dreamina-canvas",
   "source": {
     "source": "url",
     "url": "https://github.com/partme-ai/partme-dreamina-canvas.git",

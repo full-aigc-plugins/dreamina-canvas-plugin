@@ -1,4 +1,4 @@
-# Codex Dreamina Canvas 插件
+# Dreamina Canvas 插件
 
 ![Codex × Dreamina Canvas — 在智能画布上塑造创意](assets/dreamina-canvas-hero.png)
 
@@ -323,10 +323,10 @@ partme-dreamina-canvas/
 
 ## 深入文档
 
-- [Architecture](docs/Codex-Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Codex-Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
-- [Technical solution](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
-- [设计规格](docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md)
-- [实施计划](docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md)
+- [Architecture](docs/Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
+- [Technical solution](docs/Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
+- [设计规格](docs/superpowers/specs/2026-09-11-dreamina-canvas-plugin-design.md)
+- [实施计划](docs/superpowers/plans/2026-09-11-dreamina-canvas-plugin-implementation.md)
 - [贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md)
 
 ## 贡献与支持

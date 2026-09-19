@@ -56,7 +56,7 @@ class DistributionTests(unittest.TestCase):
 
         plan = (
             ROOT
-            / "docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md"
+            / "docs/superpowers/plans/2026-09-11-dreamina-canvas-plugin-implementation.md"
         ).read_text(encoding="utf-8")
         self.assertFalse(
             any(line.startswith("- [ ]") for line in plan.splitlines())

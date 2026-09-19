@@ -1,4 +1,4 @@
-# Codex Dreamina Canvas Plugin Technical Solution
+# Dreamina Canvas Plugin Technical Solution
 
 > **Document control**
 >

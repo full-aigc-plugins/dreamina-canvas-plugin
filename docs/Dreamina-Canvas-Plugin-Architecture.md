@@ -1,4 +1,4 @@
-# Codex Dreamina Canvas Plugin Architecture
+# Dreamina Canvas Plugin Architecture
 
 > **Document control**
 >
