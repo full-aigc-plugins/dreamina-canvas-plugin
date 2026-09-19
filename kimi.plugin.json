@@ -5,7 +5,7 @@
   "author": {
     "name": "Full Stack Skills / PartMe.AI"
   },
-  "homepage": "https://github.com/partme-ai/partme-dreamina-canvas",
+  "homepage": "https://github.com/full-aigc-plugins/dreamina-canvas-plugin",
   "license": "Apache-2.0",
   "keywords": [
     "dreamina",
@@ -17,7 +17,7 @@
     "shortDescription": "Build and run structured Dreamina canvases",
     "longDescription": "Operate Dreamina Canvas from your coding agent: create canvases, compose node graphs, generate image/video/audio nodes, manage timelines, quote-and-run with approval, resume operations, and download verified assets.",
     "developerName": "Full Stack Skills / PartMe.AI",
-    "websiteURL": "https://github.com/partme-ai/partme-dreamina-canvas"
+    "websiteURL": "https://github.com/full-aigc-plugins/dreamina-canvas-plugin"
   },
   "skills": "./skills/",
   "commands": "./commands/",

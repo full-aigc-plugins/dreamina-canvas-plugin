@@ -57,7 +57,7 @@ without its companion file.
   "name": "dreamina-canvas",
   "source": {
     "source": "url",
-    "url": "https://github.com/partme-ai/partme-dreamina-canvas.git",
+    "url": "https://github.com/full-aigc-plugins/dreamina-canvas-plugin.git",
     "ref": "main"
   },
   "policy": { "installation": "AVAILABLE", "authentication": "ON_USE" },

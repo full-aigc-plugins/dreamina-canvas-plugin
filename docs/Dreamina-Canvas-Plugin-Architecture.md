@@ -188,7 +188,7 @@ Operations are executable rather than aspirational: `python -m unittest discover
 
 | Aspect | Position |
 |---|---|
-| Distribution | Codex marketplace entry pointing at this repository, pinned to `main` |
+| Distribution | Cross-host marketplace entry pointing at this repository, pinned to immutable `v0.1.5` |
 | Manifests | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | Python | 3.11, 3.12, and 3.13 in the CI matrix |
 | Upstream Skills | Pinned by commit in `upstream/dreamina-skills.lock.json` and byte-verified |
