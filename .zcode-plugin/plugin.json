@@ -5,7 +5,7 @@
     "en": "Dreamina Canvas",
     "zh-CN": "即梦画布"
   },
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
   "description_i18n": {
     "en": "Dreamina Canvas workflows for structured nodes, timelines, quoted runs, recovery, and assets.",

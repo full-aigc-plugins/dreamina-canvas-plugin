@@ -1,6 +1,6 @@
 {
   "name": "dreamina-canvas",
-  "version": "0.1.4+codex.20260919",
+  "version": "0.1.5+codex.20260920",
   "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
