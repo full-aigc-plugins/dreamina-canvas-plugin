@@ -1,74 +1,152 @@
 {
-  "commit": "e8ae5880fb36f71c4e60ef854060ab9cadd9edc4",
+  "commit": "b263ade8e3e3516baf8f67ddf586e242137c96e3",
   "repository": "https://github.com/full-aigc-skills/dreamina-skills",
   "schemaVersion": "1.0",
   "skills": {
     "dreamina-canvas-auth": {
-      "SKILL.md": "a4d0e06e899bd3754534115436bff64e2f4e053a9a41785257ce0b9041e6a459",
+      "SKILL.md": "38a2b660df27566c0504b193ad8c3ee10cb6a700d47b58acb59552087212eb3d",
       "agents/openai.yaml": "210e865fcaaeaefd3c594228ebaf31f5fce12c24c185102621c0a781860ce43e",
-      "references/auth-state.md": "5004b863962e2b225b1ca12cc443e4e758e1ff8518ce19754654c3387a4eb7da"
+      "examples/boundary-refusal.md": "cdc8460c0ae630b22a05595dda4277959e9f7158b799ea7a60a46f5e2403dc87",
+      "examples/failure-recovery.md": "d6605a2123f92879062fe1362cbaea78178bc60765382b86507252ce8e5a051c",
+      "examples/happy-path.md": "9460f5f9e792aab048cc1dc20a0117acdad5f6915de81b6803209b326244c1da",
+      "references/auth-state.md": "5004b863962e2b225b1ca12cc443e4e758e1ff8518ce19754654c3387a4eb7da",
+      "references/error-recovery.md": "656fdc3a9de3f390e1a24a0c4beec60d4b973c8832d93ef96ee00303c0a9face",
+      "references/validation-checklist.md": "9788e8e873574097ce42fdacd66703445cad9aa0366c1d86b3e9a09f443a18d2",
+      "references/workflow-contract.md": "d5e458589e26d334566b630c1b5f92628038bcefa3fb8d4eef09a92b4c59a7d4"
     },
     "dreamina-canvas-cli": {
-      "SKILL.md": "5fa3f95190650bd5d7f0cfbd07e3497ef99f85644aca1a486f4fe0287521b182",
+      "SKILL.md": "d056d90df14f3c37baeb71d53a72cff8d53d5773e0bad014813d6f67e5e90c6b",
       "agents/openai.yaml": "febb47a4f53b1e456cc0b518735775679136236c5c471d957c021fcd85038d3c",
+      "examples/boundary-refusal.md": "3c7599d5ae0487a9e21e4a68641aa67756ec1a09dc123490a9cc4919f861d3d9",
+      "examples/failure-recovery.md": "8f8894ff37045cdded4762cc9ca6b50c0c56be7e90abff65131f7c4fc4c9f0bd",
+      "examples/happy-path.md": "753e7f413b1c369dbb6f4622dbfaf9ce6d200765a52a266881baf29ca07d4b26",
       "references/cli-contract.md": "91dc1aa35293cc01324c96cef9dd4a30048573c818940ae930343f1bc4a3bf84",
+      "references/error-recovery.md": "01e87571b82c2897e2334c075fcc6756eaf1108acfe82c2b581744be01e910ff",
       "references/error-routing.md": "f0a2177aa86d35fa6c2bc275bdfb665e364aca89cf40ad435e7784a9772fd995",
-      "references/install-to-use.md": "e355c5628478e18f287454c069c776357655c8872d168ac052ac354101926662"
+      "references/install-to-use.md": "e355c5628478e18f287454c069c776357655c8872d168ac052ac354101926662",
+      "references/validation-checklist.md": "2bed3743b8a688aec4992440c70d64684167c8057c6dfc1c1028244d64b6df98",
+      "references/workflow-contract.md": "6677964d882c60c33aa65b8fe1176454eb19bd0e03750b801de3847d946f4a03"
     },
     "dreamina-canvas-compose": {
-      "SKILL.md": "761b2b67e5dbc672e62ca31d414d2db065892519f12e6931e4142b92695abef9",
+      "SKILL.md": "07ae0002b504444bfe16fbad677a090c8736f3dbf51e9e5403a96d0cc00a30fd",
       "agents/openai.yaml": "bdc14c10ec6dc8439578217874253fac720e7c52e3f195284d755642374c899b",
-      "references/composition-dag.md": "077ac59a922ba38324944ddb252b8dc2db0d8d98a14e7e72085da4dd0ce0b37f"
+      "examples/boundary-refusal.md": "c8fd8f546a6d7774e293568b1712bae35221bea40f1b61a1fb72942d1bebcd83",
+      "examples/failure-recovery.md": "965c447f97b18b2231948640cfb0daadec4aa3451e1c9aae58ffd244c19beb89",
+      "examples/happy-path.md": "69c744e326765da38ccf1b804eff2b3ad837091342981ea007b3cf7d176488b3",
+      "references/composition-dag.md": "077ac59a922ba38324944ddb252b8dc2db0d8d98a14e7e72085da4dd0ce0b37f",
+      "references/error-recovery.md": "a77114efb9adf0f09d208846d6739a5dccf47d01ca03278a7bf5fe949df1070b",
+      "references/validation-checklist.md": "739ac729ee3f73f6aa5c1f9129a97cb2fcd4164068a20682af9d07c9e77b990b",
+      "references/workflow-contract.md": "de24b45b3b5157e106d0c0d7dc18943246a86b6fcd089ba6272533811e8b2a3f"
     },
     "dreamina-canvas-create": {
-      "SKILL.md": "626371bd2b694d8035ef347b51a348c590114cd167452d09dd1d1dd07256e67d",
+      "SKILL.md": "1af20892827da6972df1e860129f79a0b6b6617247db5284dedc38a8ba89e9d5",
       "agents/openai.yaml": "334586dab45da50a70c90699ed59e6afe629845d9215c8fd7072dc662bf031ec",
-      "references/canvas-context.md": "cfe2caf9e77f87bdb049b4adbe02f93af9405d039547a15f75a838c63f0ec8bc"
+      "examples/boundary-refusal.md": "1ed365168fd206fb3befdd30a429f7d1b4ad9c2db3614e387b3da3643b9258fc",
+      "examples/failure-recovery.md": "8b6b8668450a3936d68178368588a3661055d2045ba0eb35706a1a309028d3af",
+      "examples/happy-path.md": "ad27fb3f455f497f86ff5419068853336e91a949aa90db17e76d7d31b9f54012",
+      "references/canvas-context.md": "cfe2caf9e77f87bdb049b4adbe02f93af9405d039547a15f75a838c63f0ec8bc",
+      "references/error-recovery.md": "b515e50a5333af79977a5110aea8a63e745020dcb9eb6360fba16e2d5d07e78c",
+      "references/validation-checklist.md": "58cc62c4eeb0370a7fa4990ff9987d6688b3f90bc7918e40c4c0238192e11950",
+      "references/workflow-contract.md": "57762c53f3a7e104120cc4c146efe36120cb95e394011b8bd95a7ad4e0e4d6d1"
     },
     "dreamina-canvas-discover-models": {
-      "SKILL.md": "29b5f8b9823b5f25187ee42c48a08c6ac52b306c1df78b709eecc9990653745d",
+      "SKILL.md": "c1eefd704498262f3aaacdd1b12399d245e9023a2e7ce1bd3090033db4122872",
       "agents/openai.yaml": "ab8340e31f234885f49782ef5b128099276d7126a358ad238bd183859c02b854",
-      "references/capability-discovery.md": "5af2db3e7397bea8dd1e72dcbec6fab19f6bc264a1e964863129eab5fc4ed987"
+      "examples/boundary-refusal.md": "16cfa15674418016d07b56573a8f4447a49fe7fd2b7b58899eb8ac71eb81af74",
+      "examples/failure-recovery.md": "b21c1e5f7fa21bfab4048a41bdf4d622c51a405872a06d29b4038c0548ad800f",
+      "examples/happy-path.md": "007f9c9e5853daa5250cd11c76c78c1c463a828756d4f53a5df3e65031100d85",
+      "references/capability-discovery.md": "5af2db3e7397bea8dd1e72dcbec6fab19f6bc264a1e964863129eab5fc4ed987",
+      "references/error-recovery.md": "246d0a229bba65fc6712ee4cad18ebea610cab7e88f1de171c5a68ac7b12bd8a",
+      "references/validation-checklist.md": "e637973d8c9194cf99a640d5278ea8e22de69b56195e7dce297d610c13c4b33f",
+      "references/workflow-contract.md": "0b4f1c66c08e9272d93de4d91af6bb7b8415c05fe127bab076c10d8b120db17d"
     },
     "dreamina-canvas-download-assets": {
-      "SKILL.md": "5f23238399df42b5865cb9336f7099aa67da87a1200b2ce2bfd26887f3046fbc",
+      "SKILL.md": "e5467e8cdf4c0dfc98f5673a0e6c9ffd11cbba8c094ac33bd86ad171ec120f75",
       "agents/openai.yaml": "0efb2174a128fca3ed709169efcc60a89b5d2b9d0872309e65a62bd7c15c7d22",
-      "references/artifact-verification.md": "672ad40c9dc9df5db4f99f02e902e1e0ff155e848fb4a54fbbbcf236896fca62"
+      "examples/boundary-refusal.md": "b9253312cc0bd4c9f8f9be5c2b63e97b345f823587d7378a01e3551ec53f92a8",
+      "examples/failure-recovery.md": "94dfd76f04c5b2cb80224d2d5d3fac40edb45be0e359413a2b06ba2b4c63debd",
+      "examples/happy-path.md": "237a56d2e1bddafab2833d78e1238c138c72047886f4892c4ecdc8a3f2e2f93f",
+      "references/artifact-verification.md": "672ad40c9dc9df5db4f99f02e902e1e0ff155e848fb4a54fbbbcf236896fca62",
+      "references/error-recovery.md": "7f8a530e5720a21716f8ffdab434f840aa8bc9a16b1e3f2751b4154366715a73",
+      "references/validation-checklist.md": "b052dc1d7eeca8be081a2eeef7207712148c848f7fe9f3d6b1fcf71d8ba70440",
+      "references/workflow-contract.md": "a699273f4efb9b739a5acd951ab1899758e0eed0eff9c55257f6d6e683574dbd"
     },
     "dreamina-canvas-generate-audio": {
-      "SKILL.md": "659623a9a7a00aa73c64db87b40619b5efb5492d79dc99d5b0f499d9c68eb4b2",
+      "SKILL.md": "f75ad8dc7336f2f80da8179f4a6b3bcf89af4abe2393a6d06ae571f75d714c92",
       "agents/openai.yaml": "a8938d9d02c06f6c07ec9aa40c23e04d89dc11a502f90a504a571062e80a1edf",
-      "references/audio-node-contract.md": "b31f5b03629b133610cf034bd2c43908d80b71e70869726dcf22c113b8ec20aa"
+      "examples/boundary-refusal.md": "24bf2fbc7f79007df9b3fd97316250f4cd26b9e1551ffe2e066d01b8ee9816f3",
+      "examples/failure-recovery.md": "5b604ff3a7b1555b332001aec6a22fa7580a31cff58d414ef9f9f0a7bbf9e5b2",
+      "examples/happy-path.md": "ab317d5202353237e2deb4d6935c85de973e506031a780c45af004b43aff949f",
+      "references/audio-node-contract.md": "b31f5b03629b133610cf034bd2c43908d80b71e70869726dcf22c113b8ec20aa",
+      "references/error-recovery.md": "cc9eeb3aaafc3b6a2eb5baaa06dea3b3e9d4d257d495094bbac7e0b2403a7911",
+      "references/validation-checklist.md": "db7a19c0286da9a08a24bb1aab5c9cb43ebcbb6692bc4fac17fc1fca41f74501",
+      "references/workflow-contract.md": "16d3fa48b40fb7f1ea523dc2621bc5da140abcc0ac85efa565e2077be87984e5"
     },
     "dreamina-canvas-generate-image": {
-      "SKILL.md": "28c744d963fbcc0f8ba3c30ec8eb00722a0a055c08d39e8b31fd770e491a433f",
+      "SKILL.md": "402bebc419047a1f78e2bdbf1865667562e1c4fef19064c0554fe243b1a2de4d",
       "agents/openai.yaml": "f854848452819e7e2e657e14d716141db8141ff8fed739dc69f1f0c8a6cd5e00",
-      "references/image-node-contract.md": "17679017571a79c5ac3d419276e6b9ef15a87878062524286b504b4b98501f55"
+      "examples/boundary-refusal.md": "037ee86b71268d5a6ca423db5d896d56d24eae17dddd569f41768c3109a33fb8",
+      "examples/failure-recovery.md": "2e1098854b5a03bad3ae3e2cd8a9fd1c5e19fea4bf3a6188aff953cf5cee1bb3",
+      "examples/happy-path.md": "edd8f448561a33107355e33dfa10cce41afd9140505962b45533ab7f03b66b1d",
+      "references/error-recovery.md": "52a6e35ecaef90673fb95d6cbd0733aea839c130ade213f6e76e60d7c05fb882",
+      "references/image-node-contract.md": "17679017571a79c5ac3d419276e6b9ef15a87878062524286b504b4b98501f55",
+      "references/validation-checklist.md": "8571d1b23bd3052b9fb8bdfe3f5dae4e2bcbe353f2a7d195ceb9963ee89666ed",
+      "references/workflow-contract.md": "c733668d2ecce2bbc6e4fb52cd4b0aa605fd545d8584618630de782cadecf1fd"
     },
     "dreamina-canvas-generate-video": {
-      "SKILL.md": "7aacf2601179a771388a11517bd8ced7535c13b57028e98971e2f16eae8dd6a7",
+      "SKILL.md": "6a4f0e9f7243900b684cfd6c27a1af5ceb2a043392b5e418de9576ad5c809838",
       "agents/openai.yaml": "16e3986840ea18d0a543d757fdc60ecf6439443cd50cc332aeaf0e17f8729092",
-      "references/video-node-contract.md": "6481119159a92000681015933dc4bf4df03af6e38b0defa4b92e5c1dc6e5dc42"
+      "examples/boundary-refusal.md": "3b5620ba10cf70d28da0de85aefe5258e28633542f2999aa66a0181199e72dd4",
+      "examples/failure-recovery.md": "ffff6b08e1222717258eb78c23315ee921de2d61ff210f0aa32ce59e88dc9344",
+      "examples/happy-path.md": "10732a569f5ee4790fe2c87d97d8b5996843b619dff85a846aefea82c4b63234",
+      "references/error-recovery.md": "5cbf290a2757f81119f856d2e07993ef8bc3a6bdd93407757991585417c606c0",
+      "references/validation-checklist.md": "cb1d494f164480575930509a62c6bcbdcb57a6398b0feae9b54b743e95591abb",
+      "references/video-node-contract.md": "6481119159a92000681015933dc4bf4df03af6e38b0defa4b92e5c1dc6e5dc42",
+      "references/workflow-contract.md": "00843da76aa494c68d62ce28b8f6c7708495d44606c83faa3a833bcc86cd40a6"
     },
     "dreamina-canvas-manage-timeline": {
-      "SKILL.md": "66f49ee2977dc495d079afebf1acd2bade091fa6e68fd54b2e00f1e7be7db250",
+      "SKILL.md": "eb694cb603292c142b662c27d07bd37e6da6bc8a523a5f96fa0c1ba0dc735ff8",
       "agents/openai.yaml": "2e4d7fadbd5ec6866579fe1f8f8691999745ead1c3110793130f4623bf9db991",
-      "references/timeline-contract.md": "2c73a1477736e10cb72c9fa26506cdc021b99bb933ac77cbaa759dd47e44acd2"
+      "examples/boundary-refusal.md": "7cd122ee5bbf549ccce305a6cfa9a44ea9d38106b230a826710186b4ba10421f",
+      "examples/failure-recovery.md": "3473d940ab546df822894ceac9e8948c9682a79ff20f4b1cdfa7f106d59daf36",
+      "examples/happy-path.md": "df49acd33bf3b8dbdd1e9677804139ea539daa1d8277613f3263b313b91f78e1",
+      "references/error-recovery.md": "97cbeac04a01b2a0cdfac3d1f3c3f9cb74ad06482f8a8055803114205fa8cc8a",
+      "references/timeline-contract.md": "2c73a1477736e10cb72c9fa26506cdc021b99bb933ac77cbaa759dd47e44acd2",
+      "references/validation-checklist.md": "ff2b82680d3ba6570f57d6136b42b6f301cc4bd118bc98cbfd38af802db8ba3b",
+      "references/workflow-contract.md": "f7a5303211157641845f6b8b69b80686bfaf7f1533fcdf1b3d75dfba858f3f75"
     },
     "dreamina-canvas-quote-and-run": {
-      "SKILL.md": "0d897c5f38cb9e348e4f7cafea5133d096314af852df69cd0edddc8f334bf3a9",
+      "SKILL.md": "0dc56307377dd2d732b03c5154409cecba5e4812ab8e4cee92323c5f21538544",
       "agents/openai.yaml": "c34c3a64aea36dc4ff762df03e275bf104be19c006d6f0d67af46f7c65a1ec37",
-      "references/credit-approval.md": "b9cb2a21146499334858fb7d8ef3052664980fc28fde4865f61a8f15661e21bd"
+      "examples/boundary-refusal.md": "79e55b6a8d308816e2cf2c70cc9cc4fb9051c464e42ef71d6573dfcc729d064b",
+      "examples/failure-recovery.md": "3bdb2fecff7b8bd0e0ac5a0fc4490ed62ecdc2f6bb3806ee2e26f25da3f27817",
+      "examples/happy-path.md": "ab417dd330c4e32950036cf500a884694df4ccb1edfeec50b11a8e9891f154b4",
+      "references/credit-approval.md": "b9cb2a21146499334858fb7d8ef3052664980fc28fde4865f61a8f15661e21bd",
+      "references/error-recovery.md": "c14ce7d65927ecc88274b8ed693868cef12ef01c9b17cd4761fb2d8de8f22069",
+      "references/validation-checklist.md": "a3b4ef3c09420ac62110985ff43a55d824ea217cc4e6c62993f39a059189d2c1",
+      "references/workflow-contract.md": "d3b38b6aeb128d44c7fab91fcd608fb3bdee328c4a8c206f88bc63425af8c5f9"
     },
     "dreamina-canvas-resume-operation": {
-      "SKILL.md": "facc6d0eea14457a76a7d14eb052a125852dfa617ba8d6c24cadd3b02c365547",
+      "SKILL.md": "f84b0acc26106c254f940e4f4923f5c16417f28791451de323a0b1585488456f",
       "agents/openai.yaml": "007fcfe6ba9b3350d2bb8dd886cec62705205e993fd05d97a0db1f045dd66d71",
-      "references/recovery-state-machine.md": "63d9a9a3eaa50544de27c41cda6dd22e60faeee88d9e5513c8997a3b8dc40f7e"
+      "examples/boundary-refusal.md": "287c04fbdcedd5376c70a74c342ad55b6abb0fc34d9c91290ac39067a169c5b1",
+      "examples/failure-recovery.md": "f66ab4e61d39eb53e8d5fc6542bb3c195b000319a42fcc42abd199d720c46f21",
+      "examples/happy-path.md": "83c01083a772a738a9af6f110d01e4214ff821946e9abfb471b35478392e718c",
+      "references/error-recovery.md": "1eeab9f7675f5da529ab8605f22281e79f199c041fc45ec2cf261d7758545cd3",
+      "references/recovery-state-machine.md": "63d9a9a3eaa50544de27c41cda6dd22e60faeee88d9e5513c8997a3b8dc40f7e",
+      "references/validation-checklist.md": "726e9927baf3eb27ee2f0b5881f1cf7ee410b717594050caeefaf7e41d73e0bc",
+      "references/workflow-contract.md": "1d3b68cbf0dc516e2d7b9c7e2bf141135ce6bce9e70d56917f524fed7b6119e3"
     },
     "dreamina-canvas-use": {
-      "SKILL.md": "fefd9a2ca0f1574d83e4017072223998d718c0eb7b58b3992d63fc7d057fef9f",
+      "SKILL.md": "f31d7f22e579200bbfe4aa6a0c393d193fc2e04de9161ad5883cf7c397bd1771",
       "agents/openai.yaml": "c8553bfbd0ccf9754a34e86f1b3df35b5a0940b955be607802ae07f9bfe0ab99",
-      "references/routing-table.md": "aa660142b26657cf64601ad910e0b4fec2274aceb1d9ed0fb2056c0f9c772595"
+      "examples/boundary-refusal.md": "69d69470861f1b897d4d21152243d98fed2931740efd5bfe2bbcf986840081c1",
+      "examples/failure-recovery.md": "b826576844d1f3498e9bb8ddc09fc9c4862bee241bd024db54234926ec1d8472",
+      "examples/happy-path.md": "ac086251831dd28fb9ec8d07f71fd12c685f33bca4f55426e337be63878494fb",
+      "references/error-recovery.md": "42748a880e4e4488162a63b9866631a7b5804db0ef65083947adb11f1a531f2d",
+      "references/routing-table.md": "aa660142b26657cf64601ad910e0b4fec2274aceb1d9ed0fb2056c0f9c772595",
+      "references/validation-checklist.md": "99acb3bd8e6c6e82ad419cc5704370483b10e342f730127530699c37d8c4383a",
+      "references/workflow-contract.md": "1655e413edd31bcf0ffa51de978ccf600504caabd50b060bab10356b818ff292"
     }
   },
   "sourceContract": "verification/dreamina-canvas-guide-contract.json",
