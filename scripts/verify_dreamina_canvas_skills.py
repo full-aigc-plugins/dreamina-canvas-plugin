@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Verify that packaged Skills match upstream/dreamina-skills.lock.json.
 
-Reads upstream/dreamina-skills.lock.json and re-hashes every file under
-skills/dreamina-canvas-*/. Returns exit 0 iff every packaged file's
-SHA-256 equals the locked value.
+Reads upstream/dreamina-skills.lock.json, re-hashes every managed skill file,
+and permits only the plugin-local skills declared in plugin-local-skills.json.
+Returns exit 0 iff every managed file's SHA-256 equals the locked value and the
+combined inventory is exact.
 """
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LOCK = ROOT / "upstream" / "dreamina-skills.lock.json"
 SKILLS = ROOT / "skills"
+LOCAL_SKILLS = ROOT / "plugin-local-skills.json"
 
 
 def sha256_file(path: Path) -> str:
@@ -30,13 +32,17 @@ def main() -> None:
         sys.exit(1)
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
     declared = set(lock["skills"].keys())
+    local = set(
+        json.loads(LOCAL_SKILLS.read_text(encoding="utf-8")).get("skills", [])
+    )
     actual = {
         p.name
         for p in SKILLS.iterdir()
         if p.is_dir() and p.name.startswith("dreamina-canvas-")
     }
-    missing = declared - actual
-    extra = actual - declared
+    expected_inventory = declared | local
+    missing = expected_inventory - actual
+    extra = actual - expected_inventory
     if missing or extra:
         print(
             f"FAIL: skill set mismatch missing={sorted(missing)} extra={sorted(extra)}",
