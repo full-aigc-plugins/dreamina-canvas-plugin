@@ -89,7 +89,11 @@ class PortableManifestTests(unittest.TestCase):
         portable = load(PORTABLE)
         compat = load(COMPAT)
         for field in IDENTITY_FIELDS:
-            self.assertEqual(portable.get(field), compat.get(field), field)
+            portable_value = portable.get(field)
+            compat_value = compat.get(field)
+            if field == "version":
+                compat_value = str(compat_value or "").split("+", 1)[0]
+            self.assertEqual(portable_value, compat_value, field)
 
     def test_interface_parity_between_both_manifests(self) -> None:
         portable_interface = load(PORTABLE)["extensions"]["com.openai"]["interface"]

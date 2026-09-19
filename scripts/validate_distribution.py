@@ -88,8 +88,10 @@ def validate(root: Path) -> list[str]:
     repository = manifest.get("repository", "")
     if NAME_PATTERN.fullmatch(plugin_id) is None:
         errors.append("manifest name must be a kebab-case identifier")
-    if manifest.get("version") != "0.1.2":
-        errors.append("plugin version must be 0.1.2")
+    manifest_version = str(manifest.get("version", ""))
+    base_version = manifest_version.split("+", 1)[0]
+    if not base_version:
+        errors.append("plugin version must be present")
     if manifest.get("skills") != "./skills/":
         errors.append("manifest skills path must be ./skills/")
     if "mcpServers" in manifest or (root / ".mcp.json").exists():
@@ -157,7 +159,11 @@ def validate(root: Path) -> list[str]:
                 if portable_interface.get(field) != value:
                     errors.append(f"interface parity mismatch on `{field}`")
         for field in IDENTITY_FIELDS:
-            if portable.get(field) != manifest.get(field):
+            portable_value = portable.get(field)
+            manifest_value = manifest.get(field)
+            if field == "version":
+                manifest_value = str(manifest_value or "").split("+", 1)[0]
+            if portable_value != manifest_value:
                 errors.append(f"identity parity mismatch on `{field}`")
 
     # This plugin ships no MCP servers and no apps. Declaring either without

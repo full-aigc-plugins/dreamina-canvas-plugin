@@ -6,7 +6,7 @@
 
 > Build, quote, and run structured Dreamina canvases from Codex — with the free and paid steps kept apart.
 
-[![Version](https://img.shields.io/badge/version-0.1.2-blue)](https://github.com/partme-ai/partme-dreamina-canvas)
+[![Version](https://img.shields.io/badge/version-0.1.4-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.4)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Operation contract](#operation-contract) · [Troubleshooting](#troubleshooting)
@@ -57,7 +57,7 @@ Canvas project + verified local assets
 |---|---|
 | Plugin ID | `dreamina-canvas` |
 | Host | Codex CLI or ChatGPT desktop app |
-| Current version | `0.1.2` |
+| Current version | `0.1.4` |
 | Plugin manifest | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | MCP configuration | none — the plugin drives the local CLI through Skills |
 | Primary language | Python 3.11+ |
@@ -119,13 +119,13 @@ flowchart LR
 | `scripts/approval_guard.py` | Quote binding, credit ceiling, replay rejection | Cost estimation |
 | `scripts/artifact_guard.py` | Download verification and receipts | Remote object lifetime |
 | `scripts/error_router.py` | Mapping CLI exit codes to typed next actions | Retry execution |
-| `skills/` (13) | Routing and per-capability instructions for Codex | Runtime enforcement |
+| `skills/` (14) | Routing and per-capability instructions for Codex | Runtime enforcement |
 
 ## Compatibility
 
 | Plugin version | Host | CLI | Python | Status |
 |---|---|---|---|---|
-| `0.1.2` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Verified |
+| `0.1.4` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Verified |
 
 CLI runtime, version, command compatibility, explicitly authorized account authentication, and the separately approved paid canary are recorded as **PASS** in the [runtime evidence](docs/verification/dreamina-canvas-runtime.md).
 
@@ -328,8 +328,8 @@ partme-dreamina-canvas/
 
 - [Architecture](docs/Codex-Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Codex-Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
 - [Technical solution](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Codex-Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
-- [Design spec](docs/superpowers/specs/2026-09-11-partme-dreamina-canvas-design.md)
-- [Implementation plan](docs/superpowers/plans/2026-09-11-partme-dreamina-canvas-implementation.md)
+- [Design spec](docs/superpowers/specs/2026-09-11-codex-dreamina-canvas-plugin-design.md)
+- [Implementation plan](docs/superpowers/plans/2026-09-11-codex-dreamina-canvas-plugin-implementation.md)
 - [Contributing](CONTRIBUTING.md) · [Security policy](SECURITY.md)
 
 ## Contributing and support
