@@ -503,7 +503,8 @@ class CapabilityProbe:
         if self._snapshot is not None and not force:
             return self._snapshot
         outcome = self.runner([self.binary, "--format", "json", "schema"])
-        data = outcome.data() if outcome.ok else {}
+        # CommandResult (the adapter's return type) exposes exit_code, not ok().
+        data = outcome.data() if outcome.exit_code == 0 else {}
         if not outcome.ok or not data:
             raise CapabilityError(
                 f"live CLI schema could not be established (exit {outcome.exit_code}, "
