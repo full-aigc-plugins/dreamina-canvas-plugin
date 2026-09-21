@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "judge_receipt/1",
+  "judgeId": "22222222-3333-4444-5555-666666666666",
+  "adapter": "human",
+  "modelClass": "GLM-5.3-Flash (ZCode operator, image-vs-image only)",
+  "targetSha256": "31ec98a7ef117fd028d5fa9fc38668a4265e2771d70ce0bbf28ead35806db2e5",
+  "candidateSha256": "a290813a4b1049a5ee0ee1f0e2c807dd3c757489d998d0231cd9c9d63efdbae3",
+  "scores": {
+    "composition": 1.0,
+    "lighting": 2.0,
+    "materials": 2.5,
+    "details": 0.0,
+    "total": 5.5
+  },
+  "gaps": [
+    {
+      "dimension": "composition",
+      "severity": "high",
+      "location": "整幅画面",
+      "observation": "target 为全幅均匀中蓝方块（约 100% 蓝色覆盖）；candidate 为白底居中蓝色城堡徽标（约 15% 蓝色覆盖）——画面填充与主体结构根本不同",
+      "fixHint": "重写 prompt 要求全幅均匀 #4080C0 纯色、无任何主体"
+    },
+    {
+      "dimension": "composition",
+      "severity": "medium",
+      "location": "背景/主体分布",
+      "observation": "target 无背景概念（整幅即颜色本身）；candidate 约 85% 为纸白背景",
+      "fixHint": "生成需以纯色充满画幅，去白边"
+    },
+    {
+      "dimension": "details",
+      "severity": "low",
+      "location": "城堡轮廓",
+      "observation": "target 零细节（纯方块）；candidate 有城堡轮廓与门拱细节，细节密度高于 target",
+      "fixHint": "去除主体轮廓直至仅剩平坦色块"
+    }
+  ],
+  "recommendation": "revise",
+  "freshContext": true,
+  "sawPromptDraft": false,
+  "judgedAt": "2026-09-22T01:20:00Z"
+}
