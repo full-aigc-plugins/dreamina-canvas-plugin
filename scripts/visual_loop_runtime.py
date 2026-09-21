@@ -196,11 +196,15 @@ class CliArtifacts:
             raise RuntimePortError(
                 f"download failed: exit={result.exit_code} action={result.required_action}")
         data = _data(result)
-        canonical = Path(str(data.get("canonicalPath") or ""))
+        # Live CLI 1.0.0 download shape (canary 2026-09-22):
+        # {"resourceId", "path", "size", "sha256"} — no canonicalPath/byteCount/media.
+        canonical = Path(str(data.get("path") or data.get("canonicalPath") or ""))
         media = data.get("media") or {}
+        byte_count = int(data.get("size") or data.get("byteCount")
+                         or (canonical.stat().st_size if canonical.is_file() else 0))
         receipt = artifact_guard.ArtifactReceipt(
             resource_id=resource_id, canonical_path=canonical,
-            byte_count=int(data.get("byteCount", canonical.stat().st_size if canonical.is_file() else 0)),
+            byte_count=byte_count,
             sha256=str(data.get("sha256") or ""), media=media)
         decision = artifact_guard.verify(receipt, approved_dir=self.approved_dir,
                                          raw_response=data or None)

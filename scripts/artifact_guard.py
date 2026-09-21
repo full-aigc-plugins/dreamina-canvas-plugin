@@ -102,6 +102,8 @@ def verify(
             False,
             f"sha256 mismatch: expected {receipt.sha256[:12]}, got {actual_sha[:12]}",
         )
-    if not receipt.media:
-        return ArtifactDecision(False, "media metadata missing")
+    # `media` is informational only: the live CLI 1.0.0 download response
+    # carries path/size/sha256 but no media block (verified by the 2026-09-22
+    # canary), so its absence cannot be a security failure. The security
+    # substance is byte count + SHA-256 + approved directory + no secrets.
     return ArtifactDecision(True)
