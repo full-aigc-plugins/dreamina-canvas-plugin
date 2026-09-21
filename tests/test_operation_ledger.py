@@ -1,5 +1,6 @@
 import json
 import sys
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -56,6 +57,9 @@ class OperationLedgerTests(unittest.TestCase):
         self.assertEqual(action, RecoveryDecision.RESUME)
 
     def test_persist_atomic_0600(self) -> None:
+        if os.name == "nt":
+            # NTFS has no POSIX mode bits; the 0600 invariant is POSIX-scoped.
+            self.skipTest("POSIX permission bits do not exist on Windows")
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             target = persist(r(state="in_progress"), root, "default/cn")
