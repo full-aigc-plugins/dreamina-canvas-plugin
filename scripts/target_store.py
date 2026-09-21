@@ -506,9 +506,10 @@ class CapabilityProbe:
         # CommandResult (the adapter's return type) exposes exit_code, not ok().
         data = outcome.data() if outcome.exit_code == 0 else {}
         if outcome.exit_code != 0 or not data:
+            error_code = str((outcome.error or {}).get("code") or "no error code")
             raise CapabilityError(
                 f"live CLI schema could not be established (exit {outcome.exit_code}, "
-                f"{outcome.error_code() or 'no error code'}); refusing to guess reference support")
+                f"{error_code}); refusing to guess reference support")
         canonical = json.dumps(data, ensure_ascii=False, sort_keys=True).encode("utf-8")
         snapshot = CapabilitySnapshot(schema_sha256=_sha256_bytes(canonical), payload=data)
         self.capabilities_dir.mkdir(parents=True, exist_ok=True)
