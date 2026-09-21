@@ -6,7 +6,7 @@
 
 > Build, quote, and run structured Dreamina canvases from your supported coding agent — with the free and paid steps kept apart.
 
-[![Version](https://img.shields.io/badge/version-0.1.7-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.7)
+[![Version](https://img.shields.io/badge/version-0.2.0-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.2.0)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Operation contract](#operation-contract) · [Troubleshooting](#troubleshooting)
@@ -57,7 +57,7 @@ Canvas project + verified local assets
 |---|---|
 | Plugin ID | `dreamina-canvas` |
 | Host | Codex CLI or ChatGPT desktop app |
-| Current version | `0.1.7` |
+| Current version | `0.2.0` |
 | Plugin manifest | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | MCP configuration | none — the plugin drives the local CLI through Skills |
 | Primary language | Python 3.11+ |
@@ -92,26 +92,31 @@ Canvas project + verified local assets
 | Experimental | Behaviour may change; pin the version and verify |
 | Blocked / NOT_RUN | Not verified; never present it as available |
 
-### Visual-quality loop: planned, not implemented
+### Visual-quality loop: single round implemented and canary-verified
 
-The released core handles drafts, quotes, one approved submission, recovery,
-and verified downloads. It does **not** yet ship target ingestion, a latest
-candidate pointer, automated visual judging, prompt revision, or an automatic
-next round. Those capabilities are specified by the active OpenSpec change
-[`add-canvas-visual-quality-loop`](openspec/changes/add-canvas-visual-quality-loop/proposal.md).
+The visual single-round controller ships in this release: target locking,
+draft → quote → **approval pause** → one submission (submitId persisted
+first, restart reconciles the same identity) → resume-wait → transactional
+download + verification → judge request/receipt file pair → stop at
+`JUDGED` / `REVISION_PROPOSED`. The controller never quotes or submits a
+second round on its own. Host entry: `scripts/visual_loop_cli.py`.
 
 | Evidence layer | Visual-loop status | What it does not prove |
 |---|---|---|
-| OpenSpec plan | Active | A runtime controller or release |
-| Fake CLI test | Not implemented | A real Canvas request or upload |
-| Live CLI read-only probe | Version evidence only | Resource upload, generation, or paid execution |
-| Real target upload | NOT_RUN | Idempotency against a real account |
-| Paid visual-loop canary | NOT_RUN | Production readiness |
+| OpenSpec plan | Implemented (sections 1-10) | Release readiness beyond this RC |
+| Unit/contract tests (307) | Passing | Real-host behaviour |
+| Real target upload canary | **PASS** (2026-09-22) | Multi-round behaviour |
+| Real paid single-round canary | **PASS** (2026-09-22, 1 credit; stopped at `REVISION_PROPOSED`) | Multi-round, other accounts |
+| Windows CI (real runner) | **PASS** | macOS/Windows GUI hosts |
+| Cross-host golden samples (Codex/Claude/ZCode/Kimi) | NOT_RUN | Cross-host judge consistency |
+| Multi-round + prompt-revision auto-apply | Not implemented by design | Anything beyond round 1 |
 
-See the [visual-loop baseline](docs/verification/visual-loop-baseline-2026-09-21.md)
-for the exact checkout, CLI, host, lock, and test facts. A future first round
-will stop after Judge or a revision proposal; it will not automatically submit
-another paid round.
+Specified by the active OpenSpec change
+[`add-canvas-visual-quality-loop`](openspec/changes/add-canvas-visual-quality-loop/proposal.md).
+See the [visual-loop baseline](docs/verification/visual-loop-baseline-2026-09-21.md),
+the [upload canary](docs/verification/visual-loop-upload-canary-2026-09-22.md) and
+the [paid canary](docs/verification/visual-loop-paid-canary-2026-09-22.md) for the
+exact facts.
 
 ## Architecture and core flow
 
@@ -146,7 +151,7 @@ flowchart LR
 
 | Plugin version | Host | CLI | Python | Status |
 |---|---|---|---|---|
-| `0.1.7` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Documentation truthfulness correction only; runtime unchanged from the verified `0.1.7`; visual loop remains planned |
+| `0.2.0` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Visual single-round controller: real paid one-round canary passed (2026-09-22, 1 credit); multi-round and cross-host golden runs pending |
 
 CLI runtime, version, command compatibility, explicitly authorized account authentication, and the separately approved paid canary are recorded as **PASS** in the [runtime evidence](docs/verification/dreamina-canvas-runtime.md).
 
@@ -155,7 +160,7 @@ CLI runtime, version, command compatibility, explicitly authorized account authe
 ### From the plugin marketplace
 
 ```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.1.7
+codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.2.0
 codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 
