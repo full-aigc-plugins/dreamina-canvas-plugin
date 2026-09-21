@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "video_judge_golden/1",
+  "rubricVersion": "vision_judge/1",
+  "temporalGates": ["flicker", "subject_drift", "motion_continuity", "camera_motion", "pacing", "av_sync"],
+  "samples": [
+    {
+      "id": "static-pass-temporal-fail",
+      "staticTotal": 10.0,
+      "temporal": {"flicker": "fail", "subject_drift": "pass", "motion_continuity": "pass", "camera_motion": "pass", "pacing": "pass", "av_sync": "pass"},
+      "expectedOverall": "fail",
+      "note": "Identical frames grade a perfect static score, but flicker alone must fail the video. A judge that passes this is not watching the video."
+    },
+    {
+      "id": "all-clean",
+      "staticTotal": 9.0,
+      "temporal": {"flicker": "pass", "subject_drift": "pass", "motion_continuity": "pass", "camera_motion": "pass", "pacing": "pass", "av_sync": "pass"},
+      "expectedOverall": "pass",
+      "note": "Both dimensions clean is the only passing shape."
+    },
+    {
+      "id": "no-temporal-analyzer",
+      "staticTotal": 9.5,
+      "temporal": {},
+      "expectedOverall": "MANUAL_REVIEW_REQUIRED",
+      "note": "A missing temporal analyzer is a review, never a first-frame proxy."
+    }
+  ],
+  "constraints": {"noRealAccounts": true, "noPaidCalls": true, "noSecrets": true}
+}
