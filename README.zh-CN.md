@@ -110,7 +110,7 @@ Judge 请求/回执文件对 → 停在 `JUDGED` / `REVISION_PROPOSED`。控制�
 | 多轮 + 修订自动应用 | 按设计未实现 | 第 1 轮之外的任何结论 |
 
 能力由活跃 OpenSpec change
-[`add-canvas-visual-quality-loop`](openspec/changes/add-canvas-visual-quality-loop/proposal.md)
+[`add-canvas-visual-quality-loop`](openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md)
 定义。确切事实见[视觉闭环基线](docs/verification/visual-loop-baseline-2026-09-21.md)、
 [上传 Canary](docs/verification/visual-loop-upload-canary-2026-09-22.md) 与
 [付费 Canary](docs/verification/visual-loop-paid-canary-2026-09-22.md)。

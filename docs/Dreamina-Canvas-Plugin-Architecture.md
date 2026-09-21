@@ -76,7 +76,7 @@ The trust boundary is deliberate: everything that touches credentials or money l
 The table separates the stable core from planned work. A future visual-loop
 controller is not implied by the existing adapter, ledger, download receipt,
 or Harness documentation; its implementation and evidence are tracked by
-[`add-canvas-visual-quality-loop`](../openspec/changes/add-canvas-visual-quality-loop/proposal.md).
+[`add-canvas-visual-quality-loop`](../openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md).
 
 ## 5. Principles and decisions
 

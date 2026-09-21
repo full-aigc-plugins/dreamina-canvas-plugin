@@ -112,7 +112,7 @@ second round on its own. Host entry: `scripts/visual_loop_cli.py`.
 | Multi-round + prompt-revision auto-apply | Not implemented by design | Anything beyond round 1 |
 
 Specified by the active OpenSpec change
-[`add-canvas-visual-quality-loop`](openspec/changes/add-canvas-visual-quality-loop/proposal.md).
+[`add-canvas-visual-quality-loop`](openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md).
 See the [visual-loop baseline](docs/verification/visual-loop-baseline-2026-09-21.md),
 the [upload canary](docs/verification/visual-loop-upload-canary-2026-09-22.md) and
 the [paid canary](docs/verification/visual-loop-paid-canary-2026-09-22.md) for the

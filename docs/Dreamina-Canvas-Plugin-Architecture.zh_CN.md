@@ -75,7 +75,7 @@ flowchart LR
 
 该表把稳定核心与计划能力分开。现有适配器、台账、下载回执或 Harness 文档都不代表
 视觉闭环控制器已经存在；其实现和证据由
-[`add-canvas-visual-quality-loop`](../openspec/changes/add-canvas-visual-quality-loop/proposal.md)
+[`add-canvas-visual-quality-loop`](../openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md)
 跟踪。
 
 ## 5. 原则与决策
