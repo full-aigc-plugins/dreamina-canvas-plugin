@@ -42,7 +42,7 @@
 - [x] 5.3 为稳定 `resourceId`、重复调用、超时后查询和已存在资源编写 Fake CLI 场景测试。
 - [x] 5.4 实现 `canvas_reference` 上传流程，只通过 CLI 1.0.0 `resource upload` 并保存已确认的 `res:<uuid>`。
 - [x] 5.5 增加 live CLI schema 探测与能力缓存失效逻辑；schema 与技能契约不一致时暂停而不是猜测。
-- [ ] 5.6 使用临时项目完成一次明确授权的真实资源上传 Canary，验证幂等和回执；未获得授权时保持此任务未完成。
+- [x] 5.6 使用临时项目完成一次明确授权的真实资源上传 Canary，验证幂等和回执；未获得授权时保持此任务未完成。
 
 ## 6. 单轮 VisualLoopController
 
