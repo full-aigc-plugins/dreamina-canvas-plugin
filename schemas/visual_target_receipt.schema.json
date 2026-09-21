@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dreamina-canvas/schemas/visual_target_receipt.schema.json",
+  "title": "VisualTargetReceipt",
+  "description": "Content-bound identity of the locked visual target. Written before any paid stage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "targetId",
+    "version",
+    "sha256",
+    "bytes",
+    "mediaType",
+    "dimensions",
+    "source",
+    "ingestionMode",
+    "lockedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "visual_target_receipt/1"
+    },
+    "targetId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$",
+      "description": "Stable target identity, derived from content or persisted."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mediaType": {
+      "enum": [
+        "image/png",
+        "image/jpeg",
+        "image/webp",
+        "video/mp4",
+        "video/quicktime"
+      ]
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "height"
+      ],
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "source": {
+      "enum": [
+        "user_supplied",
+        "agent_generated"
+      ]
+    },
+    "ingestionMode": {
+      "enum": [
+        "judge_only",
+        "canvas_reference"
+      ]
+    },
+    "resourceId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$",
+      "description": "Present only for canvas_reference; forbidden for judge_only."
+    },
+    "importKind": {
+      "enum": [
+        "local_upload",
+        "external_generated"
+      ]
+    },
+    "lockedAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "ingestionMode": {
+            "const": "judge_only"
+          }
+        },
+        "required": [
+          "ingestionMode"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "resourceId"
+          ]
+        },
+        "$comment": "judge_only targets must never be uploaded or referenced downstream."
+      },
+      "else": {
+        "required": [
+          "resourceId",
+          "importKind"
+        ]
+      }
+    }
+  ]
+}

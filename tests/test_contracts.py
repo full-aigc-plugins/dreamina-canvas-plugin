@@ -16,6 +16,28 @@ import jsonschema
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
 
+EXPECTED_SCHEMAS = frozenset(
+    {
+        # Stable core contracts (released in 0.1.x).
+        "approval_receipt.schema.json",
+        "artifact_receipt.schema.json",
+        "canvas_request.schema.json",
+        "capability_snapshot.schema.json",
+        "command_result.schema.json",
+        "operation_receipt.schema.json",
+        "quote_receipt.schema.json",
+        # Visual-quality-loop contracts (add-canvas-visual-quality-loop, section 3).
+        "judge_receipt.schema.json",
+        "judge_request.schema.json",
+        "loop_budget.schema.json",
+        "prompt_revision_receipt.schema.json",
+        "visual_loop_state.schema.json",
+        "visual_round_receipt.schema.json",
+        "visual_target_receipt.schema.json",
+    }
+)
+
+
 FORBIDDEN_FIELD_NAMES = (
     "access_token",
     "refresh_token",
@@ -42,9 +64,15 @@ def _validator_for(name: str):
 
 
 class ContractTests(unittest.TestCase):
+    def test_schema_inventory_is_explicit(self) -> None:
+        """An exact name set, not a bare count: an unexpected addition or
+        removal must name itself in the failure message."""
+        actual = {p.name for p in SCHEMAS.glob("*.schema.json")}
+        self.assertEqual(actual, EXPECTED_SCHEMAS, sorted(actual ^ EXPECTED_SCHEMAS))
+
     def test_all_contracts_are_closed_and_reject_secrets(self) -> None:
         paths = sorted(SCHEMAS.glob("*.schema.json"))
-        self.assertEqual(len(paths), 7)
+        self.assertTrue(paths)
         for path in paths:
             schema = _load(path.name)
             self.assertIs(

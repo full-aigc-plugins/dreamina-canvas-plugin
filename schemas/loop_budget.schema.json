@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dreamina-canvas/schemas/loop_budget.schema.json",
+  "title": "LoopBudget",
+  "description": "Conservative spend accounting. Reserved is never released by a local timeout alone.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "mode",
+    "maxRounds",
+    "spent",
+    "reserved",
+    "unknown",
+    "stallPolicy"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "loop_budget/1"
+    },
+    "mode": {
+      "enum": [
+        "per_round",
+        "bounded_batch"
+      ]
+    },
+    "maxRounds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "maxTotalCredits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "maxPerRound": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spent": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reserved": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unknown": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deadline": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "stallPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxRoundsWithoutImprovement",
+        "maxRepeatedGaps",
+        "maxReplans"
+      ],
+      "properties": {
+        "maxRoundsWithoutImprovement": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maxRepeatedGaps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maxReplans": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dreamina-canvas/schemas/visual_round_receipt.schema.json",
+  "title": "VisualRoundReceipt",
+  "description": "One generation round: target, node version, quote, submit, artifact and judge linkage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "sessionId",
+    "roundId",
+    "targetId",
+    "nodeId",
+    "mutationVersion",
+    "generationFingerprint",
+    "submitId",
+    "decision",
+    "createdAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "visual_round_receipt/1"
+    },
+    "sessionId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "roundId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "targetId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "nodeId": {
+      "type": "string",
+      "pattern": "^node_[A-Za-z0-9_-]+$"
+    },
+    "mutationVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "generationFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "quoteRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quoteId",
+        "totalMaxCredits",
+        "ceiling"
+      ],
+      "properties": {
+        "quoteId": {
+          "type": "string",
+          "pattern": "^[0-9a-f-]{36}$"
+        },
+        "totalMaxCredits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ceiling": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "approvalRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestFingerprint",
+        "expiry"
+      ],
+      "description": "Non-secret approval metadata only. The approval token is NEVER persisted.",
+      "properties": {
+        "requestFingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "expiry": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        }
+      }
+    },
+    "submitId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resourceId",
+        "sha256",
+        "bytes"
+      ],
+      "properties": {
+        "resourceId": {
+          "type": "string",
+          "pattern": "^[0-9a-f-]{36}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "judgeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "judgeId"
+      ],
+      "properties": {
+        "judgeId": {
+          "type": "string",
+          "pattern": "^[0-9a-f-]{36}$"
+        }
+      }
+    },
+    "decision": {
+      "enum": [
+        "completed",
+        "revision_proposed",
+        "stalled",
+        "paused",
+        "failed"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  }
+}

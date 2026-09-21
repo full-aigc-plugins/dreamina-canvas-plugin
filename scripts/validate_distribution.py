@@ -72,6 +72,32 @@ def png_shape(target: Path) -> tuple[int, int, int]:
     return width, height, data[25]
 
 
+def validate_contracts(root: Path) -> list[str]:
+    """Every contract under schemas/ is part of the distribution surface.
+
+    It must be present, parseable, closed, and self-identifying: a contract
+    that silently stops being closed is a false green for every consumer.
+    """
+    errors: list[str] = []
+    schema_paths = sorted((root / "schemas").glob("*.schema.json"))
+    if not schema_paths:
+        errors.append("missing shipped JSON contracts: schemas/*.schema.json")
+    for schema_path in schema_paths:
+        rel = schema_path.relative_to(root)
+        try:
+            schema = load_json(schema_path)
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            errors.append(f"{rel}: unparseable contract: {exc}")
+            continue
+        if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+            errors.append(f"{rel}: contract must declare the 2020-12 dialect")
+        if not str(schema.get("$id", "")).startswith("dreamina-canvas/schemas/"):
+            errors.append(f"{rel}: contract $id must live under dreamina-canvas/schemas/")
+        if schema.get("additionalProperties") is not False:
+            errors.append(f"{rel}: contract must be closed (additionalProperties: false)")
+    return errors
+
+
 def validate(root: Path) -> list[str]:
     errors: list[str] = []
     manifest_path = root / ".codex-plugin" / "plugin.json"
@@ -121,6 +147,8 @@ def validate(root: Path) -> list[str]:
     for filename in REQUIRED_FILES:
         if not (root / filename).is_file():
             errors.append(f"missing required file: {filename}")
+
+    errors.extend(validate_contracts(root))
 
     # --- portable manifest (canonical) -----------------------------------
     portable_path = root / "plugin.json"

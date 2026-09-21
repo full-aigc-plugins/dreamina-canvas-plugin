@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dreamina-canvas/schemas/prompt_revision_receipt.schema.json",
+  "title": "PromptRevisionReceipt",
+  "description": "Full generation-block replacement. Any unexpected dropped field or reference is refused.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "baseMutationVersion",
+    "baseFingerprint",
+    "resultFingerprint",
+    "judgeReceiptId",
+    "updateId",
+    "changedFields",
+    "result",
+    "createdAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "prompt_revision_receipt/1"
+    },
+    "baseMutationVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "baseFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "resultFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "judgeReceiptId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "updateId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "changedFields": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {
+        "enum": [
+          "mode",
+          "model",
+          "ratio",
+          "resolution",
+          "count",
+          "duration",
+          "prompt",
+          "refs"
+        ]
+      }
+    },
+    "result": {
+      "enum": [
+        "applied",
+        "refused_fidelity",
+        "paused_concurrent_change"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  }
+}

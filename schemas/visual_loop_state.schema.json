@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dreamina-canvas/schemas/visual_loop_state.schema.json",
+  "title": "VisualLoopState",
+  "description": "The only source of execution permission. Never widens budget or retargets on stall.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "state",
+    "currentRound",
+    "pendingOperations",
+    "receiptRefs",
+    "stopRequested",
+    "revisionCount",
+    "updatedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "visual_loop_state/1"
+    },
+    "state": {
+      "enum": [
+        "CREATED",
+        "TARGET_LOCKED",
+        "TARGET_REGISTERED",
+        "DRAFT_SAVED",
+        "QUOTED",
+        "AWAITING_APPROVAL",
+        "SUBMITTED",
+        "WAITING",
+        "ARTIFACT_VERIFIED",
+        "AWAITING_JUDGE",
+        "JUDGED",
+        "REVISION_PROPOSED",
+        "COMPLETED",
+        "PAUSED",
+        "STALLED",
+        "STOP_REQUESTED",
+        "DRAINING_ACCEPTED",
+        "STOPPED",
+        "FAILED"
+      ]
+    },
+    "currentRound": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "bestRound": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "targetId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "pendingOperations": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "submitId",
+          "nodeId"
+        ],
+        "properties": {
+          "submitId": {
+            "type": "string",
+            "pattern": "^[0-9a-f-]{36}$"
+          },
+          "nodeId": {
+            "type": "string",
+            "pattern": "^node_[A-Za-z0-9_-]+$"
+          }
+        }
+      }
+    },
+    "receiptRefs": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "ref"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "target",
+              "round",
+              "judge_request",
+              "judge_receipt",
+              "prompt_revision",
+              "budget"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          }
+        }
+      }
+    },
+    "stopRequested": {
+      "type": "boolean"
+    },
+    "remoteCancelled": {
+      "const": false,
+      "description": "Honest stop semantics: stopping prevents NEW submissions only."
+    },
+    "revisionCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "updatedAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dreamina-canvas/schemas/judge_request.schema.json",
+  "title": "JudgeRequest",
+  "description": "Target/candidate content-bound request sent to a host-neutral Judge adapter.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "requestId",
+    "target",
+    "candidate",
+    "rubricVersion",
+    "freshContext",
+    "forbidPromptDraft",
+    "createdAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "judge_request/1"
+    },
+    "requestId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "targetId",
+        "sha256"
+      ],
+      "properties": {
+        "targetId": {
+          "type": "string",
+          "pattern": "^[0-9a-f-]{36}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resourceId",
+        "sha256",
+        "mediaType"
+      ],
+      "properties": {
+        "resourceId": {
+          "type": "string",
+          "pattern": "^[0-9a-f-]{36}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "mediaType": {
+          "enum": [
+            "image/png",
+            "image/jpeg",
+            "image/webp"
+          ]
+        }
+      }
+    },
+    "rubricVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "freshContext": {
+      "const": true,
+      "description": "Judge must run with no prompt draft, no model history, no prior verdict."
+    },
+    "forbidPromptDraft": {
+      "const": true
+    },
+    "createdAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  }
+}

@@ -17,13 +17,13 @@
 
 ## 3. Schema 与安全回执
 
-- [ ] 3.1 先为 Target、Round、JudgeRequest、JudgeReceipt、Budget、Loop State 和 Prompt Revision 编写 schema 正向/反向测试及 `additionalProperties` 拒绝测试。
-- [ ] 3.2 新增 `VisualTargetReceipt` schema，覆盖内容摘要、媒体元数据、目标版本、导入模式、资源标识和锁定时间。
-- [ ] 3.3 新增 `VisualRoundReceipt` schema，关联目标、节点版本、generation fingerprint、报价、非敏感授权元数据、submitId、产物、Judge 和决策。
-- [ ] 3.4 新增 `JudgeRequest` 与 `JudgeReceipt` schema，强制目标/候选内容绑定、rubric 版本、fresh-context 声明、评分、差距和建议动作。
-- [ ] 3.5 新增 `LoopBudget`、`VisualLoopState` 与 `PromptRevisionReceipt` schema，覆盖费用状态、停止状态、恢复引用、基础版本和完整替换证据。
-- [ ] 3.6 扩展秘密字段和敏感值扫描测试，确保审批 Token、Cookie、签名 URL、Secret、访问密钥及隐藏推理不能写入回执。
-- [ ] 3.7 为所有 schema 添加版本字段和向后兼容策略，并更新分发校验确保 schema 被打包。
+- [x] 3.1 先为 Target、Round、JudgeRequest、JudgeReceipt、Budget、Loop State 和 Prompt Revision 编写 schema 正向/反向测试及 `additionalProperties` 拒绝测试。
+- [x] 3.2 新增 `VisualTargetReceipt` schema，覆盖内容摘要、媒体元数据、目标版本、导入模式、资源标识和锁定时间。
+- [x] 3.3 新增 `VisualRoundReceipt` schema，关联目标、节点版本、generation fingerprint、报价、非敏感授权元数据、submitId、产物、Judge 和决策。
+- [x] 3.4 新增 `JudgeRequest` 与 `JudgeReceipt` schema，强制目标/候选内容绑定、rubric 版本、fresh-context 声明、评分、差距和建议动作。
+- [x] 3.5 新增 `LoopBudget`、`VisualLoopState` 与 `PromptRevisionReceipt` schema，覆盖费用状态、停止状态、恢复引用、基础版本和完整替换证据。
+- [x] 3.6 扩展秘密字段和敏感值扫描测试，确保审批 Token、Cookie、签名 URL、Secret、访问密钥及隐藏推理不能写入回执。
+- [x] 3.7 为所有 schema 添加版本字段和向后兼容策略，并更新分发校验确保 schema 被打包。
 
 ## 4. 状态存储与恢复状态机
 
