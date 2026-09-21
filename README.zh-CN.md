@@ -6,7 +6,7 @@
 
 > 在受支持的编码智能体中构建、报价并运行结构化的 Dreamina 画布——免费步骤与付费步骤严格分离。
 
-[![版本](https://img.shields.io/badge/version-0.1.6-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.6)
+[![版本](https://img.shields.io/badge/version-0.1.7-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.1.7)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [安装](#安装) · [快速开始](#快速开始) · [操作契约](#操作契约) · [故障排查](#故障排查)
@@ -57,7 +57,7 @@
 |---|---|
 | 插件 ID | `dreamina-canvas` |
 | 宿主 | Codex CLI 或 ChatGPT 桌面应用 |
-| 当前版本 | `0.1.6` |
+| 当前版本 | `0.1.7` |
 | 插件清单 | `.codex-plugin/plugin.json`（兼容）与 `plugin.json`（便携） |
 | MCP 配置 | 无——插件通过 Skills 驱动本地 CLI |
 | 主要语言 | Python 3.11+ |
@@ -92,6 +92,25 @@
 | 实验性 | 行为可能调整；请固定版本并自行验证 |
 | 封锁 / NOT_RUN | 未验证；不得描述为可用 |
 
+### 视觉质量闭环：计划中，尚未实现
+
+已发布的核心能力只覆盖草稿、报价、一次已批准提交、续查和已校验下载；当前**尚未**
+交付目标素材导入、最新候选指针、自动视觉 Judge、Prompt Revision 或自动下一轮。
+这些能力由正在进行的 OpenSpec change
+[`add-canvas-visual-quality-loop`](openspec/changes/add-canvas-visual-quality-loop/proposal.md)
+定义。
+
+| 证据层级 | 视觉闭环状态 | 不能证明什么 |
+|---|---|---|
+| OpenSpec 计划 | 进行中 | 运行时控制器或发布版本 |
+| Fake CLI 测试 | 尚未实现 | 真实 Canvas 请求或上传 |
+| 真实 CLI 只读探测 | 仅版本证据 | 素材上传、生成或付费执行 |
+| 真实目标上传 | NOT_RUN | 真实账户上的幂等性 |
+| 付费视觉闭环 Canary | NOT_RUN | 生产就绪 |
+
+确切的仓库、CLI、宿主、锁文件和测试事实见[视觉闭环基线](docs/verification/visual-loop-baseline-2026-09-21.md)。
+未来第一轮会在 Judge 或修订提案后暂停，不会自动提交另一轮付费请求。
+
 ## 架构与核心流程
 
 ```mermaid
@@ -125,7 +144,7 @@ flowchart LR
 
 | 插件版本 | 宿主 | CLI | Python | 状态 |
 |---|---|---|---|---|
-| `0.1.6` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 已验证 |
+| `0.1.7` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 仅文档真伪更正；运行时与已验证的 `0.1.7` 一致；视觉闭环仍为计划能力 |
 
 CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以及单独批准的付费金丝雀，均在[运行期证据](docs/verification/dreamina-canvas-runtime.md)中记录为 **PASS**。
 
@@ -134,7 +153,7 @@ CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以�
 ### 从插件市场安装
 
 ```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.1.6
+codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.1.7
 codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 

@@ -4,8 +4,8 @@
 >
 > | 字段 | 值 |
 > |---|---|
-> | 状态 | 已实现，以 `0.1.2` 发布 |
-> | 范围 | 本仓库中的 Codex 插件：CLI 适配器、各类守卫、台账与 Skills |
+> | 状态 | 核心契约已实现，以 `0.1.7` 发布；视觉质量闭环计划中，尚未实现 |
+> | 范围 | 本跨宿主插件的 CLI 适配器、各类守卫、台账、Skills 与计划中的视觉闭环扩展 |
 > | 读者 | 插件维护者、安全审阅者与集成工程师 |
 > | 不在范围 | Dreamina Canvas 服务本身、CLI 内部实现与上游 Skill 库 |
 > | 运行证据 | `docs/verification/` |
@@ -71,8 +71,12 @@ flowchart LR
 | 产物校验 | 字节数与 SHA-256 | 不变 | 无 |
 | 成本估算 | 委托给 CLI 的报价 | 相同 | 本仓库绝不自行估算成本 |
 | 凭据处理 | 不拥有 | 不拥有 | 有意缺失 |
+| 视觉目标与质量闭环 | 尚未实现 | 目标锁定、单轮控制器、JudgePort、修订和有界策略 | 活跃 change `add-canvas-visual-quality-loop` |
 
-没有"部分实现"的能力：每一行要么由本仓库拥有并交付，要么被明确委托。这条区分就是本文档的诚实契约。
+该表把稳定核心与计划能力分开。现有适配器、台账、下载回执或 Harness 文档都不代表
+视觉闭环控制器已经存在；其实现和证据由
+[`add-canvas-visual-quality-loop`](../openspec/changes/add-canvas-visual-quality-loop/proposal.md)
+跟踪。
 
 ## 5. 原则与决策
 
@@ -94,6 +98,7 @@ flowchart LR
 | 操作台账 | 非敏感标识、请求指纹、最后已知状态 | 远端状态 |
 | 恢复循环 | 有界轮询、终态、可恢复性 | 重新提交 |
 | 下载器 | 已批准的目标位置、校验和、媒体回执 | 远端对象生命周期 |
+| 视觉闭环控制器 | 计划中的目标/轮次状态、Judge 请求和预算策略 | 当前已发布运行路径 |
 
 依赖方向是单向的：Skills 调用守卫，守卫调用适配器，适配器调用 CLI。没有组件反向调用，也没有组件直接访问远端 API。
 
@@ -188,7 +193,7 @@ stateDiagram-v2
 
 | 方面 | 立场 |
 |---|---|
-| 分发 | 指向本仓库、固定到不可变 `v0.1.6` 的跨宿主 marketplace 条目 |
+| 分发 | 指向本仓库、固定到不可变 `v0.1.7` 的跨宿主 marketplace 条目 |
 | 清单 | `.codex-plugin/plugin.json`（兼容）与 `plugin.json`（便携） |
 | Python | CI 矩阵覆盖 3.11、3.12 与 3.13 |
 | 上游 Skill | 由 `upstream/dreamina-skills.lock.json` 按提交固定并逐字节校验 |
@@ -212,3 +217,4 @@ stateDiagram-v2
 | 与上游的 Skill 一致性 | `scripts/verify_dreamina_canvas_skills.py` 的输出 |
 | 运行期行为 | `docs/verification/dreamina-canvas-runtime.md` |
 | 真实环境验收 | `docs/verification/real-environment-acceptance-2026-09-13.md` |
+| 视觉闭环计划与基线 | `openspec/changes/add-canvas-visual-quality-loop/` 与 `docs/verification/visual-loop-baseline-2026-09-21.md` |

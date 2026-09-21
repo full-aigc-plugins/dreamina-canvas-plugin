@@ -9,20 +9,20 @@
       "source": {
         "source": "url",
         "url": "https://github.com/full-aigc-plugins/dreamina-canvas-plugin.git",
-        "ref": "v0.1.6"
+        "ref": "v0.1.7"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Creativity",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
-      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.1.6/assets/official-logo.png",
+      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.1.7/assets/official-logo.png",
       "interface": {
         "displayName": "Dreamina Canvas",
         "shortDescription": "Build and run structured Dreamina canvases",
-        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.1.6/assets/official-logo.png"
+        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.1.7/assets/official-logo.png"
       }
     }
   ]

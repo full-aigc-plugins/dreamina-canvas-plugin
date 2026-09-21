@@ -4,8 +4,8 @@
 >
 > | Field | Value |
 > |---|---|
-> | Status | Implemented and released as `0.1.2` |
-> | Scope | The cross-host plugin in this repository: the CLI adapter, guards, ledger, and Skills |
+> | Status | Core contract implemented and released as `0.1.7`; visual-quality loop planned, not implemented |
+> | Scope | The cross-host plugin's CLI adapter, guards, ledger, Skills, and the planned visual-loop extension |
 > | Audience | Plugin maintainers, security reviewers, and integration engineers |
 > | Out of scope | The Dreamina Canvas service itself, the CLI's internals, and the upstream Skill library |
 > | Runtime evidence | `docs/verification/` |
@@ -71,8 +71,12 @@ The trust boundary is deliberate: everything that touches credentials or money l
 | Artifact verification | Byte count and SHA-256 | Unchanged | None |
 | Cost estimation | Delegated to the CLI's quote | Same | This repository never estimates cost itself |
 | Credential handling | Not owned | Not owned | Intentionally absent |
+| Visual target and quality loop | Not implemented | Locked target, single-round controller, JudgePort, revision and bounded policy | Active change `add-canvas-visual-quality-loop` |
 
-No capability is partially implemented: each row is either owned and delivered here, or explicitly delegated. That distinction is the honesty contract of this document.
+The table separates the stable core from planned work. A future visual-loop
+controller is not implied by the existing adapter, ledger, download receipt,
+or Harness documentation; its implementation and evidence are tracked by
+[`add-canvas-visual-quality-loop`](../openspec/changes/add-canvas-visual-quality-loop/proposal.md).
 
 ## 5. Principles and decisions
 
@@ -94,6 +98,7 @@ No capability is partially implemented: each row is either owned and delivered h
 | operation ledger | non-secret IDs, request fingerprint, last known state | Remote state |
 | recovery loop | bounded polling, terminal states, resumability | Resubmission |
 | downloader | approved destination, checksum, media receipt | Remote object lifetime |
+| visual-loop controller | Planned target/round state, Judge requests and budget policy | Current released runtime path |
 
 Dependency direction is one-way: Skills call guards, guards call the adapter, the adapter calls the CLI. No component reaches back up the chain, and no component calls the remote API directly.
 
@@ -188,7 +193,7 @@ Operations are executable rather than aspirational: `python -m unittest discover
 
 | Aspect | Position |
 |---|---|
-| Distribution | Cross-host marketplace entry pointing at this repository, pinned to immutable `v0.1.6` |
+| Distribution | Cross-host marketplace entry pointing at this repository, pinned to immutable `v0.1.7` |
 | Manifests | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | Python | 3.11, 3.12, and 3.13 in the CI matrix |
 | Upstream Skills | Pinned by commit in `upstream/dreamina-skills.lock.json` and byte-verified |
@@ -212,3 +217,4 @@ Risks and their mitigations:
 | Skill parity with upstream | `scripts/verify_dreamina_canvas_skills.py` output |
 | Runtime behavior | `docs/verification/dreamina-canvas-runtime.md` |
 | Real-environment acceptance | `docs/verification/real-environment-acceptance-2026-09-13.md` |
+| Visual-loop planning and baseline | `openspec/changes/add-canvas-visual-quality-loop/` and `docs/verification/visual-loop-baseline-2026-09-21.md` |
