@@ -49,6 +49,14 @@ UNEVIDENCED_FORMS = frozenset({"uri:", "vid:", "file://"})
 _TARGET_NAMESPACE = uuid.UUID("6f1d4b7a-6c2b-5f4e-9d38-2a0c9b7e5d41")
 
 
+def _outcome_data(outcome: Any) -> dict:
+    """Extract `data` from either our CommandOutcome or the adapter's CommandResult."""
+    payload = getattr(outcome, "payload", None)
+    if isinstance(payload, dict):
+        return payload.get("data") or {}
+    return {}
+
+
 class TargetError(Exception):
     """The target cannot be used as requested."""
 
@@ -380,15 +388,13 @@ class ResourceUploader:
 
     MAX_RECONCILE_ROUNDS = 2
 
-    def __init__(self, *, runner: Runner, store: TargetStore, project_id: str,
-                 binary: str = "dreamina-canvas") -> None:
+    def __init__(self, *, runner: Runner, store: TargetStore, project_id: str) -> None:
         self.runner = runner
         self.store = store
         self.project_id = project_id
-        self.binary = binary
 
     def _argv(self, *args: str) -> list[str]:
-        return [self.binary, "--format", "json", *args]
+        return ["--format", "json", *args]
 
     def _upload_argv(self, *, path: Path, resource_id: str, import_kind: str) -> list[str]:
         return self._argv("resource", "upload", "--file", str(path),
@@ -504,8 +510,7 @@ class CapabilityProbe:
         if self._snapshot is not None and not force:
             return self._snapshot
         outcome = self.runner(["--format", "json", "schema"])
-        # CommandResult (the adapter's return type) exposes exit_code, not ok().
-        data = outcome.data() if outcome.exit_code == 0 else {}
+        data = _outcome_data(outcome)
         if outcome.exit_code != 0 or not data:
             error_code = str((outcome.error or {}).get("code") or "no error code")
             raise CapabilityError(
