@@ -12,7 +12,7 @@
 - [x] 2.2 更新上游 Canvas CLI/图像/视频/下载相关技能，准确描述 `resource upload`、`res:<uuid>`、资源导入以及 `uri:`/`vid:` 的当前运行时边界。
 - [x] 2.3 增加 live-schema 兼容检查，证明受管技能声明与 `dreamina-canvas 1.0.0 schema` 一致；不执行上传或付费写入。
 - [x] 2.4 运行上游 TRACE、链接、技能结构和相关回归测试，修复契约或交叉 Skill 引用问题。
-- [ ] 2.5 bump 上游技能版本，提交并推送不可变 tag，等待远端 CI 和 release 资产验证；在完成前不得修改 Canvas 锁文件。
+- [x] 2.5 bump 上游技能版本，提交并推送不可变 tag，等待远端 CI 和 release 资产验证；在完成前不得修改 Canvas 锁文件。
 - [x] 2.6 使用正式 tag、peeled SHA 和内容摘要更新 Canvas `skills.lock.json` 及受管技能，并运行离线/在线完整性验证，禁止手改 vendored 文件。
 
 ## 3. Schema 与安全回执
