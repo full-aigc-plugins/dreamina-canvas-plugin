@@ -5,15 +5,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from approval_guard import (  # noqa: E402
+from approval_guard import (
     Approval,
-    Decision,
     Quote,
     RunRequest,
     check_approval,
     mark_used,
 )
-
 
 PROJECT = "proj_00112233445566778899aabbccddeeff"
 NODE_A = "node_aaaaaaaaaaaa"

@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import error_router as router  # noqa: E402
+import error_router as router
 
 
 class ErrorRouterTests(unittest.TestCase):

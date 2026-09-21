@@ -198,7 +198,7 @@ class SingleRoundTests(ControllerCase):
         self.assertEqual(result.required_action, "judge")
 
     def test_low_score_produces_a_revision_proposal_and_stops(self) -> None:
-        controller, parts = self.controller()
+        controller, _parts = self.controller()
         results = self.drive(controller, approve_after=1, judge_after=1)
         final = results[-1]
         # The scripted judge gives 9.0; re-run with a failing verdict instead.
@@ -270,7 +270,7 @@ class PauseAndBudgetTests(ControllerCase):
 
 class StopSemanticsTests(ControllerCase):
     def test_stop_before_submission_goes_straight_to_stopped(self) -> None:
-        controller, parts = self.controller()
+        controller, _parts = self.controller()
         controller.run_until_pause()
         state = controller.request_stop()
         self.assertEqual(state.state, "STOPPED")

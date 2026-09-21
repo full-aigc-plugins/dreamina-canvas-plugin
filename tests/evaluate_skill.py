@@ -12,8 +12,8 @@ mirrors the documented routing rules of each Canvas Skill.
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures" / "cli"
@@ -27,7 +27,7 @@ class Plan(list):
         self.notes: list[str] = []
 
     @property
-    def commands(self) -> "Plan":
+    def commands(self) -> Plan:
         # alias for readability
         return self
 

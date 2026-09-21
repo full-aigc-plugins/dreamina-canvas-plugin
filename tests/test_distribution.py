@@ -64,7 +64,7 @@ class DistributionTests(unittest.TestCase):
         self.assertNotIn("remain unimplemented", plan)
 
     def test_validator_accepts_distribution(self) -> None:
-        result = subprocess.run([sys.executable, str(ROOT / "scripts/validate_distribution.py"), str(ROOT)], capture_output=True, text=True)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts/validate_distribution.py"), str(ROOT)], capture_output=True, text=True, check=False)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_manifest_and_marketplace(self) -> None:

@@ -4,17 +4,15 @@ from __future__ import annotations
 
 import json
 import shutil
-import struct
 import subprocess
 import sys
 import tempfile
 import unittest
-import zlib
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-import video_judge as vj  # noqa: E402
+import video_judge as vj
 
 GOLDEN = Path(__file__).resolve().parents[1] / "tests/fixtures/judge/golden"
 

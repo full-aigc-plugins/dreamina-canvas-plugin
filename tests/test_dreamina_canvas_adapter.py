@@ -17,7 +17,7 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import dreamina_canvas_adapter as adapter  # noqa: E402
+import dreamina_canvas_adapter as adapter
 
 
 class FakeProc:
@@ -127,12 +127,8 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(result.payload["data"], {"v": 1})
 
     def test_timeout_propagates(self) -> None:
-        with mock.patch.object(
-            subprocess,
-            "run",
-            lambda *a, **kw: (_ for _ in ()).throw(subprocess.TimeoutExpired(cmd="x", timeout=1)),
-        ):
-            with self.assertRaises(subprocess.TimeoutExpired):
+        with mock.patch.object(subprocess, "run", lambda *a, **kw: (_ for _ in ()).throw(subprocess.TimeoutExpired(cmd="x", timeout=1))), \
+                self.assertRaises(subprocess.TimeoutExpired):
                 adapter.run_dreamina_canvas(["version"], timeout_seconds=1)
 
     def test_output_size_limit_caps_strings(self) -> None:

@@ -21,10 +21,9 @@ cli = importlib.import_module("visual_loop_cli")
 
 
 def _minimal_png(*, seed: bytes = b"0") -> bytes:
-    import struct, zlib
     from test_target_store import png_bytes
     return png_bytes(seed=seed)
-from test_judge_exchange import receipt, SESSION, TARGET, SHA_T, CANDIDATE, SHA_C
+from test_judge_exchange import CANDIDATE, SESSION, SHA_C, receipt
 
 
 class CliCase(unittest.TestCase):
@@ -39,7 +38,8 @@ class CliCase(unittest.TestCase):
         self.addCleanup(self._tmp.cleanup)
 
     def run_cli(self, *argv: str) -> tuple[int, str]:
-        import io, contextlib
+        import contextlib
+        import io
         buf = io.StringIO()
         try:
             with contextlib.redirect_stdout(buf):
@@ -61,7 +61,7 @@ class CliCase(unittest.TestCase):
     def test_relock_on_changed_content_is_refused(self) -> None:
         self.run_cli("lock-target", *self.base, str(self.png))
         self.png.write_bytes(_minimal_png(seed=b"1"))
-        code, out = self.run_cli("lock-target", *self.base, str(self.png))
+        code, _out = self.run_cli("lock-target", *self.base, str(self.png))
         self.assertEqual(code, 1)
 
     def test_request_and_import_judge_round_trip(self) -> None:
@@ -89,7 +89,7 @@ class CliCase(unittest.TestCase):
 
     def test_stop_before_submission_is_terminal_and_honest(self) -> None:
         self.run_cli("lock-target", *self.base, str(self.png))
-        code, out = self.run_cli("stop", *self.base)
+        _code, out = self.run_cli("stop", *self.base)
         state = json.loads(out)
         self.assertEqual(state["state"], "STOPPED")
         self.assertFalse(state["remoteCancelled"])

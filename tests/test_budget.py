@@ -67,7 +67,7 @@ class PolicyTests(unittest.TestCase):
     """9.2 / 9.3 — bounded batch caps, vendor approval stays authoritative."""
 
     def policy(self, **over) -> bg.BoundedBatchPolicy:
-        defaults = dict(max_rounds=2, max_total_credits=100, max_per_round=50)
+        defaults = {"max_rounds": 2, "max_total_credits": 100, "max_per_round": 50}
         defaults.update(over)
         return bg.BoundedBatchPolicy(**defaults)
 

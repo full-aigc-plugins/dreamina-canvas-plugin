@@ -104,9 +104,8 @@ class StateMachineTests(unittest.TestCase):
 
     def test_unknown_state_names_are_rejected(self) -> None:
         for bogus in ("RUNNING", "done", "TARGET_LOCKED "):
-            with self.subTest(state=bogus):
-                with self.assertRaises(ls.IllegalTransition):
-                    ls.advance(make_state(), bogus)
+            with self.subTest(state=bogus), self.assertRaises(ls.IllegalTransition):
+                ls.advance(make_state(), bogus)
 
     def test_terminal_states_have_no_successors(self) -> None:
         for terminal in ("COMPLETED", "STOPPED", "FAILED"):
@@ -149,9 +148,8 @@ class StoreTests(unittest.TestCase):
 
     def test_session_id_must_be_a_canonical_uuid(self) -> None:
         for bogus in ("not-a-uuid", SESSION.upper(), "", "../escape"):
-            with self.subTest(session=bogus):
-                with self.assertRaises(ls.StateStoreError):
-                    ls.LoopStateStore(root=self.approved / ".loop", session_id=bogus)
+            with self.subTest(session=bogus), self.assertRaises(ls.StateStoreError):
+                ls.LoopStateStore(root=self.approved / ".loop", session_id=bogus)
 
     def test_round_trip_persists_and_reloads(self) -> None:
         state = make_state(state="QUOTED", current_round=1)
@@ -159,7 +157,6 @@ class StoreTests(unittest.TestCase):
         self.assertEqual(self.store.read(), state)
 
     def test_state_file_is_private(self) -> None:
-        import unittest as _u
         if os.name == "nt":
             # NTFS has no POSIX mode bits; chmod(0o600) maps to a read-only
             # attribute there. The invariant is POSIX-scoped by definition.
@@ -271,9 +268,8 @@ class StoreTests(unittest.TestCase):
 
     def test_traversal_is_rejected(self) -> None:
         for bogus in ("../escape.json", "rounds/../../escape", "/etc/passwd"):
-            with self.subTest(path=bogus):
-                with self.assertRaises(ls.StateStoreError):
-                    ls.normalize_relative(bogus)
+            with self.subTest(path=bogus), self.assertRaises(ls.StateStoreError):
+                ls.normalize_relative(bogus)
 
 
 class ContractAlignmentTests(unittest.TestCase):

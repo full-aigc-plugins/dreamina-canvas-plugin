@@ -1,6 +1,6 @@
 import json
-import sys
 import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from operation_ledger import (  # noqa: E402
+from operation_ledger import (
     OperationReceipt,
     RecoveryDecision,
     decide,
@@ -37,7 +37,7 @@ class OperationLedgerTests(unittest.TestCase):
         self.assertEqual(action, RecoveryDecision.RESUME)
 
     def test_empty_submit_id_rejected(self) -> None:
-        action, reason = decide(r(submit=""), "")
+        action, _reason = decide(r(submit=""), "")
         self.assertEqual(action, RecoveryDecision.REJECT_EMPTY_SUBMIT_ID)
 
     def test_in_progress_continues(self) -> None:
@@ -79,9 +79,8 @@ class OperationLedgerTests(unittest.TestCase):
     def test_persist_rejects_forbidden_fields(self) -> None:
         bad = r()
         bad.extra["creditConfirmationToken"] = "secret"
-        with tempfile.TemporaryDirectory() as td:
-            with self.assertRaises(ValueError):
-                persist(bad, Path(td), "default/cn")
+        with tempfile.TemporaryDirectory() as td, self.assertRaises(ValueError):
+            persist(bad, Path(td), "default/cn")
 
 
 if __name__ == "__main__":

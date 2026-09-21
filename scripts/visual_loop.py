@@ -351,7 +351,9 @@ class VisualLoopController:
         try:
             submission = self.execution.submit(node_id=node_id, submit_id=submit_id,
                                                credit_token=guarantee)
-        except Exception:  # transport failure: keep the identity, ask to resume
+        except Exception:  # noqa: BLE001 - deliberate pause boundary: any port
+            # failure (transport, auth, probe) must keep the persisted
+            # identity and park the round for resume, never crash mid-round.
             return self._result(state, node_id=node_id, submit_id=submit_id,
                                 required_action="resume", paused=True)
         if submission.state == "rejected":

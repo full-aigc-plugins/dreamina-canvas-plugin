@@ -15,7 +15,7 @@ INTENT_RE = re.compile(
 def main() -> int:
     try:
         payload = json.load(sys.stdin)
-    except Exception:
+    except (ValueError, UnicodeDecodeError, OSError):
         payload = {}
     prompt = str(payload.get("prompt") or "") if isinstance(payload, dict) else ""
     if prompt.strip().startswith("/"):

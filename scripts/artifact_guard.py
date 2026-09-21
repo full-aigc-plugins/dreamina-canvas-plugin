@@ -12,10 +12,8 @@ Verifies that a downloaded file matches the post-write response:
 from __future__ import annotations
 
 import hashlib
-import re
 from dataclasses import dataclass
 from pathlib import Path
-
 
 SECRET_FIELD_NAMES = (
     "signedUrl",
@@ -54,11 +52,11 @@ def hash_file(path: Path) -> str:
 
 
 def _ensure_no_secret_fields(payload: dict) -> ArtifactDecision:
-    for key in payload.keys():
+    for key in payload:
         if key in SECRET_FIELD_NAMES:
             return ArtifactDecision(False, f"forbidden field {key!r} in payload")
     nested = payload.get("media") or {}
-    for key in nested.keys():
+    for key in nested:
         if key in SECRET_FIELD_NAMES:
             return ArtifactDecision(False, f"forbidden field media.{key} in payload")
     return ArtifactDecision(True)

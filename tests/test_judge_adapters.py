@@ -106,9 +106,8 @@ class RequestHygieneTests(unittest.TestCase):
         for key in ("history", "priorVerdicts", "modelHistory"):
             polluted = dict(request)
             polluted[key] = [{"round": 1, "score": 5}]
-            with self.subTest(key=key):
-                with self.assertRaises(ja.JudgeRequestError):
-                    ja.assert_request_hygiene(polluted)
+            with self.subTest(key=key), self.assertRaises(ja.JudgeRequestError):
+                ja.assert_request_hygiene(polluted)
 
     def test_unasserted_fresh_context_is_refused(self) -> None:
         request = ja.build_judge_request(target_id="t", target_sha256="a" * 64,

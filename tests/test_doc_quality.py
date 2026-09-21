@@ -61,9 +61,9 @@ class DocQualityGateTests(unittest.TestCase):
         for path in ALL_DOCS:
             text = read(path)
             self.assertEqual(
-                len(re.findall(r"^# ", text, re.M)), 1, f"{path.name}: H1 count"
+                len(re.findall(r"^# ", text, re.MULTILINE)), 1, f"{path.name}: H1 count"
             )
-            fences = re.findall(r"^```(\w*)", text, re.M)
+            fences = re.findall(r"^```(\w*)", text, re.MULTILINE)
             self.assertEqual(len(fences) % 2, 0, f"{path.name}: unbalanced fences")
             untagged = [f for f in fences[0::2] if not f]
             self.assertEqual(untagged, [], f"{path.name}: untagged fences")
@@ -109,7 +109,7 @@ class DocQualityGateTests(unittest.TestCase):
 
     def test_gate8_mermaid_covers_context_and_state(self) -> None:
         joined = "\n".join(read(p) for p in ARCHITECTURE)
-        blocks = re.findall(r"```mermaid(.*?)```", joined, re.S)
+        blocks = re.findall(r"```mermaid(.*?)```", joined, re.DOTALL)
         self.assertTrue(blocks, "no mermaid blocks in the architecture pair")
         self.assertTrue(
             any("flowchart" in b or "graph " in b for b in blocks),

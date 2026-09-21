@@ -22,7 +22,7 @@ def main() -> int:
 
     try:
         sys.stdin.read()
-    except Exception:
+    except (ValueError, UnicodeDecodeError, OSError):
         pass
     print("即梦画布插件环境：" + "；".join(lines))
     return 0
@@ -31,6 +31,6 @@ def main() -> int:
 if __name__ == "__main__":
     try:
         json.load(sys.stdin)
-    except Exception:
+    except (ValueError, UnicodeDecodeError, OSError):
         pass
     sys.exit(main())

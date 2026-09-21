@@ -148,16 +148,14 @@ class VisualContractTests(unittest.TestCase):
 
     def test_every_new_contract_rejects_an_unknown_field(self) -> None:
         for name, make in POSITIVE.items():
-            with self.subTest(schema=name):
-                with self.assertRaises(jsonschema.ValidationError):
-                    _validator_for(name).validate(make(rogueField="x"))
+            with self.subTest(schema=name), self.assertRaises(jsonschema.ValidationError):
+                _validator_for(name).validate(make(rogueField="x"))
 
     def test_every_new_contract_rejects_secret_shaped_fields(self) -> None:
         for name, make in POSITIVE.items():
             for secret in SECRET_FIELD_NAMES:
-                with self.subTest(schema=name, field=secret):
-                    with self.assertRaises(jsonschema.ValidationError):
-                        _validator_for(name).validate(make(**{secret: "leaked"}))
+                with self.subTest(schema=name, field=secret), self.assertRaises(jsonschema.ValidationError):
+                    _validator_for(name).validate(make(**{secret: "leaked"}))
 
     def test_no_secret_name_is_declared_by_any_new_contract(self) -> None:
         """Scan declared property NAMES, not prose: a description may legitimately
@@ -228,10 +226,9 @@ class VisualContractTests(unittest.TestCase):
         v = _validator_for("visual_round_receipt.schema.json")
         for leaked in ({"token": "x"}, {"creditConfirmationToken": "x"},
                        {"signedUrl": "https://x"}):
-            with self.subTest(leaked=leaked):
-                with self.assertRaises(jsonschema.ValidationError):
-                    v.validate(round_receipt(
-                        approvalRef={"requestFingerprint": SHA, "expiry": UTC, **leaked}))
+            with self.subTest(leaked=leaked), self.assertRaises(jsonschema.ValidationError):
+                v.validate(round_receipt(
+                    approvalRef={"requestFingerprint": SHA, "expiry": UTC, **leaked}))
 
     def test_round_receipt_rejects_unknown_decision(self) -> None:
         v = _validator_for("visual_round_receipt.schema.json")
@@ -298,9 +295,8 @@ class VisualContractTests(unittest.TestCase):
         v = _validator_for("loop_budget.schema.json")
         v.validate(loop_budget())
         for field in ("spent", "reserved", "unknown"):
-            with self.subTest(field=field):
-                with self.assertRaises(jsonschema.ValidationError):
-                    v.validate(loop_budget(**{field: -1}))
+            with self.subTest(field=field), self.assertRaises(jsonschema.ValidationError):
+                v.validate(loop_budget(**{field: -1}))
 
     def test_loop_budget_requires_a_stall_policy(self) -> None:
         v = _validator_for("loop_budget.schema.json")
@@ -319,9 +315,8 @@ class VisualContractTests(unittest.TestCase):
             with self.subTest(state=state):
                 v.validate(loop_state(state=state))
         for bogus in ("RUNNING", "done", "TARGET_LOCKED "):
-            with self.subTest(state=bogus):
-                with self.assertRaises(jsonschema.ValidationError):
-                    v.validate(loop_state(state=bogus))
+            with self.subTest(state=bogus), self.assertRaises(jsonschema.ValidationError):
+                v.validate(loop_state(state=bogus))
 
     def test_loop_state_cannot_claim_a_remote_cancel(self) -> None:
         """Stopping prevents NEW submissions; it is never a vendor cancel."""

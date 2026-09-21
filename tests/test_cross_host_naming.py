@@ -1,8 +1,7 @@
 """Protect cross-host public identity from obsolete Codex product prefixes."""
 
-from pathlib import Path
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BANNED_PUBLIC_NAMES = (

@@ -43,6 +43,7 @@ CHANGEABLE_FIELDS = frozenset({"prompt", "refs"})
 BLOCK_MODES = ("t2i", "i2i")
 VIDEO_MODES = ("t2v", "first_last_frame", "m2v")
 import re as _re
+
 _REF_RE = _re.compile(r"^(?:node:[A-Za-z0-9_-]+|res:[0-9a-f-]{36})$")
 
 

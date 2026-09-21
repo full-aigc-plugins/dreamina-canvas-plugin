@@ -11,7 +11,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "vendor" / "skill_vendor.py"
 GIT_ENV = {
@@ -85,6 +84,7 @@ def vendor(command: str, consumer: Path, *extra: str) -> subprocess.CompletedPro
         cwd=consumer,
         capture_output=True,
         text=True,
+        check=False,
     )
 
 

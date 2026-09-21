@@ -208,11 +208,10 @@ class TargetLockTests(unittest.TestCase):
         receipt = self.store.lock(self.write("t.png", png_bytes()),
                                   mode="canvas_reference", source="user_supplied")
         for bogus in (RESOURCE.upper(), "res:" + RESOURCE, "not-a-uuid"):
-            with self.subTest(resource=bogus):
-                with self.assertRaises(ts.TargetError):
-                    self.store.register_canvas_reference(
-                        receipt, resource_id=bogus, import_kind="local_upload",
-                        upload_evidence="c" * 64)
+            with self.subTest(resource=bogus), self.assertRaises(ts.TargetError):
+                self.store.register_canvas_reference(
+                    receipt, resource_id=bogus, import_kind="local_upload",
+                    upload_evidence="c" * 64)
 
 
 class UploadTests(unittest.TestCase):

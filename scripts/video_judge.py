@@ -102,7 +102,7 @@ class FFmpegFrameSampler:
             [ffprobe, "-v", "error", "-select_streams", "v:0",
              "-show_entries", "stream=avg_frame_rate,duration",
              "-of", "json", str(video_path)],
-            capture_output=True, text=True, timeout=60)
+            capture_output=True, text=True, timeout=60, check=False)
         if result.returncode != 0:
             raise VideoJudgeError(f"ffprobe failed: {result.stderr.strip()[:200]}")
         stream = (json.loads(result.stdout).get("streams") or [{}])[0]

@@ -126,7 +126,7 @@ class CliExecution:
     def submit(self, *, node_id: str, submit_id: str, credit_token: str) -> Submission:
         # Ledger first: the identity exists outside the process before the call.
         fingerprint = hashlib.sha256(
-            "|".join((self.project_id, node_id, submit_id)).encode("utf-8")).hexdigest()
+            f"{self.project_id}|{node_id}|{submit_id}".encode()).hexdigest()
         persist(OperationReceipt(
             project_id=self.project_id, node_id=node_id, submit_id=submit_id,
             last_known_state="in_progress", resubmittable=False,
