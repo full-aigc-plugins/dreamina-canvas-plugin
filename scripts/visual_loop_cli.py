@@ -109,6 +109,12 @@ def cmd_step(args: argparse.Namespace) -> int:
         print(json.dumps({"ok": False,
                           "error": "lock a target first (lock-target)"}))
         return 1
+    if not args.prompt.strip():
+        # The service rejects an empty prompt (params.prompt FIELD_VALUE_INVALID,
+        # host-acceptance canary 2026-09-22); fail before any draft is saved.
+        print(json.dumps({"ok": False,
+                          "error": "--prompt is required (the service rejects empty prompts)"}))
+        return 1
     target_receipt = json.loads(
         (store.session_dir / str(target_ref["ref"])).read_text(encoding="utf-8"))
     target = {"ingestionMode": target_receipt["ingestionMode"],
@@ -123,8 +129,7 @@ def cmd_step(args: argparse.Namespace) -> int:
         f"{args.session_id}|{state.current_round}".encode()).hexdigest()
     controller = VisualLoopController(
         store=store, target=target,
-        runtime=CliCanvasRuntime(project_id=args.project_id, probe=None) if False
-        else _runtime(args),
+        runtime=_runtime(args),
         approval=_EnvApproval(ceiling=args.approve_credit_ceiling,
                               token_env=args.credit_token_env,
                               fingerprint=fingerprint),
