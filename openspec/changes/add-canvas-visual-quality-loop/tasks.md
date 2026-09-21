@@ -104,6 +104,6 @@
 - [x] 11.5 为新功能 bump 到不可变 RC 版本，确保 catalog、四端 manifest、Codex 构建后缀和发布包版本全链一致。
 - [x] 11.6 提交并推送 Canvas tag，等待远端 CI，通过后核对 GitHub Release 资产、checksum 和 tag commit。
 - [x] 11.7 更新 `full-aigc-plugins` 市场 catalog，使用生成脚本同步 Codex/ZCode/Kimi 清单并提交推送，禁止手改生成产物。
-- [ ] 11.8 清理各宿主旧缓存，从市场重新安装 RC，在 Codex、Claude Code、ZCode、Kimi 复跑 JudgePort 与单轮非付费验收。
+- [x] 11.8 清理各宿主旧缓存，从市场重新安装 RC，在 Codex、Claude Code、ZCode、Kimi 复跑 JudgePort 与单轮非付费验收。
 - [x] 11.9 对照 OpenSpec requirements、任务、测试和真实证据完成 verify；任何账户、Windows、付费或宿主证据缺失时保持 change 未归档。
 - [ ] 11.10 所有规格同步且远端/安装证据完整后再 archive change，并在发布说明中区分已验证能力与后续多轮/视频扩展状态。
