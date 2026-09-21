@@ -59,12 +59,12 @@
 
 ## 7. JudgePort 与跨宿主适配
 
-- [ ] 7.1 建立图像黄金样本、四维 rubric 和通过/失败期望，确保样本不包含真实账户秘密或付费依赖。
-- [ ] 7.2 实现 JudgePort 核心验证：只传目标、候选、rubric 和约束，拒绝 Prompt、模型历史或不匹配的内容摘要。
-- [ ] 7.3 实现 `HostSubagentJudgeAdapter` 的协议层，不在核心控制器中写死任何宿主专属 API。
-- [ ] 7.4 实现可选 `DreaminaDesignSkillJudgeAdapter` 与 `ExternalMcpJudgeAdapter`，未安装时返回能力不可用而不是破坏 Canvas。
-- [ ] 7.5 实现 `HumanJudgeAdapter` 和可恢复导入命令，使无视觉模型环境可以停在 `AWAITING_JUDGE` 后人工继续。
-- [ ] 7.6 为 malformed、错候选、错目标、非 fresh-context、缺分项、含秘密和重复 JudgeReceipt 增加拒绝测试。
+- [x] 7.1 建立图像黄金样本、四维 rubric 和通过/失败期望，确保样本不包含真实账户秘密或付费依赖。
+- [x] 7.2 实现 JudgePort 核心验证：只传目标、候选、rubric 和约束，拒绝 Prompt、模型历史或不匹配的内容摘要。
+- [x] 7.3 实现 `HostSubagentJudgeAdapter` 的协议层，不在核心控制器中写死任何宿主专属 API。
+- [x] 7.4 实现可选 `DreaminaDesignSkillJudgeAdapter` 与 `ExternalMcpJudgeAdapter`，未安装时返回能力不可用而不是破坏 Canvas。
+- [x] 7.5 实现 `HumanJudgeAdapter` 和可恢复导入命令，使无视觉模型环境可以停在 `AWAITING_JUDGE` 后人工继续。
+- [x] 7.6 为 malformed、错候选、错目标、非 fresh-context、缺分项、含秘密和重复 JudgeReceipt 增加拒绝测试。
 - [ ] 7.7 在 Codex、Claude Code、ZCode、Kimi 的隔离安装中运行同一黄金样本，保存 schema、关联、安全和评分容差报告；缺少真实宿主证据时不得勾选。
 
 ## 8. Prompt Revision

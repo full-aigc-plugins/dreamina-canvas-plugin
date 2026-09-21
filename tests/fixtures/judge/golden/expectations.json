@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "judge_golden/1",
+  "rubricVersion": "vision_judge/1",
+  "dimensions": {
+    "composition": [
+      0,
+      3
+    ],
+    "lighting": [
+      0,
+      3
+    ],
+    "materials": [
+      0,
+      3
+    ],
+    "details": [
+      0,
+      1
+    ],
+    "total": [
+      0,
+      10
+    ]
+  },
+  "samples": [
+    {
+      "id": "identical-pass",
+      "target": "target.png",
+      "candidate": "candidate-pass.png",
+      "targetSha256": "6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f",
+      "candidateSha256": "6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f",
+      "expectation": {
+        "minTotal": 9.0,
+        "mustNotRecommend": "reject",
+        "note": "byte-identical images; a correct judge cannot demand more"
+      }
+    },
+    {
+      "id": "divergent-fail",
+      "target": "target.png",
+      "candidate": "candidate-fail.png",
+      "targetSha256": "6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f",
+      "candidateSha256": "d7ccd2086845a7b6fd8972f70d10caa6cf6cbee872f7d3fe409ed4bfacc0aaa1",
+      "expectation": {
+        "maxTotal": 9.0,
+        "mustNameGap": true,
+        "note": "pixel content differs; full score would prove the judge is not comparing"
+      }
+    }
+  ],
+  "constraints": {
+    "noRealAccounts": true,
+    "noPaidCalls": true,
+    "noSecrets": true
+  }
+}
