@@ -4,8 +4,8 @@
     {
       "package": "dreamina-skills",
       "repo": "https://github.com/full-aigc-skills/dreamina-skills.git",
-      "ref": "v1.6.2",
-      "sha": "f739b86fff342c1f75a179865356580dfb90b4c7",
+      "ref": "v1.6.3",
+      "sha": "11098c9436a0de35b8e34099648589fd68f37da2",
       "skills": [
         "dreamina-canvas-auth",
         "dreamina-canvas-cli",
@@ -28,7 +28,7 @@
         "dreamina-canvas-compose": "4ff799399a18fb0725861cf03fb779e673833d7ec0cb6513bbad46676afc8ecb",
         "dreamina-canvas-create": "e1c1d4f062f761a046103cec50682e78892c99e68ed2f87316beacd20833cedd",
         "dreamina-canvas-discover-models": "fa6beb11b7abe10bc066b420c42b7b3b1c8d1c9dcce7f2a9167028970d7dbd6c",
-        "dreamina-canvas-download-assets": "e0a76980df929de5ba7bd2b3935158d437ac5c1f6887826a1b7ce75f0ea1c1c4",
+        "dreamina-canvas-download-assets": "25a040ebe1c25b7146ff04b249d8151ddb8bd5d57d678f71069419d69fcca508",
         "dreamina-canvas-generate-audio": "412842c4a7e895413e20d75db9552253489164adf0f893c724a722ffc7d6c9cb",
         "dreamina-canvas-generate-image": "9a5490a16b321cd3d158ebbe25276da51ec789f88a7a88cfa9f42ad8e75f6f31",
         "dreamina-canvas-generate-video": "fef76411ce48f1f080e59aa88e1404ce59a6cb595ee9982aa8a58321dd372d71",

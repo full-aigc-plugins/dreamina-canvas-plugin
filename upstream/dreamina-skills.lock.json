@@ -1,5 +1,5 @@
 {
-  "commit": "b263ade8e3e3516baf8f67ddf586e242137c96e3",
+  "commit": "11098c9436a0de35b8e34099648589fd68f37da2",
   "repository": "https://github.com/full-aigc-skills/dreamina-skills",
   "schemaVersion": "1.0",
   "skills": {
@@ -61,13 +61,14 @@
       "references/workflow-contract.md": "0b4f1c66c08e9272d93de4d91af6bb7b8415c05fe127bab076c10d8b120db17d"
     },
     "dreamina-canvas-download-assets": {
-      "SKILL.md": "e5467e8cdf4c0dfc98f5673a0e6c9ffd11cbba8c094ac33bd86ad171ec120f75",
+      "SKILL.md": "ae5fe2cb3c3cedb230e9aa38e611b19893e469001945ac4d14dd1848fd67f648",
       "agents/openai.yaml": "0efb2174a128fca3ed709169efcc60a89b5d2b9d0872309e65a62bd7c15c7d22",
       "examples/boundary-refusal.md": "b9253312cc0bd4c9f8f9be5c2b63e97b345f823587d7378a01e3551ec53f92a8",
       "examples/failure-recovery.md": "94dfd76f04c5b2cb80224d2d5d3fac40edb45be0e359413a2b06ba2b4c63debd",
       "examples/happy-path.md": "237a56d2e1bddafab2833d78e1238c138c72047886f4892c4ecdc8a3f2e2f93f",
       "references/artifact-verification.md": "672ad40c9dc9df5db4f99f02e902e1e0ff155e848fb4a54fbbbcf236896fca62",
       "references/error-recovery.md": "7f8a530e5720a21716f8ffdab434f840aa8bc9a16b1e3f2751b4154366715a73",
+      "references/resource-upload.md": "5bb7fe9b117304fb4facb4881b719770cf4ff09ca1f6d3dcecc9741f0c3c1207",
       "references/validation-checklist.md": "b052dc1d7eeca8be081a2eeef7207712148c848f7fe9f3d6b1fcf71d8ba70440",
       "references/workflow-contract.md": "a699273f4efb9b739a5acd951ab1899758e0eed0eff9c55257f6d6e683574dbd"
     },
