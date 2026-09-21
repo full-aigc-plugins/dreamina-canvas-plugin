@@ -97,9 +97,9 @@
 
 ## 11. 完整验证与发布
 
-- [ ] 11.1 运行目标单元测试、全部单元测试、场景测试、schema 验证、OpenSpec strict 验证、技能完整性和分发验证。
-- [ ] 11.2 运行静态检查、秘密扫描、Markdown/链接检查和 `git diff --check`，审查兼容性、安全、幂等、并发和可维护性。
-- [ ] 11.3 在全新临时目录安装插件发行包，验证 CLI 发现、Harness 路由、schema 资源、无软链恢复和版本身份。
+- [x] 11.1 运行目标单元测试、全部单元测试、场景测试、schema 验证、OpenSpec strict 验证、技能完整性和分发验证。
+- [x] 11.2 运行静态检查、秘密扫描、Markdown/链接检查和 `git diff --check`，审查兼容性、安全、幂等、并发和可维护性。
+- [x] 11.3 在全新临时目录安装插件发行包，验证 CLI 发现、Harness 路由、schema 资源、无软链恢复和版本身份。
 - [ ] 11.4 在用户明确提供账户、凭证和费用上限后执行一次真实付费单轮 Canary；否则记录为发布阻塞项，不虚报完成。
 - [ ] 11.5 为新功能 bump 到不可变 RC 版本，确保 catalog、四端 manifest、Codex 构建后缀和发布包版本全链一致。
 - [ ] 11.6 提交并推送 Canvas tag，等待远端 CI，通过后核对 GitHub Release 资产、checksum 和 tag commit。
