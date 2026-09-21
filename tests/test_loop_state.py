@@ -159,6 +159,11 @@ class StoreTests(unittest.TestCase):
         self.assertEqual(self.store.read(), state)
 
     def test_state_file_is_private(self) -> None:
+        import unittest as _u
+        if os.name == "nt":
+            # NTFS has no POSIX mode bits; chmod(0o600) maps to a read-only
+            # attribute there. The invariant is POSIX-scoped by definition.
+            self.skipTest("POSIX permission bits do not exist on Windows")
         self.store.write(make_state())
         mode = oct(os.stat(self.store.state_path).st_mode & 0o777)
         self.assertEqual(mode, "0o600", mode)

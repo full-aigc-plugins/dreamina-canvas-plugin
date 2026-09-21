@@ -282,12 +282,15 @@ def _atomic_write(target: Path, data: bytes, *, mode: int = 0o600) -> None:
             os.fsync(handle.fileno())
         os.chmod(tmp, mode)
         os.replace(tmp, target)
-        # Persist the rename itself.
-        dir_fd = os.open(target.parent, os.O_RDONLY)
-        try:
-            os.fsync(dir_fd)
-        finally:
-            os.close(dir_fd)
+        # Persist the rename itself. Directory fsync is POSIX-only: Windows
+        # cannot open a directory with O_RDONLY (PermissionError), and the
+        # NTFS/Metadata journaling already orders the rename there.
+        if os.name != "nt":
+            dir_fd = os.open(target.parent, os.O_RDONLY)
+            try:
+                os.fsync(dir_fd)
+            finally:
+                os.close(dir_fd)
     except BaseException:
         if tmp.exists():
             tmp.unlink()

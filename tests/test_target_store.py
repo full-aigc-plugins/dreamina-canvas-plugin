@@ -173,6 +173,8 @@ class TargetLockTests(unittest.TestCase):
             json.loads(receipt.path.read_text(encoding="utf-8")))
 
     def test_locked_receipt_is_private(self) -> None:
+        if os.name == "nt":
+            self.skipTest("POSIX permission bits do not exist on Windows")
         receipt = self.store.lock(self.write("t.png", png_bytes()),
                                   mode="judge_only", source="user_supplied")
         self.assertEqual(oct(os.stat(receipt.path).st_mode & 0o777), "0o600")
