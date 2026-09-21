@@ -43,10 +43,12 @@ _STATUS_MAP = {
     "running": "in_progress",
     "in_progress": "in_progress",
     "queued": "in_progress",
+    "succeeded": "completed",  # operation status uses the -ed form (live-verified)
     "success": "completed",
     "completed": "completed",
     "failed": "failed",
     "canceled": "failed",
+    "cancelled": "failed",
     "absent": "absent",
 }
 
@@ -158,6 +160,11 @@ class CliExecution:
         raw = str(data.get("state") or data.get("status") or "unknown").lower()
         state = _STATUS_MAP.get(raw, "unknown")
         resource_id = data.get("resourceId")
+        if not resource_id:
+            # operation status nests resources: [{resourceId, ...}]
+            resources = data.get("resources") or []
+            if resources:
+                resource_id = resources[0].get("resourceId")
         return RemoteStatus(submit_id=submit_id, state=state,
                             resource_id=str(resource_id) if resource_id else None)
 
