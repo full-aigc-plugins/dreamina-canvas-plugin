@@ -485,10 +485,11 @@ class CapabilityProbe:
     conclusion cannot be reused silently.
     """
 
-    def __init__(self, *, runner: Runner, root: Path, binary: str = "dreamina-canvas") -> None:
+    def __init__(self, *, runner: Runner, root: Path) -> None:
+        # The runner owns the binary name (run_dreamina_canvas prepends it);
+        # argv here is pure arguments.
         self.runner = runner
         self.root = Path(root)
-        self.binary = binary
         self._snapshot: CapabilitySnapshot | None = None
 
     @property
@@ -502,7 +503,7 @@ class CapabilityProbe:
     def refresh(self, *, force: bool = False) -> CapabilitySnapshot:
         if self._snapshot is not None and not force:
             return self._snapshot
-        outcome = self.runner([self.binary, "--format", "json", "schema"])
+        outcome = self.runner(["--format", "json", "schema"])
         # CommandResult (the adapter's return type) exposes exit_code, not ok().
         data = outcome.data() if outcome.exit_code == 0 else {}
         if outcome.exit_code != 0 or not data:
