@@ -37,11 +37,11 @@
 
 ## 5. 目标锁定与资源上传
 
-- [ ] 5.1 为目标授权目录、媒体探测、SHA-256 锁定、同路径内容变化和目标版本化编写失败优先测试。
-- [ ] 5.2 实现 `TargetStore` 和 `judge_only` 模式，保证目标不会被远端上传或写入生成引用。
-- [ ] 5.3 为稳定 `resourceId`、重复调用、超时后查询和已存在资源编写 Fake CLI 场景测试。
-- [ ] 5.4 实现 `canvas_reference` 上传流程，只通过 CLI 1.0.0 `resource upload` 并保存已确认的 `res:<uuid>`。
-- [ ] 5.5 增加 live CLI schema 探测与能力缓存失效逻辑；schema 与技能契约不一致时暂停而不是猜测。
+- [x] 5.1 为目标授权目录、媒体探测、SHA-256 锁定、同路径内容变化和目标版本化编写失败优先测试。
+- [x] 5.2 实现 `TargetStore` 和 `judge_only` 模式，保证目标不会被远端上传或写入生成引用。
+- [x] 5.3 为稳定 `resourceId`、重复调用、超时后查询和已存在资源编写 Fake CLI 场景测试。
+- [x] 5.4 实现 `canvas_reference` 上传流程，只通过 CLI 1.0.0 `resource upload` 并保存已确认的 `res:<uuid>`。
+- [x] 5.5 增加 live CLI schema 探测与能力缓存失效逻辑；schema 与技能契约不一致时暂停而不是猜测。
 - [ ] 5.6 使用临时项目完成一次明确授权的真实资源上传 Canary，验证幂等和回执；未获得授权时保持此任务未完成。
 
 ## 6. 单轮 VisualLoopController

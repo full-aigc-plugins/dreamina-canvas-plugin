@@ -80,17 +80,23 @@
     "resourceId": {
       "type": "string",
       "pattern": "^[0-9a-f-]{36}$",
-      "description": "Present only for canvas_reference; forbidden for judge_only."
+      "description": "Confirmed Canvas resource id. Absent until the upload succeeds."
     },
     "importKind": {
       "enum": [
         "local_upload",
         "external_generated"
-      ]
+      ],
+      "description": "Declared at lock time for canvas_reference; forbidden for judge_only."
     },
     "lockedAt": {
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "uploadEvidence": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 of the confirmed upload exchange; absent until confirmed."
     }
   },
   "allOf": [
@@ -107,17 +113,26 @@
       },
       "then": {
         "not": {
-          "required": [
-            "resourceId"
+          "anyOf": [
+            {
+              "required": [
+                "resourceId"
+              ]
+            },
+            {
+              "required": [
+                "importKind"
+              ]
+            }
           ]
         },
-        "$comment": "judge_only targets must never be uploaded or referenced downstream."
+        "$comment": "judge_only targets are never uploaded and never referenced."
       },
       "else": {
         "required": [
-          "resourceId",
           "importKind"
-        ]
+        ],
+        "$comment": "canvas_reference declares its import kind at lock time; resourceId appears only once an upload is confirmed."
       }
     }
   ]

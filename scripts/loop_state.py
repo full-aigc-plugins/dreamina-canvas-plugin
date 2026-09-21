@@ -401,6 +401,32 @@ class LoopStateStore:
             _atomic_write(target, payload.encode("utf-8"))
         return target
 
+    def complete_intent(self, *, kind: str, submit_id: str,
+                        result: Mapping[str, Any]) -> Path:
+        """Record the confirmed outcome of an intent that was already persisted.
+
+        The intent exists precisely so an interrupted caller can reconcile the
+        SAME identity instead of minting a new one; a completed intent therefore
+        stays addressable by its original id.
+        """
+        target = self.intent_path(submit_id)
+        if not target.is_file():
+            raise StateStoreError(
+                f"cannot complete an intent that was never recorded: {submit_id}")
+        try:
+            payload = json.loads(target.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            raise StateStoreError(f"intent is unreadable: {exc}") from exc
+        if payload.get("kind") != kind:
+            raise StateStoreError(
+                f"intent kind mismatch: recorded {payload.get('kind')!r}, asked {kind!r}")
+        payload["result"] = dict(result)
+        payload["completedAt"] = _utc_now()
+        with _exclusive_lock(self.lock_path):
+            _atomic_write(target, json.dumps(payload, ensure_ascii=False, indent=2,
+                                             sort_keys=True).encode("utf-8"))
+        return target
+
     def pending_intent(self, *, kind: str, submit_id: str) -> dict[str, Any]:
         target = self.intent_path(submit_id)
         if not target.is_file():

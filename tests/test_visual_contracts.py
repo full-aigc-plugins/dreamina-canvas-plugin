@@ -189,12 +189,23 @@ class VisualContractTests(unittest.TestCase):
         with self.assertRaises(jsonschema.ValidationError):
             v.validate(target_receipt(ingestionMode="judge_only", resourceId=UUID_A))
 
-    def test_target_receipt_canvas_reference_requires_resource_id(self) -> None:
+    def test_target_receipt_canvas_reference_declares_its_import_kind(self) -> None:
+        """Lock time declares the mode and import kind; the resourceId only
+        appears once an upload is confirmed (spec: 'and upload confirmed')."""
         v = _validator_for("visual_target_receipt.schema.json")
         with self.assertRaises(jsonschema.ValidationError):
             v.validate(target_receipt(ingestionMode="canvas_reference"))
         v.validate(target_receipt(ingestionMode="canvas_reference",
-                                  resourceId=UUID_A, importKind="local_upload"))
+                                  importKind="local_upload"))
+        v.validate(target_receipt(ingestionMode="canvas_reference",
+                                  importKind="local_upload", resourceId=UUID_A,
+                                  uploadEvidence=SHA))
+
+    def test_target_receipt_judge_only_forbids_import_kind_too(self) -> None:
+        v = _validator_for("visual_target_receipt.schema.json")
+        with self.assertRaises(jsonschema.ValidationError):
+            v.validate(target_receipt(ingestionMode="judge_only",
+                                      importKind="local_upload"))
 
     def test_target_receipt_rejects_uppercase_digest_and_non_utc_time(self) -> None:
         v = _validator_for("visual_target_receipt.schema.json")
