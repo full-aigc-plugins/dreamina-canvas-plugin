@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "golden_hosts_report/1",
+  "date": "2026-09-22",
+  "golden": "tests/fixtures/judge/golden",
+  "rubricVersion": "vision_judge/1",
+  "protocol": "fresh-context headless judge per host; digests pre-supplied; both golden samples per host; receipts validated against judge_receipt.schema.json",
+  "hosts": {
+    "codex": {
+      "cli": "GPT-5 / codex-cli 0.147.0 (marketplace install v0.2.0)",
+      "samples": {
+        "identical-pass": {
+          "total": 10.0,
+          "recommendation": "accept",
+          "gaps": 0,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        },
+        "divergent-fail": {
+          "total": 6.0,
+          "recommendation": "revise",
+          "gaps": 2,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        }
+      }
+    },
+    "claude": {
+      "cli": "Claude Code 2.1.273 (marketplace install v0.2.0)",
+      "samples": {
+        "identical-pass": {
+          "total": 10.0,
+          "recommendation": "accept",
+          "gaps": 0,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        },
+        "divergent-fail": {
+          "total": 4.0,
+          "recommendation": "revise",
+          "gaps": 3,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        }
+      }
+    },
+    "kimi": {
+      "cli": "Kimi 0.43.1 (isolated skills-dir install v0.2.0)",
+      "samples": {
+        "identical-pass": {
+          "total": 10.0,
+          "recommendation": "accept",
+          "gaps": 0,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        },
+        "divergent-fail": {
+          "total": 6.0,
+          "recommendation": "revise",
+          "gaps": 2,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        }
+      }
+    },
+    "zcode": {
+      "cli": "GLM-5.3-Flash / ZCode (isolated install v0.2.0)",
+      "samples": {
+        "identical-pass": {
+          "total": 10.0,
+          "recommendation": "accept",
+          "gaps": 0,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        },
+        "divergent-fail": {
+          "total": 8.0,
+          "recommendation": "revise",
+          "gaps": 1,
+          "schemaValid": true,
+          "digestBound": true,
+          "freshContext": true,
+          "secretFree": true,
+          "goldenGate": "PASS",
+          "gapNamingOnDivergent": "PASS",
+          "overall": "PASS",
+          "schemaErrors": []
+        }
+      }
+    }
+  }
+}

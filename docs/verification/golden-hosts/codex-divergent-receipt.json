@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "judge_receipt/1",
+  "judgeId": "0fd77425-634c-4599-9fd2-ae548b45deaa",
+  "adapter": "host_subagent",
+  "modelClass": "GPT-5",
+  "targetSha256": "6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f",
+  "candidateSha256": "d7ccd2086845a7b6fd8972f70d10caa6cf6cbee872f7d3fe409ed4bfacc0aaa1",
+  "scores": {
+    "composition": 3.0,
+    "lighting": 0.0,
+    "materials": 2.0,
+    "details": 1.0,
+    "total": 6.0
+  },
+  "gaps": [
+    {
+      "dimension": "lighting",
+      "severity": "high",
+      "location": "entire frame",
+      "observation": "The target is uniformly dark gray (#404040), while the candidate is uniformly light gray (#C0C0C0), producing a major exposure and tonal mismatch.",
+      "fixHint": "Reduce the candidate's RGB value uniformly from 192 to 64."
+    },
+    {
+      "dimension": "materials",
+      "severity": "medium",
+      "location": "entire surface",
+      "observation": "Both images are flat, opaque, textureless grayscale fields, but the candidate's much lighter tone does not match the target surface appearance.",
+      "fixHint": "Preserve the uniform matte surface while changing its color to #404040."
+    }
+  ],
+  "recommendation": "revise",
+  "freshContext": true,
+  "sawPromptDraft": false,
+  "judgedAt": "2026-09-22T00:00:00Z"
+}

@@ -65,7 +65,7 @@
 - [x] 7.4 实现可选 `DreaminaDesignSkillJudgeAdapter` 与 `ExternalMcpJudgeAdapter`，未安装时返回能力不可用而不是破坏 Canvas。
 - [x] 7.5 实现 `HumanJudgeAdapter` 和可恢复导入命令，使无视觉模型环境可以停在 `AWAITING_JUDGE` 后人工继续。
 - [x] 7.6 为 malformed、错候选、错目标、非 fresh-context、缺分项、含秘密和重复 JudgeReceipt 增加拒绝测试。
-- [ ] 7.7 在 Codex、Claude Code、ZCode、Kimi 的隔离安装中运行同一黄金样本，保存 schema、关联、安全和评分容差报告；缺少真实宿主证据时不得勾选。
+- [x] 7.7 在 Codex、Claude Code、ZCode、Kimi 的隔离安装中运行同一黄金样本，保存 schema、关联、安全和评分容差报告；缺少真实宿主证据时不得勾选。
 
 ## 8. Prompt Revision
 

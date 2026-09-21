@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "judge_receipt/1",
+  "judgeId": "8f3c1d92-6a4e-4b71-9c2d-5e0a7b13f4c8",
+  "adapter": "host_subagent",
+  "modelClass": "deepseek-v4-flash",
+  "targetSha256": "6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f",
+  "candidateSha256": "d7ccd2086845a7b6fd8972f70d10caa6cf6cbee872f7d3fe409ed4bfacc0aaa1",
+  "scores": {
+    "composition": 2.0,
+    "lighting": 0.5,
+    "materials": 1.0,
+    "details": 0.5,
+    "total": 4.0
+  },
+  "gaps": [
+    {
+      "dimension": "lighting",
+      "severity": "high",
+      "location": "entire frame, corner to corner (no localized variation in either image)",
+      "observation": "Target is a dark neutral charcoal gray, luminance roughly 22-25% (#3A3A3A-ish); candidate is a light gray, luminance roughly 77-80% (#C7C7CB-ish). That is an exposure mismatch of roughly 3 to 3.5 stops across the whole image. The candidate also carries a faint cool/blue cast while the target's gray reads neutral to very slightly warm. Both are perfectly flat with no gradient, falloff, or shadow, so light distribution matches but absolute level and temperature do not.",
+      "fixHint": "Reduce exposure by roughly 3.5 stops and neutralize the blue cast so the fill sits at approximately #3A3A3A with the same flat, shadowless distribution."
+    },
+    {
+      "dimension": "materials",
+      "severity": "high",
+      "location": "entire frame surface",
+      "observation": "Neither image contains any texture, pattern, or distinct surface, so there is no material detail to compare directly. The mismatch is in surface value/reflectance read: the target presents as a dark matte surface, while the candidate's far lighter fill reads as a pale matte surface (or blank page) with an entirely different reflectance character.",
+      "fixHint": "Match the base value/reflectance of the fill to the target's dark matte tone; if the target surface carries any microtexture or grain it is below the resolution of this comparison and should be verified against a non-flat reference."
+    },
+    {
+      "dimension": "composition",
+      "severity": "low",
+      "location": "frame bounds (full bleed in both)",
+      "observation": "Structurally identical: both are single uniform fields filling the frame edge to edge at the same aspect ratio, with no subject, horizon, or internal feature in either. The only compositional difference is perceptual weight, since the candidate's light field reads as a near-empty bright canvas against the target's dark backdrop.",
+      "fixHint": "No framing or placement change needed; correcting the overall value will resolve the residual compositional weight difference."
+    }
+  ],
+  "recommendation": "revise",
+  "freshContext": true,
+  "sawPromptDraft": false,
+  "judgedAt": "2026-09-22T00:00:00Z"
+}

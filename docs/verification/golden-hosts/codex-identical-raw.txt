@@ -1,0 +1,58 @@
+Reading additional input from stdin...
+2026-09-21T17:45:24.615199Z ERROR codex_models_manager::manager: failed to load models cache: missing field `supports_parallel_tool_calls` at line 139 column 5
+OpenAI Codex v0.147.0
+--------
+workdir: /private/tmp/golden-hosts/codex-wd
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 01a0c512-9d46-7f30-bb8e-248c24ebb148
+--------
+user
+You are judging visual fidelity of a candidate image against a target image.
+
+Target image file: /tmp/golden-hosts/codex-wd/target.png (sha256: 6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f)
+Candidate image file: /tmp/golden-hosts/codex-wd/candidate-pass.png (sha256: 6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f)
+
+Read/view both images. Score along this rubric:
+- composition (0-3): framing, layout, subject placement and scale
+- lighting (0-3): color temperature, exposure, shadows, atmosphere
+- materials (0-3): surface qualities, texture, translucency
+- details (0-1): high-frequency detail density
+total = sum of the four scores (0-10). You may use 0.5 increments.
+
+For every dimension where the candidate differs from the target, name the location and the specific difference in a gap entry.
+
+Output STRICT JSON only — no prose before or after — exactly this shape:
+{"schemaVersion":"judge_receipt/1","judgeId":"<any-uuid>","adapter":"host_subagent","modelClass":"<your model name>","targetSha256":"6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f","candidateSha256":"6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f","scores":{"composition":0.0,"lighting":0.0,"materials":0.0,"details":0.0,"total":0.0},"gaps":[{"dimension":"composition","severity":"low","location":"...","observation":"...","fixHint":"..."}],"recommendation":"accept","freshContext":true,"sawPromptDraft":false,"judgedAt":"2026-09-22T00:00:00Z"}
+
+Rules: use the exact sha256 values given above; scores must be within range (composition/lighting/materials 0-3, details 0-1, total 0-10); gaps array may be empty only if total >= 9; recommendation must be one of accept/revise/replan/reject.
+2026-09-21T17:45:27.474228Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:27.483802Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:27.620778Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:27.846724Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:27.872766Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:27.980707Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.003224Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.013038Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.013368Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.530813Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.538165Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.599302Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.723210Z ERROR codex_rmcp_client::oauth::refresh_transaction: error=failed to refresh OAuth tokens for server hyper3d
+2026-09-21T17:45:28.772434Z ERROR codex_rmcp_client::oauth::refresh_transaction: error=failed to refresh OAuth tokens for server hyper3d
+2026-09-21T17:45:28.980802Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:28.999746Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:29.152403Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:29.647982Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:29.671925Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+2026-09-21T17:45:29.720996Z ERROR rmcp::transport::worker: worker quit with fatal: Unexpected content type: Some("missing-content-type; body: "), when send initialized notification
+warning: Exceeded skills context budget. All skill descriptions were removed and 462 additional skills were not included in the model-visible skills list.
+codex
+{"schemaVersion":"judge_receipt/1","judgeId":"550e8400-e29b-41d4-a716-446655440000","adapter":"host_subagent","modelClass":"GPT-5","targetSha256":"6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f","candidateSha256":"6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f","scores":{"composition":3.0,"lighting":3.0,"materials":3.0,"details":1.0,"total":10.0},"gaps":[],"recommendation":"accept","freshContext":true,"sawPromptDraft":false,"judgedAt":"2026-09-22T00:00:00Z"}
+tokens used
+34,269
+{"schemaVersion":"judge_receipt/1","judgeId":"550e8400-e29b-41d4-a716-446655440000","adapter":"host_subagent","modelClass":"GPT-5","targetSha256":"6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f","candidateSha256":"6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f","scores":{"composition":3.0,"lighting":3.0,"materials":3.0,"details":1.0,"total":10.0},"gaps":[],"recommendation":"accept","freshContext":true,"sawPromptDraft":false,"judgedAt":"2026-09-22T00:00:00Z"}

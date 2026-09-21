@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "judge_receipt/1",
+  "judgeId": "550e8400-e29b-41d4-a716-446655440000",
+  "adapter": "host_subagent",
+  "modelClass": "GPT-5",
+  "targetSha256": "6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f",
+  "candidateSha256": "6cae5336055b94e23bd2eca9b962b32d9fc40cb05e515f065a652323d74b826f",
+  "scores": {
+    "composition": 3.0,
+    "lighting": 3.0,
+    "materials": 3.0,
+    "details": 1.0,
+    "total": 10.0
+  },
+  "gaps": [],
+  "recommendation": "accept",
+  "freshContext": true,
+  "sawPromptDraft": false,
+  "judgedAt": "2026-09-22T00:00:00Z"
+}
