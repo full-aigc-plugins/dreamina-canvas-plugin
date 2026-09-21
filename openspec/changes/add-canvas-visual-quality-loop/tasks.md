@@ -46,9 +46,9 @@
 
 ## 6. 单轮 VisualLoopController
 
-- [ ] 6.1 为完整单轮编写 Fake CLI + Fake JudgePort E2E，使其先因控制器不存在而失败。
-- [ ] 6.2 定义 `CanvasRuntimePort`、`ApprovalPort`、`OperationLedgerPort`、`ArtifactPort`、`JudgePort`、`PromptRevisionPort`、`BudgetLedger` 和 `ExitPolicy` 的最小接口及测试替身。
-- [ ] 6.3 实现 `VisualLoopController` 命令入口和机器可解析结果，组合现有 adapter、approval guard、operation ledger、artifact guard 与 error router。
+- [x] 6.1 为完整单轮编写 Fake CLI + Fake JudgePort E2E，使其先因控制器不存在而失败。
+- [x] 6.2 定义 `CanvasRuntimePort`、`ApprovalPort`、`OperationLedgerPort`、`ArtifactPort`、`JudgePort`、`PromptRevisionPort`、`BudgetLedger` 和 `ExitPolicy` 的最小接口及测试替身。
+- [x] 6.3 实现 `VisualLoopController` 命令入口和机器可解析结果，组合现有 adapter、approval guard、operation ledger、artifact guard 与 error router。
 - [ ] 6.4 实现目标锁定/注册、live capability/model 探测、saved draft 创建或更新，且草稿阶段不得触发生成。
 - [ ] 6.5 实现实时报价、预算检查和 `AWAITING_APPROVAL` 暂停，审批凭证仅在内存中传递且不得写盘。
 - [ ] 6.6 实现提交前稳定 `submitId` 持久化、单次 run、结果不明确时的 operation resume，以及禁止新 submitId 重提。

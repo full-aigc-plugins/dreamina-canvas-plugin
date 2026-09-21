@@ -59,24 +59,34 @@ STATES: tuple[str, ...] = (
 
 TERMINAL_STATES = frozenset({"COMPLETED", "STOPPED", "FAILED"})
 
-# In-flight states whose remote operation may already exist. A restart must
-# reconcile the ORIGINAL submitId rather than submitting again.
+# States a restart cannot simply abandon: an intent may already exist and must
+# be reconciled with the ORIGINAL submitId rather than re-submitted.
 INTERRUPTIBLE_STATES = frozenset({
     "SUBMITTED", "WAITING", "ARTIFACT_VERIFIED", "DRAINING_ACCEPTED",
     "AWAITING_APPROVAL", "QUOTED",
 })
 
+# States in which the remote may already have ACCEPTED work. A stop request from
+# here must drain (keep reconciling) instead of claiming a cancellation; every
+# other state can stop outright. Deliberately narrower than
+# INTERRUPTIBLE_STATES, which also covers pre-submission reconciliation.
+REMOTE_PENDING_STATES = frozenset({"SUBMITTED", "WAITING", "DRAINING_ACCEPTED"})
+
+# Edges beyond design.md decision 5's diagram, both required by the
+# visual-loop spec: stopping before submission enters STOPPED directly
+# ("Stop is requested before submission"), and an unrecoverable remote,
+# artifact or judge failure enters the diagnosable FAILED state.
 TRANSITIONS: Mapping[str, frozenset[str]] = {
     "CREATED": frozenset({"TARGET_LOCKED", "STOPPED"}),
     "TARGET_LOCKED": frozenset({"TARGET_REGISTERED", "DRAFT_SAVED", "STOPPED"}),
-    "TARGET_REGISTERED": frozenset({"DRAFT_SAVED"}),
+    "TARGET_REGISTERED": frozenset({"DRAFT_SAVED", "STOPPED"}),
     "DRAFT_SAVED": frozenset({"QUOTED", "STOPPED"}),
-    "QUOTED": frozenset({"AWAITING_APPROVAL", "PAUSED"}),
-    "AWAITING_APPROVAL": frozenset({"SUBMITTED"}),
-    "SUBMITTED": frozenset({"WAITING", "DRAINING_ACCEPTED"}),
-    "WAITING": frozenset({"ARTIFACT_VERIFIED", "DRAINING_ACCEPTED"}),
-    "ARTIFACT_VERIFIED": frozenset({"AWAITING_JUDGE"}),
-    "AWAITING_JUDGE": frozenset({"JUDGED"}),
+    "QUOTED": frozenset({"AWAITING_APPROVAL", "PAUSED", "STOPPED"}),
+    "AWAITING_APPROVAL": frozenset({"SUBMITTED", "STOPPED"}),
+    "SUBMITTED": frozenset({"WAITING", "DRAINING_ACCEPTED", "FAILED"}),
+    "WAITING": frozenset({"ARTIFACT_VERIFIED", "DRAINING_ACCEPTED", "FAILED"}),
+    "ARTIFACT_VERIFIED": frozenset({"AWAITING_JUDGE", "FAILED"}),
+    "AWAITING_JUDGE": frozenset({"JUDGED", "FAILED"}),
     "JUDGED": frozenset({"COMPLETED", "REVISION_PROPOSED", "STALLED"}),
     "REVISION_PROPOSED": frozenset({"PAUSED"}),
     "DRAINING_ACCEPTED": frozenset({"STOPPED"}),
@@ -88,8 +98,13 @@ TRANSITIONS: Mapping[str, frozenset[str]] = {
     "FAILED": frozenset(),
 }
 
+# The six main contracts of design.md decision 4, plus the two auxiliary
+# correlation receipts that `VisualRoundReceipt.quoteRef` / `.approvalRef`
+# point at. Both carry non-secret metadata only (a quote id and ceiling; an
+# approval request fingerprint and ceiling) — never an approval credential.
 RECEIPT_KINDS = frozenset({
     "target", "round", "judge_request", "judge_receipt", "prompt_revision", "budget",
+    "quote", "approval",
 })
 
 
