@@ -69,12 +69,12 @@
 
 ## 8. Prompt Revision
 
-- [ ] 8.1 为完整 generation block 保真建立属性/表驱动测试，覆盖模型、模式、比例、分辨率、数量、时长、`node:`/`res:` 引用和未知保留字段。
-- [ ] 8.2 实现 live node 读取、`mutationVersion` 与 generation fingerprint 校验，并在并发变化时进入 `PAUSED`。
-- [ ] 8.3 实现只接受经验证 gap 和用户约束的 Prompt 重写器接口，输出完整 generation block。
-- [ ] 8.4 实现保真校验和有意变更白名单，任何意外丢失引用或生成字段都拒绝更新。
-- [ ] 8.5 实现稳定 `updateId`、结果不明确时的状态查询和 `PromptRevisionReceipt` 持久化。
-- [ ] 8.6 增加重复修订、并发节点变化、无效 Judge、隐藏推理泄露和部分更新回归测试。
+- [x] 8.1 为完整 generation block 保真建立属性/表驱动测试，覆盖模型、模式、比例、分辨率、数量、时长、`node:`/`res:` 引用和未知保留字段。
+- [x] 8.2 实现 live node 读取、`mutationVersion` 与 generation fingerprint 校验，并在并发变化时进入 `PAUSED`。
+- [x] 8.3 实现只接受经验证 gap 和用户约束的 Prompt 重写器接口，输出完整 generation block。
+- [x] 8.4 实现保真校验和有意变更白名单，任何意外丢失引用或生成字段都拒绝更新。
+- [x] 8.5 实现稳定 `updateId`、结果不明确时的状态查询和 `PromptRevisionReceipt` 持久化。
+- [x] 8.6 增加重复修订、并发节点变化、无效 Judge、隐藏推理泄露和部分更新回归测试。
 
 ## 9. 预算、停滞与终止治理
 
