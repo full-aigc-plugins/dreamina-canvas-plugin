@@ -7,6 +7,7 @@
   "additionalProperties": false,
   "required": [
     "schemaVersion",
+    "sessionId",
     "state",
     "currentRound",
     "pendingOperations",
@@ -18,6 +19,11 @@
   "properties": {
     "schemaVersion": {
       "const": "visual_loop_state/1"
+    },
+    "sessionId": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$",
+      "description": "Session binding: the store refuses a state file from another session."
     },
     "state": {
       "enum": [
@@ -51,8 +57,12 @@
       "minimum": 0
     },
     "targetId": {
-      "type": "string",
-      "pattern": "^[0-9a-f-]{36}$"
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f-]{36}$",
+      "description": "Absent until a target is locked."
     },
     "pendingOperations": {
       "type": "array",

@@ -108,7 +108,8 @@ def loop_budget(**over):
 
 def loop_state(**over):
     fixture = {
-        "schemaVersion": "visual_loop_state/1", "state": "AWAITING_JUDGE",
+        "schemaVersion": "visual_loop_state/1", "sessionId": UUID_A,
+        "state": "AWAITING_JUDGE",
         "currentRound": 1, "pendingOperations": [], "receiptRefs": [],
         "stopRequested": False, "revisionCount": 0, "updatedAt": UTC,
     }
@@ -352,7 +353,7 @@ class ContractPackagingTests(unittest.TestCase):
         import tempfile
 
         sys.path.insert(0, str(ROOT / "scripts"))
-        from validate_distribution import validate_contracts  # noqa: PLC0415
+        from validate_distribution import validate_contracts
 
         with tempfile.TemporaryDirectory() as tmp:
             schemas = Path(tmp) / "schemas"
@@ -392,7 +393,7 @@ class ContractPackagingTests(unittest.TestCase):
         import tempfile
 
         sys.path.insert(0, str(ROOT / "scripts"))
-        from validate_distribution import validate_contracts  # noqa: PLC0415
+        from validate_distribution import validate_contracts
 
         with tempfile.TemporaryDirectory() as tmp:
             (Path(tmp) / "schemas").mkdir()

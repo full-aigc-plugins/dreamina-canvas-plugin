@@ -27,12 +27,12 @@
 
 ## 4. 状态存储与恢复状态机
 
-- [ ] 4.1 用表驱动测试定义全部合法和非法状态迁移，包括 CREATED、TARGET_LOCKED、TARGET_REGISTERED、DRAFT_SAVED、QUOTED、AWAITING_APPROVAL、SUBMITTED、WAITING、ARTIFACT_VERIFIED、AWAITING_JUDGE、JUDGED、REVISION_PROPOSED、COMPLETED、PAUSED、STALLED、STOP_REQUESTED、DRAINING_ACCEPTED、STOPPED 和 FAILED。
-- [ ] 4.2 实现会话级 `LoopStateStore`，使用授权目录、规范路径包含检查、文件锁、临时文件、fsync 和原子替换。
-- [ ] 4.3 实现不可变轮次目录与原子 `latest.json` 指针，不创建 `latest.png` 软链接。
-- [ ] 4.4 为每个外部副作用建立“先持久化意图/请求标识，再调用外部系统”的恢复门禁。
-- [ ] 4.5 增加从每个可中断状态重启的测试，证明 `SUBMITTED`/`WAITING` 只恢复同一 `submitId`，不重复付费提交。
-- [ ] 4.6 增加损坏、缺失、版本不兼容和回执引用断裂的状态测试，失败时禁止外部写入并输出可操作诊断。
+- [x] 4.1 用表驱动测试定义全部合法和非法状态迁移，包括 CREATED、TARGET_LOCKED、TARGET_REGISTERED、DRAFT_SAVED、QUOTED、AWAITING_APPROVAL、SUBMITTED、WAITING、ARTIFACT_VERIFIED、AWAITING_JUDGE、JUDGED、REVISION_PROPOSED、COMPLETED、PAUSED、STALLED、STOP_REQUESTED、DRAINING_ACCEPTED、STOPPED 和 FAILED。
+- [x] 4.2 实现会话级 `LoopStateStore`，使用授权目录、规范路径包含检查、文件锁、临时文件、fsync 和原子替换。
+- [x] 4.3 实现不可变轮次目录与原子 `latest.json` 指针，不创建 `latest.png` 软链接。
+- [x] 4.4 为每个外部副作用建立“先持久化意图/请求标识，再调用外部系统”的恢复门禁。
+- [x] 4.5 增加从每个可中断状态重启的测试，证明 `SUBMITTED`/`WAITING` 只恢复同一 `submitId`，不重复付费提交。
+- [x] 4.6 增加损坏、缺失、版本不兼容和回执引用断裂的状态测试，失败时禁止外部写入并输出可操作诊断。
 - [ ] 4.7 在 macOS/Linux 与 Windows 路径样本上验证原子更新、锁和无软链行为。
 
 ## 5. 目标锁定与资源上传
