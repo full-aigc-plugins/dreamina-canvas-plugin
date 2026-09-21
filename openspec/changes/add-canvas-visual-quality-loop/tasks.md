@@ -78,13 +78,13 @@
 
 ## 9. 预算、停滞与终止治理
 
-- [ ] 9.1 为 `spent`、`reserved`、`unknown` 和 `available` 编写预算不变量测试，覆盖本地超时不释放预留。
-- [ ] 9.2 实现默认 `per_round` 策略以及目标、最大轮数、总额度、单轮额度和截止时间绑定的 `bounded_batch` 策略。
-- [ ] 9.3 确保 `bounded_batch` 不绕过 CLI 的当前短期审批；缺少有效审批时固定停在 `AWAITING_APPROVAL`。
-- [ ] 9.4 实现最低退出分数、关键分项门禁、连续无改善、重复 gap、重规划次数和最大轮数策略。
-- [ ] 9.5 实现最佳轮次保留和 `STALLED`/`PAUSED` 诊断，停滞时不得自动扩大预算或改换目标。
-- [ ] 9.6 实现 `STOP_REQUESTED`、`DRAINING_ACCEPTED`、`STOPPED`，并测试停止后无新编辑、报价、审批或提交。
-- [ ] 9.7 若未来 CLI 提供取消能力，以独立规格变更接入；当前 UI、Skill 和回执统一使用“停止后续轮次/继续排空”语义。
+- [x] 9.1 为 `spent`、`reserved`、`unknown` 和 `available` 编写预算不变量测试，覆盖本地超时不释放预留。
+- [x] 9.2 实现默认 `per_round` 策略以及目标、最大轮数、总额度、单轮额度和截止时间绑定的 `bounded_batch` 策略。
+- [x] 9.3 确保 `bounded_batch` 不绕过 CLI 的当前短期审批；缺少有效审批时固定停在 `AWAITING_APPROVAL`。
+- [x] 9.4 实现最低退出分数、关键分项门禁、连续无改善、重复 gap、重规划次数和最大轮数策略。
+- [x] 9.5 实现最佳轮次保留和 `STALLED`/`PAUSED` 诊断，停滞时不得自动扩大预算或改换目标。
+- [x] 9.6 实现 `STOP_REQUESTED`、`DRAINING_ACCEPTED`、`STOPPED`，并测试停止后无新编辑、报价、审批或提交。
+- [x] 9.7 若未来 CLI 提供取消能力，以独立规格变更接入；当前 UI、Skill 和回执统一使用“停止后续轮次/继续排空”语义。
 
 ## 10. 视频关键帧与时序 Judge
 
