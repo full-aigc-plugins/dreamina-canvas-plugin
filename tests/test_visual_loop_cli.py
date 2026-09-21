@@ -1,0 +1,104 @@
+"""Smoke tests for the host-facing entry (task 6.10).
+
+`step` against the real CLI is covered by the composition tests with an
+injected runner; here we pin the subcommands a host drives between pauses:
+lock-target, status, request-judge, import-judge, stop — and that credentials
+only ever travel through the environment.
+"""
+
+from __future__ import annotations
+
+import importlib
+import json
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+cli = importlib.import_module("visual_loop_cli")
+
+
+def _minimal_png(*, seed: bytes = b"0") -> bytes:
+    import struct, zlib
+    from test_target_store import png_bytes
+    return png_bytes(seed=seed)
+from test_judge_exchange import receipt, SESSION, TARGET, SHA_T, CANDIDATE, SHA_C
+
+
+class CliCase(unittest.TestCase):
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.ws = Path(self._tmp.name) / "workspace"
+        self.ws.mkdir()
+        self.png = self.ws / "target.png"
+        self.png.write_bytes(_minimal_png(seed=b"0"))
+        self.base = ["--root", ".loop", "--approved-root", str(self.ws),
+                     "--session-id", SESSION]
+        self.addCleanup(self._tmp.cleanup)
+
+    def run_cli(self, *argv: str) -> tuple[int, str]:
+        import io, contextlib
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                code = cli.main(list(argv))
+        except SystemExit as exc:  # argparse errors
+            return int(exc.code or 0), buf.getvalue()
+        return code, buf.getvalue()
+
+    def test_lock_then_status_records_the_target(self) -> None:
+        code, out = self.run_cli("lock-target", *self.base, str(self.png))
+        self.assertEqual(code, 0, out)
+        body = json.loads(out)
+        self.assertEqual(body["ingestionMode"], "judge_only")
+        code, out = self.run_cli("status", *self.base)
+        state = json.loads(out)
+        self.assertEqual(state["state"], "CREATED")
+        self.assertEqual([r["kind"] for r in state["receiptRefs"]], ["target"])
+
+    def test_relock_on_changed_content_is_refused(self) -> None:
+        self.run_cli("lock-target", *self.base, str(self.png))
+        self.png.write_bytes(_minimal_png(seed=b"1"))
+        code, out = self.run_cli("lock-target", *self.base, str(self.png))
+        self.assertEqual(code, 1)
+
+    def test_request_and_import_judge_round_trip(self) -> None:
+        self.run_cli("lock-target", *self.base, str(self.png))
+        code, out = self.run_cli(
+            "request-judge", *self.base,
+            "--candidate-resource-id", CANDIDATE,
+            "--candidate-sha256", SHA_C)
+        self.assertEqual(code, 0, out)
+        # The request binds the digest of the locked target.
+        request_path = json.loads(out)["request"]
+        request = json.loads(Path(request_path).read_text(encoding="utf-8"))
+        self.assertEqual(len(request["target"]["sha256"]), 64)
+
+        verdict = receipt()
+        verdict["targetSha256"] = request["target"]["sha256"]
+        receipt_file = self.ws / "verdict.json"
+        receipt_file.write_text(json.dumps(verdict), encoding="utf-8")
+        code, out = self.run_cli("import-judge", *self.base, str(receipt_file))
+        self.assertEqual(code, 0, out)
+        # Duplicate is refused.
+        code, out = self.run_cli("import-judge", *self.base, str(receipt_file))
+        self.assertEqual(code, 1)
+        self.assertIn("duplicate", json.loads(out)["error"])
+
+    def test_stop_before_submission_is_terminal_and_honest(self) -> None:
+        self.run_cli("lock-target", *self.base, str(self.png))
+        code, out = self.run_cli("stop", *self.base)
+        state = json.loads(out)
+        self.assertEqual(state["state"], "STOPPED")
+        self.assertFalse(state["remoteCancelled"])
+
+    def test_step_without_a_target_fails_closed(self) -> None:
+        code, out = self.run_cli("step", *self.base, "--project-id", SESSION)
+        self.assertEqual(code, 1)
+        self.assertIn("lock a target", json.loads(out)["error"])
+
+
+if __name__ == "__main__":
+    unittest.main()

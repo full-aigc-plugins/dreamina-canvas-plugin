@@ -55,7 +55,7 @@
 - [x] 6.7 实现事务下载、临时文件校验、哈希、原子提交、不可变候选归档和 ArtifactReceipt 关联。
 - [x] 6.8 实现 JudgeRequest 发出、`AWAITING_JUDGE` 暂停、JudgeReceipt 恢复输入及 `JUDGED`/`REVISION_PROPOSED`/`COMPLETED` 决策。
 - [x] 6.9 增加断网、CLI 非 JSON 输出、远端失败、下载损坏、Judge 无效和进程崩溃场景测试。
-- [ ] 6.10 更新 Harness 路由到真实控制器，并删除或改写任何仍声称依靠人工串联即可获得自动闭环的说明。
+- [x] 6.10 更新 Harness 路由到真实控制器，并删除或改写任何仍声称依靠人工串联即可获得自动闭环的说明。
 
 ## 7. JudgePort 与跨宿主适配
 

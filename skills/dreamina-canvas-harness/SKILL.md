@@ -36,35 +36,40 @@ description: Dreamina Canvas invocation spec for WorkBuddy - the dreamina-canvas
 - CLI 的 stdout/stderr 与标识持久化按 `dreamina-canvas-cli` 技能规范执行。
 - 付费动作同样 submit-once：一次授权一次提交，恢复走 resume 技能。
 
-## 5. 视觉质量闭环（计划中，尚未实现）
+## 5. 视觉质量闭环（单轮控制器已实现；付费 Canary 与多轮未运行）
 
-目标素材锁定、候选产物指针、跨宿主 Judge 与 Prompt Revision 将由
-[`add-canvas-visual-quality-loop`](../../openspec/changes/add-canvas-visual-quality-loop/proposal.md)
-逐步交付。当前发布版本只有画布保存、报价、一次提交、续查与下载校验；它**没有**
-视觉闭环控制器。
+单轮视觉闭环控制器已在本仓实现并有测试覆盖：目标锁定 → 草稿 → 报价 →
+**审批暂停** → 单次提交（submitId 先行落盘，重启只对账同一身份）→ 恢复等待 →
+事务下载与校验（摘要不符即隔离）→ Judge 请求/回执文件对 → 停在
+`JUDGED` / `REVISION_PROPOSED`。控制器自身永不报价或提交第二轮。
+
+宿主入口：`scripts/visual_loop_cli.py`（`lock-target` / `step` / `status` /
+`request-judge` / `import-judge` / `stop`）。审批凭证只经环境变量在提交瞬间
+读取，绝不写入 argv、日志或任何持久化文件。
 
 ```text
-VISUAL_LOOP_STATUS: PLANNED_NOT_IMPLEMENTED
-VISUAL_TARGET_UPLOAD: NOT_IMPLEMENTED
-VISUAL_CANDIDATE_POINTER: NOT_IMPLEMENTED
-VISUAL_JUDGE_AUTOMATION: NOT_IMPLEMENTED
+VISUAL_LOOP_STATUS: SINGLE_ROUND_IMPLEMENTED_PAID_CANARY_NOT_RUN
+VISUAL_TARGET_UPLOAD: IMPLEMENTED_UPLOAD_CANARY_NOT_RUN
+VISUAL_CANDIDATE_POINTER: IMMUTABLE_ROUNDS_PLUS_ATOMIC_LATEST_JSON
+VISUAL_JUDGE_AUTOMATION: HOST_MEDIATED_RECEIPT_IMPORT_IMPLEMENTED
 LOCAL_FILE_URI_REFERENCE: UNSUPPORTED
+PAID_EXECUTION: REQUIRES_THE_STANDARD_QUOTE_CONFIRM_RUN_CHAIN
+WINDOWS_LOCK_SEMANTICS: NOT_VERIFIED
 ```
 
 当前边界：
 
 - 不把本地文件 URI 写入节点 prompt 或引用参数；`uri:` / `vid:` 是否受支持必须以
   当前 CLI schema 和已锁定上游技能为准。
-- `download-assets` 当前只将已完成资源下载到用户批准的目录，并校验字节数和
-  SHA-256；不会自动维护候选副本、最新产物指针或跨轮目录。
-- 本插件当前不自动调用兄弟插件、宿主子智能体或外部 MCP 进行视觉评估；用户如需
-  人工评审，应在不泄露凭据的前提下自行提供目标与候选素材。
-- 第一阶段控制器落地后，只执行一轮“目标锁定/可选上传 → 草稿 → 报价与批准 →
-  生成与恢复 → 下载与校验 → Judge”。Judge 后形成完成结论或修订提案，并暂停，
-  不自动发起下一轮。
-- `dreamina-design-plugin` 可在未来作为 `JudgePort` 的可选适配器，但不是当前
-  Harness 的运行时依赖，也不能替代结构化 JudgeReceipt。
+- **未执行**真实资源上传 Canary 与真实付费单轮 Canary；在此之前不得把上传与
+  付费能力表述为已验收。Windows 上的文件锁与原子替换语义未在真实 Windows 上
+  验证。
+- Judge 由宿主在暂停点之间提供：`request-judge` 落盘请求，宿主子代理 / 兄弟
+  插件 / 人工产出的裁决经 `import-judge` 校验（内容摘要绑定、fresh-context、
+  拒绝秘密字段）后才能被控制器消费；本 Harness 不自动调用任何宿主。
+- 停止语义诚实：已接受的任务进入排空（`DRAINING_ACCEPTED`），继续以原
+  `submitId` 对账；从不声称远端取消。
+- Prompt Revision（change 第 8 节）落地前，修订提案只记录不自动应用。
 
-不要把本节的计划描述、Fake CLI 测试或只读 CLI 探测表述为真实资源上传、真实模型
-生成或付费验收。对应证据等级见
+不要把本节的控制器实现表述为已通过真实付费验收；对应证据等级见
 [`docs/verification/visual-loop-baseline-2026-09-21.md`](../../docs/verification/visual-loop-baseline-2026-09-21.md)。

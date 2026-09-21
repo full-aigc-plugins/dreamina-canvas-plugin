@@ -9,7 +9,6 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS = ROOT / "skills" / "dreamina-canvas-harness" / "SKILL.md"
 PUBLIC_DOCS = (
@@ -25,11 +24,13 @@ class HarnessTruthfulnessTests(unittest.TestCase):
     def test_harness_marks_visual_loop_features_as_planned(self) -> None:
         content = HARNESS.read_text(encoding="utf-8")
         for marker in (
-            "VISUAL_LOOP_STATUS: PLANNED_NOT_IMPLEMENTED",
-            "VISUAL_TARGET_UPLOAD: NOT_IMPLEMENTED",
-            "VISUAL_CANDIDATE_POINTER: NOT_IMPLEMENTED",
-            "VISUAL_JUDGE_AUTOMATION: NOT_IMPLEMENTED",
+            "VISUAL_LOOP_STATUS: SINGLE_ROUND_IMPLEMENTED_PAID_CANARY_NOT_RUN",
+            "VISUAL_TARGET_UPLOAD: IMPLEMENTED_UPLOAD_CANARY_NOT_RUN",
+            "VISUAL_CANDIDATE_POINTER: IMMUTABLE_ROUNDS_PLUS_ATOMIC_LATEST_JSON",
+            "VISUAL_JUDGE_AUTOMATION: HOST_MEDIATED_RECEIPT_IMPORT_IMPLEMENTED",
             "LOCAL_FILE_URI_REFERENCE: UNSUPPORTED",
+            "PAID_EXECUTION: REQUIRES_THE_STANDARD_QUOTE_CONFIRM_RUN_CHAIN",
+            "WINDOWS_LOCK_SEMANTICS: NOT_VERIFIED",
         ):
             self.assertIn(marker, content)
 
