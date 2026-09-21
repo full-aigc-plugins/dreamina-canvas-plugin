@@ -424,7 +424,7 @@ class ResourceUploader:
         intent.record_intent(kind="resource_upload", submit_id=resource_id)
         outcome = self.runner(self._upload_argv(path=path, resource_id=resource_id,
                                                 import_kind=import_kind))
-        if outcome.ok:
+        if outcome.exit_code == 0:
             return self._complete(resource_id, import_kind, outcome, reconciled=False)
         if outcome.error_code() == "cli.resource_already_exists":
             return self._reconcile(resource_id, import_kind, path=path, allow_upload=False)
@@ -435,7 +435,7 @@ class ResourceUploader:
         """Resolve an ambiguous result with the SAME id. Never mint a new one."""
         for _ in range(self.MAX_RECONCILE_ROUNDS):
             outcome = self.runner(self._get_argv(resource_id))
-            if outcome.ok and outcome.data().get("resourceId"):
+            if outcome.exit_code == 0 and outcome.data().get("resourceId"):
                 return self._complete(resource_id, import_kind, outcome,
                                       reconciled=True)
         raise UploadUnresolved(
@@ -505,7 +505,7 @@ class CapabilityProbe:
         outcome = self.runner([self.binary, "--format", "json", "schema"])
         # CommandResult (the adapter's return type) exposes exit_code, not ok().
         data = outcome.data() if outcome.exit_code == 0 else {}
-        if not outcome.ok or not data:
+        if outcome.exit_code != 0 or not data:
             raise CapabilityError(
                 f"live CLI schema could not be established (exit {outcome.exit_code}, "
                 f"{outcome.error_code() or 'no error code'}); refusing to guess reference support")
