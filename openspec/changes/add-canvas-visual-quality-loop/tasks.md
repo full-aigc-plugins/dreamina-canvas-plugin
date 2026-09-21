@@ -53,7 +53,7 @@
 - [x] 6.5 实现实时报价、预算检查和 `AWAITING_APPROVAL` 暂停，审批凭证仅在内存中传递且不得写盘。
 - [x] 6.6 实现提交前稳定 `submitId` 持久化、单次 run、结果不明确时的 operation resume，以及禁止新 submitId 重提。
 - [x] 6.7 实现事务下载、临时文件校验、哈希、原子提交、不可变候选归档和 ArtifactReceipt 关联。
-- [ ] 6.8 实现 JudgeRequest 发出、`AWAITING_JUDGE` 暂停、JudgeReceipt 恢复输入及 `JUDGED`/`REVISION_PROPOSED`/`COMPLETED` 决策。
+- [x] 6.8 实现 JudgeRequest 发出、`AWAITING_JUDGE` 暂停、JudgeReceipt 恢复输入及 `JUDGED`/`REVISION_PROPOSED`/`COMPLETED` 决策。
 - [x] 6.9 增加断网、CLI 非 JSON 输出、远端失败、下载损坏、Judge 无效和进程崩溃场景测试。
 - [ ] 6.10 更新 Harness 路由到真实控制器，并删除或改写任何仍声称依靠人工串联即可获得自动闭环的说明。
 
