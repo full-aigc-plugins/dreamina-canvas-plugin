@@ -1,6 +1,6 @@
 {
   "name": "dreamina-canvas",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI"

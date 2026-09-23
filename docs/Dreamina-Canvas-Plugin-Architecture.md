@@ -4,7 +4,7 @@
 >
 > | Field | Value |
 > |---|---|
-> | Status | Core contract and the visual single-round loop implemented, released as `0.2.0` (paid one-round canary passed 2026-09-22); multi-round and cross-host golden runs pending |
+> | Status | Core contract, the visual single-round loop, and the library wiring released as `0.3.0` (paid one-round canary + 8/8 cross-host golden samples passed 2026-09-22); multi-round pending |
 > | Scope | The cross-host plugin's CLI adapter, guards, ledger, Skills, and the planned visual-loop extension |
 > | Audience | Plugin maintainers, security reviewers, and integration engineers |
 > | Out of scope | The Dreamina Canvas service itself, the CLI's internals, and the upstream Skill library |
@@ -193,7 +193,7 @@ Operations are executable rather than aspirational: `python -m unittest discover
 
 | Aspect | Position |
 |---|---|
-| Distribution | Cross-host marketplace entry pointing at this repository, pinned to immutable `v0.2.0` |
+| Distribution | Cross-host marketplace entry pointing at this repository, pinned to immutable `v0.3.0` |
 | Manifests | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | Python | 3.11, 3.12, and 3.13 in the CI matrix |
 | Upstream Skills | Pinned by commit in `upstream/dreamina-skills.lock.json` and byte-verified |

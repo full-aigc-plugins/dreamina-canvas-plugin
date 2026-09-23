@@ -6,7 +6,7 @@
 
 > 在受支持的编码智能体中构建、报价并运行结构化的 Dreamina 画布——免费步骤与付费步骤严格分离。
 
-[![版本](https://img.shields.io/badge/version-0.2.0-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.2.0)
+[![版本](https://img.shields.io/badge/version-0.3.0-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.3.0)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [安装](#安装) · [快速开始](#快速开始) · [操作契约](#操作契约) · [故障排查](#故障排查)
@@ -57,7 +57,7 @@
 |---|---|
 | 插件 ID | `dreamina-canvas` |
 | 宿主 | Codex CLI 或 ChatGPT 桌面应用 |
-| 当前版本 | `0.2.0` |
+| 当前版本 | `0.3.0` |
 | 插件清单 | `.codex-plugin/plugin.json`（兼容）与 `plugin.json`（便携） |
 | MCP 配置 | 无——插件通过 Skills 驱动本地 CLI |
 | 主要语言 | Python 3.11+ |
@@ -118,7 +118,7 @@ Judge 请求/回执文件对 → 停在 `JUDGED` / `REVISION_PROPOSED`。控制�
 ### 库入口对照
 
 由活跃 OpenSpec change
-[`wire-library-capabilities`](openspec/changes/wire-library-capabilities/proposal.md)
+[`wire-library-capabilities`](openspec/changes/archive/2026-09-24-wire-library-capabilities/proposal.md)
 接线：
 
 | 能力 | 库 | CLI 入口 |
@@ -161,6 +161,7 @@ flowchart LR
 
 | 插件版本 | 宿主 | CLI | Python | 状态 |
 |---|---|---|---|---|
+| `0.3.0` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 库面接线（`revise`/`judge`/`sample-frames`/`video-verdict`）+ 预算账本统一；跨宿主黄金样本 8/8 通过（2026-09-22）；多轮待验 |
 | `0.2.0` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 视觉单轮控制器：真实付费单轮 Canary 已通过（2026-09-22，1 积分）；多轮与跨宿主黄金样本待验 |
 
 CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以及单独批准的付费金丝雀，均在[运行期证据](docs/verification/dreamina-canvas-runtime.md)中记录为 **PASS**。
@@ -170,7 +171,7 @@ CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以�
 ### 从插件市场安装
 
 ```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.2.0
+codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.3.0
 codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 

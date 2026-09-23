@@ -5,7 +5,7 @@
     {
       "name": "dreamina-canvas",
       "description": "Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, verified assets, and a visual single-round quality loop.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "source": "./"
     }
   ]

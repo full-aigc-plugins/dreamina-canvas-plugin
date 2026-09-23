@@ -35,4 +35,4 @@
 ## 6. 验证与发布
 
 - [x] 6.1 全量测试 + ruff + OpenSpec strict + 分发/技能校验。
-- [ ] 6.2 bump minor 版本 + 全链同步 + tag + Release + 市场同步。
+- [x] 6.2 bump minor 版本 + 全链同步 + tag + Release + 市场同步。
