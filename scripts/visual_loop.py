@@ -28,6 +28,16 @@ from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
 from artifact_guard import SECRET_FIELD_NAMES
+from budget import (
+    BoundedBatchPolicy,
+    BudgetExceeded,
+    BudgetLedger,
+    ExitGovernor,
+    PerRoundPolicy,
+    Quote,
+    Reservation,
+    RoundScore,
+)
 from loop_state import (
     REMOTE_PENDING_STATES,
     LoopState,
@@ -53,13 +63,6 @@ class SecretRefused(LoopError):
 # --------------------------------------------------------------------------- #
 # Ports (6.2) — the controller depends on these and nothing else
 # --------------------------------------------------------------------------- #
-
-@dataclass(frozen=True)
-class Quote:
-    quote_id: str
-    total_max_credits: int
-    confirmable: bool
-
 
 @dataclass(frozen=True)
 class Approval:
@@ -133,33 +136,8 @@ class JudgePort(Protocol):
 
 @runtime_checkable
 class PromptRevisionPort(Protocol):
-    def propose(self, *, verdict: JudgeVerdict) -> Mapping[str, Any]: ...
-
-
-@dataclass(frozen=True)
-class BudgetLedger:
-    """Conservative accounting: a local timeout never releases a reservation."""
-
-    max_total_credits: int = 0
-    spent: int = 0
-    reserved: int = 0
-
-    def would_exceed(self, quote: Quote) -> bool:
-        return bool(self.max_total_credits) and (
-            self.spent + self.reserved + quote.total_max_credits > self.max_total_credits)
-
-
-@dataclass(frozen=True)
-class ExitPolicy:
-    """dream-loop's exit criteria expressed as data, not prose."""
-
-    min_total: float = 8.0
-
-    def decided(self, verdict: JudgeVerdict) -> str:
-        total = float(verdict.scores.get("total", 0.0))
-        if total >= self.min_total and not verdict.gaps:
-            return "completed"
-        return "revision_proposed"
+    def propose(self, *, verdict: JudgeVerdict,
+                node_id: str) -> Mapping[str, Any]: ...
 
 
 # --------------------------------------------------------------------------- #
@@ -222,7 +200,9 @@ class VisualLoopController:
     judge: JudgePort
     revision: PromptRevisionPort
     budget: BudgetLedger = field(default_factory=BudgetLedger)
-    exit_policy: ExitPolicy = field(default_factory=ExitPolicy)
+    policy: PerRoundPolicy | BoundedBatchPolicy = field(default_factory=PerRoundPolicy)
+    governor: ExitGovernor = field(default_factory=ExitGovernor)
+    reservation: Reservation | None = field(default=None, init=False)
 
     # ---- state helpers --------------------------------------------------- #
     def state(self) -> LoopState:
@@ -234,6 +214,12 @@ class VisualLoopController:
     def _persist(self, state: LoopState) -> LoopState:
         self.store.write(state)
         return state
+
+    def _settle(self, outcome: str) -> None:
+        """Settle a reservation only on a verified terminal outcome."""
+        if self.reservation is not None:
+            self.budget.settle(self.reservation, outcome=outcome)
+            self.reservation = None
 
     def request_stop(self) -> LoopState:
         """Stop prevents NEW work; it never claims a remote cancellation."""
@@ -313,10 +299,14 @@ class VisualLoopController:
             return self._result(self._persist(advance(state, "PAUSED")),
                                 node_id=node_id, required_action="fix_draft",
                                 paused=True)
-        if self.budget.would_exceed(quote):
+        try:
+            self.policy.check(self.budget, quote)
+        except BudgetExceeded:
             return self._result(self._persist(advance(state, "PAUSED")),
                                 node_id=node_id, required_action="raise_budget",
                                 paused=True)
+        # Reserved at quote acceptance; only a verified terminal settles it.
+        self.reservation = self.budget.reserve(quote)
         state = self._persist_receipt("quote", {
             "quoteId": quote.quote_id, "totalMaxCredits": quote.total_max_credits})
         return self._result(self._persist(advance(state, "AWAITING_APPROVAL")),
@@ -357,6 +347,7 @@ class VisualLoopController:
             return self._result(state, node_id=node_id, submit_id=submit_id,
                                 required_action="resume", paused=True)
         if submission.state == "rejected":
+            self._settle("failed")
             return self._result(self._persist(advance(state, "FAILED")),
                                 node_id=node_id, submit_id=submit_id,
                                 required_action="human_intervention")
@@ -371,6 +362,7 @@ class VisualLoopController:
             return self._result(state, submit_id=submit_id,
                                 required_action="resume", paused=True)
         if status.state != "completed" or not status.resource_id:
+            self._settle("failed")
             return self._result(self._persist(advance(state, "FAILED")),
                                 submit_id=submit_id,
                                 required_action="human_intervention")
@@ -379,6 +371,7 @@ class VisualLoopController:
             destination=self.store.session_dir / "rounds" / f"r{state.current_round}")
         assert_no_secrets({"resourceId": artifact.resource_id,
                            "sha256": artifact.sha256})
+        self._settle("completed")
         return self._result(self._persist(advance(state, "ARTIFACT_VERIFIED")),
                             submit_id=submit_id, resource_id=artifact.resource_id)
 
@@ -394,10 +387,27 @@ class VisualLoopController:
                            "scores": dict(verdict.scores),
                            "gaps": [dict(gap) for gap in verdict.gaps]})
         judged = self._persist(advance(state, "JUDGED"))
-        if self.exit_policy.decided(verdict) == "completed":
+        score = RoundScore(
+            round_index=state.current_round,
+            total=float(verdict.scores.get("total", 0.0)),
+            dimension_scores=dict(verdict.scores),
+            gap_keys=frozenset(
+                f"{gap.get('dimension')}:{gap.get('location')}"
+                for gap in verdict.gaps),
+            recommendation=verdict.recommendation,
+        )
+        decision = self.governor.observe(score)
+        if decision == "completed":
             return self._result(self._persist(advance(judged, "COMPLETED")),
                                 decision="completed")
-        proposal = self.revision.propose(verdict=verdict)
+        if decision == "stalled":
+            return self._result(self._persist(advance(judged, "STALLED")),
+                                decision="stalled")
+        node_id = (str(state.pending_operations[0].get("nodeId", ""))
+                   if state.pending_operations else "")
+        plan = self.revision.propose(verdict=verdict, node_id=node_id)
+        proposal = dict(plan)
+        proposal["replanRequired"] = decision == "replan_required"
         # A revision proposal is where the round ENDS. Nothing quotes or submits
         # the next round from here.
         return self._result(self._persist(advance(judged, "REVISION_PROPOSED")),

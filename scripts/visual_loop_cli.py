@@ -99,6 +99,140 @@ class _EnvApproval:
                         credit_token=token)
 
 
+def _revision_port(args: argparse.Namespace):
+    """PromptRevisionPort backed by the real prompt_revision service."""
+    from dreamina_canvas_adapter import run_dreamina_canvas
+    from visual_loop_runtime import CliPromptRevision
+
+    return CliPromptRevision(runner=run_dreamina_canvas, store=_store(args),
+                             project_id=args.project_id)
+
+
+def cmd_revise(args: argparse.Namespace) -> int:
+    """Propose a complete-block revision from a judge receipt; --apply writes it."""
+    from dreamina_canvas_adapter import run_dreamina_canvas
+    from prompt_revision import (
+        ConcurrentChange,
+        PromptRevisionService,
+        RevisionError,
+        apply_plan,
+        plan_revision,
+    )
+
+    store = _store(args)
+    state = _ensure_state(store)
+    if not state.pending_operations:
+        print(json.dumps({"ok": False,
+                          "error": "no node in session state; run a round first"}))
+        return 1
+    node_id = str(state.pending_operations[-1].get("nodeId") or "")
+    receipt_payload = json.loads(
+        Path(args.receipt).expanduser().read_text(encoding="utf-8"))
+    service = PromptRevisionService(runner=run_dreamina_canvas, store=store,
+                                    project_id=args.project_id, node_id=node_id)
+    try:
+        plan = plan_revision(service, receipt_payload,
+                             constraints={"prompt": args.constraint_prompt}
+                             if args.constraint_prompt else {},
+                             new_refs=tuple(args.new_ref or ()))
+        if not args.apply:
+            print(json.dumps({"ok": True, "applied": False, "plan": plan},
+                             ensure_ascii=False, indent=2, sort_keys=True))
+            return 0
+        receipt_path = apply_plan(service, plan)
+    except (RevisionError, ConcurrentChange) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    print(json.dumps({"ok": True, "applied": True,
+                      "receipt": str(receipt_path)}, ensure_ascii=False))
+    return 0
+
+
+def cmd_judge(args: argparse.Namespace) -> int:
+    """Mint a JudgeRequest, dispatch to a named adapter, import the verdict."""
+    from judge_adapters import (
+        CapabilityUnavailable,
+        JudgeRequestError,
+        dispatch_judge,
+    )
+
+    store = _store(args)
+    state = _ensure_state(store)
+    target_ref = next((ref for ref in state.receipt_refs
+                       if ref.get("kind") == "target"), None)
+    if target_ref is None:
+        print(json.dumps({"ok": False,
+                          "error": "lock a target first (lock-target)"}))
+        return 1
+    target_receipt = json.loads(
+        (store.session_dir / str(target_ref["ref"])).read_text(encoding="utf-8"))
+    request_path = jx.write_judge_request(
+        store, target_id=str(target_receipt["targetId"]),
+        target_sha256=str(target_receipt["sha256"]),
+        candidate_resource_id=args.candidate_resource_id,
+        candidate_sha256=args.candidate_sha256)
+    request = json.loads(Path(request_path).read_text(encoding="utf-8"))
+    if args.adapter == "human":
+        print(json.dumps({"ok": True, "adapter": "human",
+                          "request": str(request_path),
+                          "next": "produce a JudgeReceipt and run import-judge"},
+                         ensure_ascii=False))
+        return 0
+    try:
+        receipt = dispatch_judge(adapter=args.adapter, request=request,
+                                 cmd=args.cmd, target_image=args.target_image,
+                                 candidate_image=args.candidate_image)
+        receipt_path = jx.import_judge_receipt(store, receipt)
+    except (JudgeRequestError, CapabilityUnavailable, jx.JudgeExchangeError) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    print(json.dumps({"ok": True, "adapter": args.adapter,
+                      "receipt": str(receipt_path)}, ensure_ascii=False))
+    return 0
+
+
+def cmd_sample_frames(args: argparse.Namespace) -> int:
+    """Expose VideoEvidence sampling from the real FFmpeg port."""
+    from video_judge import FFmpegFrameSampler, VideoJudgeError
+
+    sampler = FFmpegFrameSampler(fps=args.fps, max_frames=args.max_frames)
+    try:
+        evidence = sampler.sample(Path(args.video).expanduser())
+    except (VideoJudgeError, OSError) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    payload = {
+        "sourceSha256": evidence.source_sha256,
+        "durationSeconds": evidence.duration_seconds,
+        "fps": evidence.fps,
+        "samplingStrategy": evidence.sampling_strategy,
+        "frames": [{"index": frame.index, "timestamp": frame.timestamp,
+                    "sha256": frame.sha256} for frame in evidence.frames],
+    }
+    print(json.dumps({"ok": True, "evidence": payload},
+                     ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
+def cmd_video_verdict(args: argparse.Namespace) -> int:
+    """Compose the still/temporal verdict (missing temporal = manual review)."""
+    from video_judge import decide_video_verdict
+
+    temporal = json.loads(args.temporal) if args.temporal else {}
+    verdict = decide_video_verdict(static_total=args.static_total,
+                                   temporal=temporal, min_total=args.min_total)
+    payload = {
+        "staticTotal": verdict.static_total,
+        "temporal": dict(verdict.temporal),
+        "overall": verdict.overall,
+        "passed": verdict.passed,
+        "reasons": list(verdict.reasons),
+    }
+    print(json.dumps({"ok": True, "verdict": payload},
+                     ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
 def cmd_step(args: argparse.Namespace) -> int:
     store = _store(args)
     state = _ensure_state(store)
@@ -137,7 +271,7 @@ def cmd_step(args: argparse.Namespace) -> int:
         artifacts=CliArtifacts(store=store, project_id=args.project_id,
                                approved_dir=Path(args.approved_root).expanduser()),
         judge=jx.PendingJudgePort(store),
-        revision=_NoRevision())
+        revision=_revision_port(args))
     result = controller.run_until_pause()
     print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2, sort_keys=True))
     return 0
@@ -154,12 +288,7 @@ def _runtime(args: argparse.Namespace):
                             project_id=args.project_id)
 
 
-class _NoRevision:
-    """Phase-1 stand-in: a revision proposal is recorded, never auto-applied."""
 
-    def propose(self, *, verdict):
-        return {"changedFields": [], "deferred": True,
-                "reason": "prompt revision lands in change section 8"}
 
 
 def cmd_status(args: argparse.Namespace) -> int:
@@ -266,6 +395,40 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("stop")
     common(p)
     p.set_defaults(func=cmd_stop)
+
+    p = sub.add_parser("revise")
+    common(p)
+    p.add_argument("--project-id", required=True)
+    p.add_argument("--receipt", required=True)
+    p.add_argument("--constraint-prompt", default="")
+    p.add_argument("--new-ref", action="append", default=[])
+    p.add_argument("--apply", action="store_true")
+    p.set_defaults(func=cmd_revise)
+
+    p = sub.add_parser("judge")
+    common(p)
+    p.add_argument("--adapter",
+                   choices=("human", "host-subagent", "design-skill",
+                            "external-mcp"),
+                   default="human")
+    p.add_argument("--cmd", default="")
+    p.add_argument("--target-image", default="")
+    p.add_argument("--candidate-image", default="")
+    p.add_argument("--candidate-resource-id", required=True)
+    p.add_argument("--candidate-sha256", required=True)
+    p.set_defaults(func=cmd_judge)
+
+    p = sub.add_parser("sample-frames")
+    p.add_argument("--video", required=True)
+    p.add_argument("--fps", type=float, default=2.0)
+    p.add_argument("--max-frames", type=int, default=32)
+    p.set_defaults(func=cmd_sample_frames)
+
+    p = sub.add_parser("video-verdict")
+    p.add_argument("--static-total", type=float, required=True)
+    p.add_argument("--temporal", default="")
+    p.add_argument("--min-total", type=float, default=8.0)
+    p.set_defaults(func=cmd_video_verdict)
     return parser
 
 

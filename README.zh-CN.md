@@ -102,18 +102,31 @@ Judge 请求/回执文件对 → 停在 `JUDGED` / `REVISION_PROPOSED`。控制�
 | 证据层级 | 视觉闭环状态 | 不能证明什么 |
 |---|---|---|
 | OpenSpec 计划 | 已实现（第 1-10 节） | 本 RC 之外的发布就绪 |
-| 单元/契约测试（307 项） | 通过 | 真实宿主行为 |
+| 单元/契约测试（331 项） | 通过 | 真实宿主行为 |
 | 真实上传 Canary | **通过**（2026-09-22） | 多轮行为 |
 | 真实付费单轮 Canary | **通过**（2026-09-22，1 积分；停在 `REVISION_PROPOSED`） | 多轮、其他账户 |
 | Windows CI（真实 runner） | **通过** | macOS/Windows GUI 宿主 |
-| 跨宿主黄金样本（Codex/Claude/ZCode/Kimi） | NOT_RUN | 跨宿主 Judge 一致性 |
+| 跨宿主黄金样本（Codex/Claude/ZCode/Kimi） | **通过**（2026-09-22，8/8 门禁；[报告](docs/verification/golden-hosts-2026-09-22.md)） | 这 4 个宿主之外的一致性 |
 | 多轮 + 修订自动应用 | 按设计未实现 | 第 1 轮之外的任何结论 |
 
-能力由活跃 OpenSpec change
+能力由已归档 OpenSpec change
 [`add-canvas-visual-quality-loop`](openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md)
 定义。确切事实见[视觉闭环基线](docs/verification/visual-loop-baseline-2026-09-21.md)、
 [上传 Canary](docs/verification/visual-loop-upload-canary-2026-09-22.md) 与
 [付费 Canary](docs/verification/visual-loop-paid-canary-2026-09-22.md)。
+
+### 库入口对照
+
+由活跃 OpenSpec change
+[`wire-library-capabilities`](openspec/changes/wire-library-capabilities/proposal.md)
+接线：
+
+| 能力 | 库 | CLI 入口 |
+|---|---|---|
+| 预算与退出治理 | `scripts/budget.py` | `step` 内部（报价占额、终态结算） |
+| 提示词修订（默认仅提案） | `scripts/prompt_revision.py` | `visual_loop_cli.py revise [--apply]` |
+| Judge 分发（human 停等 / shell 适配器） | `scripts/judge_adapters.py` | `visual_loop_cli.py judge --adapter …` |
+| 视频时序门禁 | `scripts/video_judge.py` | `visual_loop_cli.py sample-frames` / `video-verdict` |
 
 ## 架构与核心流程
 

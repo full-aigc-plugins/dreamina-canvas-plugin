@@ -100,5 +100,44 @@ class CliCase(unittest.TestCase):
         self.assertIn("lock a target", json.loads(out)["error"])
 
 
+class EntryPointsTests(CliCase):
+    """New entry points: revise / judge / sample-frames / video-verdict."""
+
+    def test_video_verdict_without_temporal_is_manual_review(self) -> None:
+        code, out = self.run_cli("video-verdict", "--static-total", "9.5")
+        self.assertEqual(code, 0, out)
+        verdict = json.loads(out)["verdict"]
+        self.assertEqual(verdict["overall"], "MANUAL_REVIEW_REQUIRED")
+        self.assertFalse(verdict["passed"])
+
+    def test_flicker_fails_even_with_perfect_stills(self) -> None:
+        code, out = self.run_cli("video-verdict", "--static-total", "10",
+                                "--temporal", json.dumps({"flicker": "fail"}))
+        self.assertEqual(code, 0, out)
+        self.assertEqual(json.loads(out)["verdict"]["overall"], "fail")
+
+    def test_sample_frames_missing_video_fails_closed(self) -> None:
+        code, out = self.run_cli("sample-frames", "--video",
+                                 str(self.ws / "nope.mp4"))
+        self.assertEqual(code, 1)
+        self.assertFalse(json.loads(out)["ok"])
+
+    def test_revise_without_a_round_fails_closed(self) -> None:
+        code, out = self.run_cli("revise", *self.base, "--project-id", SESSION,
+                                 "--receipt", str(self.ws / "x.json"))
+        self.assertEqual(code, 1)
+        self.assertIn("run a round first", json.loads(out)["error"])
+
+    def test_judge_human_mints_the_request_and_parks(self) -> None:
+        self.run_cli("lock-target", *self.base, str(self.png))
+        code, out = self.run_cli("judge", *self.base, "--adapter", "human",
+                                 "--candidate-resource-id", SESSION,
+                                 "--candidate-sha256", "b" * 64)
+        self.assertEqual(code, 0, out)
+        body = json.loads(out)
+        self.assertIn("import-judge", body["next"])
+        self.assertNotIn("scores", body)
+
+
 if __name__ == "__main__":
     unittest.main()

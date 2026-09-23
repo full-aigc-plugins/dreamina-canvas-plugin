@@ -226,6 +226,38 @@ class CliArtifacts:
                         bytes=receipt.byte_count, sha256=receipt.sha256)
 
 
+class CliPromptRevision:
+    """PromptRevisionPort backed by prompt_revision.plan_revision.
+
+    Propose-only by contract: the round's revision is a printed plan. Writing
+    the block back requires an explicit `revise --apply` (Non-goal honoured).
+    """
+
+    def __init__(self, *, runner: Runner, store: LoopStateStore,
+                 project_id: str, constraints: Mapping[str, str] | None = None,
+                 new_refs: tuple[str, ...] = ()) -> None:
+        self._runner = runner
+        self._store = store
+        self._project_id = project_id
+        self._constraints = constraints
+        self._new_refs = new_refs
+
+    def propose(self, *, verdict: Any, node_id: str) -> Mapping[str, Any]:
+        from prompt_revision import PromptRevisionService, plan_revision
+
+        service = PromptRevisionService(
+            runner=self._runner, store=self._store,
+            project_id=self._project_id, node_id=node_id)
+        receipt_like = {"judgeId": verdict.judge_id,
+                        "gaps": [dict(gap) for gap in verdict.gaps]}
+        plan = plan_revision(service, receipt_like,
+                             constraints=self._constraints,
+                             new_refs=self._new_refs)
+        plan["reasons"] = [str(gap.get("observation", ""))
+                           for gap in receipt_like["gaps"]][:20]
+        return plan
+
+
 def _now() -> str:
     from datetime import datetime, timezone
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

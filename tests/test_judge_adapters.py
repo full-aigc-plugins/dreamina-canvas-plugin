@@ -9,6 +9,7 @@ is not actually comparing.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import unittest
 from pathlib import Path
@@ -186,6 +187,43 @@ class RefusalMatrixTests(unittest.TestCase):
             "duplicate receipt": True,  # judge_exchange: one verdict per request
         }
         self.assertTrue(all(covered.values()), covered)
+
+
+class DispatchTests(unittest.TestCase):
+    """dispatch_judge routing: human parks, missing deps park, shells round-trip."""
+
+    REQUEST = ja.build_judge_request(
+        target_id="t1", target_sha256="a" * 64,
+        candidate_resource_id="res:ffeeddcc-bbaa-9988-7766-554433221100",
+        candidate_sha256="b" * 64)
+
+    def test_human_parks_without_scores(self) -> None:
+        payload = ja.dispatch_judge(adapter="human", request=self.REQUEST)
+        self.assertEqual(payload["status"], "awaiting_human")
+        self.assertNotIn("scores", payload)
+
+    def test_missing_command_is_capability_unavailable(self) -> None:
+        with self.assertRaises(ja.CapabilityUnavailable):
+            ja.dispatch_judge(adapter="external-mcp", request=self.REQUEST)
+
+    def test_host_subagent_requires_both_images(self) -> None:
+        with self.assertRaises(ja.JudgeRequestError):
+            ja.dispatch_judge(adapter="host-subagent", request=self.REQUEST,
+                              cmd="true", target_image="t.png")
+
+    @unittest.skipIf(os.name == "nt", "shlex bridge is POSIX-shaped")
+    def test_external_mcp_round_trips_through_a_shell_command(self) -> None:
+        inner = ("import json, sys; r = json.load(sys.stdin); "
+                 "print(json.dumps({'requestId': r['requestId'], "
+                 "'target': r['target'], 'candidate': r['candidate'], "
+                 "'verdict': {'overall': 'pass', 'scores': {'total': 9.0}, "
+                 "'gaps': [], 'recommendation': 'accept'}}))")
+        out = ja.dispatch_judge(
+            adapter="external-mcp", request=self.REQUEST,
+            cmd=f"{sys.executable} -c {json.dumps(inner)}")
+        self.assertEqual(out["requestId"], self.REQUEST["requestId"])
+        self.assertEqual(out["target"]["sha256"], "a" * 64)
+        self.assertEqual(out["candidate"]["sha256"], "b" * 64)
 
 
 if __name__ == "__main__":

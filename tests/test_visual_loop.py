@@ -20,6 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
+import budget as bg
 import visual_loop as vl
 from loop_state import LoopStateStore
 
@@ -118,7 +119,7 @@ class FakeRevision:
     def __init__(self) -> None:
         self.calls = 0
 
-    def propose(self, *, verdict):
+    def propose(self, *, verdict, node_id=None):
         self.calls += 1
         return {"changedFields": ["prompt"], "reason": verdict.recommendation}
 
@@ -253,7 +254,9 @@ class PauseAndBudgetTests(ControllerCase):
 
     def test_budget_ceiling_pauses_before_approval(self) -> None:
         controller, parts = self.controller(
-            budget=vl.BudgetLedger(max_total_credits=10))
+            budget=bg.BudgetLedger(),
+            policy=bg.BoundedBatchPolicy(
+                max_rounds=10, max_total_credits=10, max_per_round=1000))
         result = self.drive(controller, approve_after=1, judge_after=1)[-1]
         self.assertEqual(result.state, "PAUSED")
         self.assertEqual(result.required_action, "raise_budget")
@@ -364,6 +367,40 @@ class SafetyTests(ControllerCase):
         result = controller.run_until_pause()
         self.assertEqual(result.required_action, "register_target")
         self.assertEqual(parts["runtime"].draft_calls, 0)
+
+
+class BudgetUnificationTests(ControllerCase):
+    """One Quote type, conservative accounting, critical gates (9.1-9.5)."""
+
+    def test_the_quote_type_is_unified(self) -> None:
+        self.assertIs(vl.Quote, bg.Quote)
+
+    def test_a_passed_quote_reserves_its_credits(self) -> None:
+        ledger = bg.BudgetLedger()
+        controller, _parts = self.controller(budget=ledger)
+        result = controller.run_until_pause()
+        self.assertEqual(result.state, "AWAITING_APPROVAL")
+        self.assertEqual(ledger.reserved, 40)
+
+    def test_a_critical_dimension_gate_blocks_completion(self) -> None:
+        controller, parts = self.controller(
+            judge=verdict(total=9.5),
+            governor=bg.ExitGovernor(critical_dimension_minimums={"details": 0.5}))
+        final = self.drive(controller, approve_after=1, judge_after=1)[-1]
+        self.assertEqual(final.state, "REVISION_PROPOSED")
+        self.assertEqual(parts["revision"].calls, 1)
+
+    def test_a_verified_failure_releases_the_reservation(self) -> None:
+        ledger = bg.BudgetLedger()
+        controller, _parts = self.controller(
+            budget=ledger,
+            execution=FakeExecution(statuses=[
+                vl.RemoteStatus(submit_id="", state="failed")]),
+            judge=verdict(total=9.0))
+        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA)
+        self.assertEqual(controller.run_until_pause().state, "AWAITING_APPROVAL")
+        self.assertEqual(controller.run_until_pause().state, "FAILED")
+        self.assertEqual((ledger.spent, ledger.reserved, ledger.unknown), (0, 0, 0))
 
 
 if __name__ == "__main__":

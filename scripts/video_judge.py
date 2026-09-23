@@ -18,10 +18,11 @@ import json
 import shutil
 import subprocess
 import tempfile
+from abc import ABC, abstractmethod
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 
 TEMPORAL_GATES = ("flicker", "subject_drift", "motion_continuity",
                   "camera_motion", "pacing", "av_sync")
@@ -53,11 +54,14 @@ class VideoEvidence:
     frames: Sequence[FrameSample]
 
 
-class FrameSamplerPort(Protocol):
+class FrameSamplerPort(ABC):
+    """Explicit nominal port: implementations inherit this base."""
+
+    @abstractmethod
     def sample(self, video_path: Path) -> VideoEvidence: ...
 
 
-class FFmpegFrameSampler:
+class FFmpegFrameSampler(FrameSamplerPort):
     """Optional adapter: present only when `ffmpeg` exists on the host."""
 
     def __init__(self, *, fps: float = 2.0, max_frames: int = 32,
@@ -182,11 +186,14 @@ def decide_video_verdict(*, static_total: float | None,
     return VideoJudgeVerdict(static_total, temporal, overall, reasons)
 
 
-class TemporalGateEvaluator(Protocol):
+class TemporalGateEvaluator(ABC):
+    """Explicit nominal port: implementations inherit this base."""
+
+    @abstractmethod
     def evaluate(self, evidence: VideoEvidence) -> Mapping[str, str]: ...
 
 
-class DegradedTemporalEvaluator:
+class DegradedTemporalEvaluator(TemporalGateEvaluator):
     """The honest fallback: without a temporal analyzer, nothing is claimed."""
 
     def evaluate(self, evidence: VideoEvidence) -> Mapping[str, str]:

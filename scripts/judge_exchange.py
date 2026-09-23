@@ -55,13 +55,6 @@ def _next_path(directory: Path, prefix: str) -> Path:
     return directory / f"{prefix}-{len(list(directory.glob(f'{prefix}-*.json')))}.json"
 
 
-def _append_ref(store: LoopStateStore, state: LoopState, kind: str,
-                relative: str) -> LoopState:
-    refs = tuple(state.receipt_refs) + ({"kind": kind, "ref": relative},)
-    return store.write(replace(state, receipt_refs=refs)) or replace(
-        state, receipt_refs=refs)
-
-
 def current_request_path(store: LoopStateStore) -> Path | None:
     """The latest judge request recorded in the state, if any."""
     state = store.read()

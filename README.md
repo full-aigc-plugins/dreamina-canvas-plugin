@@ -104,19 +104,31 @@ second round on its own. Host entry: `scripts/visual_loop_cli.py`.
 | Evidence layer | Visual-loop status | What it does not prove |
 |---|---|---|
 | OpenSpec plan | Implemented (sections 1-10) | Release readiness beyond this RC |
-| Unit/contract tests (307) | Passing | Real-host behaviour |
+| Unit/contract tests (331) | Passing | Real-host behaviour |
 | Real target upload canary | **PASS** (2026-09-22) | Multi-round behaviour |
 | Real paid single-round canary | **PASS** (2026-09-22, 1 credit; stopped at `REVISION_PROPOSED`) | Multi-round, other accounts |
 | Windows CI (real runner) | **PASS** | macOS/Windows GUI hosts |
-| Cross-host golden samples (Codex/Claude/ZCode/Kimi) | NOT_RUN | Cross-host judge consistency |
+| Cross-host golden samples (Codex/Claude/ZCode/Kimi) | **PASS** (2026-09-22, 8/8 gates; [report](docs/verification/golden-hosts-2026-09-22.md)) | Consistency beyond these 4 hosts |
 | Multi-round + prompt-revision auto-apply | Not implemented by design | Anything beyond round 1 |
 
-Specified by the active OpenSpec change
+Specified by the archived OpenSpec change
 [`add-canvas-visual-quality-loop`](openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md).
 See the [visual-loop baseline](docs/verification/visual-loop-baseline-2026-09-21.md),
 the [upload canary](docs/verification/visual-loop-upload-canary-2026-09-22.md) and
 the [paid canary](docs/verification/visual-loop-paid-canary-2026-09-22.md) for the
 exact facts.
+
+### Library entry points
+
+Wired by the active OpenSpec change
+[`wire-library-capabilities`](openspec/changes/wire-library-capabilities/proposal.md):
+
+| Capability | Library | CLI entry |
+|---|---|---|
+| Budget + exit governance | `scripts/budget.py` | inside `step` (quote reserves, terminal outcome settles) |
+| Prompt revision (propose-only by default) | `scripts/prompt_revision.py` | `visual_loop_cli.py revise [--apply]` |
+| Judge dispatch (human parks / shell adapters) | `scripts/judge_adapters.py` | `visual_loop_cli.py judge --adapter …` |
+| Video temporal gate | `scripts/video_judge.py` | `visual_loop_cli.py sample-frames` / `video-verdict` |
 
 ## Architecture and core flow
 

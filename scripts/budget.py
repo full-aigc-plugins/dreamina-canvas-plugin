@@ -20,7 +20,15 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
 
-from visual_loop import Quote
+
+@dataclass(frozen=True)
+class Quote:
+    quote_id: str
+    total_max_credits: int
+    confirmable: bool
+
+
+BudgetPolicy = "PerRoundPolicy | BoundedBatchPolicy"
 
 
 class BudgetExceeded(Exception):

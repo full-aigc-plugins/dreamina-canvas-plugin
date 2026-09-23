@@ -186,5 +186,64 @@ class ApplyTests(unittest.TestCase):
         self.assertNotIn("reasoning", receipt_text.lower())
 
 
+class PlanApplyTests(unittest.TestCase):
+    """revise entry seam: propose-only by default, apply writes a receipt."""
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.approved = Path(self._tmp.name) / "workspace"
+        self.approved.mkdir()
+        self.store = LoopStateStore(root=self.approved / ".loop", session_id=SESSION)
+        self.addCleanup(self._tmp.cleanup)
+
+    def service(self, results: list) -> pr.PromptRevisionService:
+        class R:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def __call__(self, argv, **kw):
+                if not self.items:
+                    raise AssertionError(f"unexpected call {argv[:4]}")
+                return self.items.pop(0)
+
+        return pr.PromptRevisionService(runner=R(results), store=self.store,
+                                        project_id=SESSION, node_id=NODE)
+
+    def test_plan_is_propose_only_and_rebuilds_the_full_block(self) -> None:
+        service = self.service([view(3, BASE_BLOCK)])
+        plan = pr.plan_revision(service, {
+            "judgeId": SESSION,
+            "gaps": [{"dimension": "lighting", "location": "face",
+                      "observation": "key light reversed",
+                      "fixHint": "key light from upper-left 30 degrees"}]})
+        self.assertFalse(plan["applied"])
+        self.assertEqual(plan["changedFields"], ["prompt"])
+        for key, value in BASE_BLOCK.items():
+            if key != "prompt":
+                self.assertEqual(plan["resultBlock"][key], value, key)
+        self.assertIn("key light", plan["resultBlock"]["prompt"])
+
+    def test_apply_plan_writes_a_prompt_revision_receipt(self) -> None:
+        service = self.service([
+            view(3, BASE_BLOCK),
+            view(3, BASE_BLOCK),
+            view(3, BASE_BLOCK),
+            envelope({"node": {"nodeId": NODE, "mutationVersion": "4"}}),
+        ])
+        plan = pr.plan_revision(service, {
+            "judgeId": SESSION,
+            "gaps": [{"dimension": "lighting", "location": "face",
+                      "observation": "x", "fixHint": "key light upper-left"}]})
+        receipt = pr.apply_plan(service, plan)
+        self.assertTrue(receipt.is_file())
+
+    def test_gap_without_a_fix_hint_is_refused(self) -> None:
+        service = self.service([view(3, BASE_BLOCK)])
+        with self.assertRaises(pr.RevisionError):
+            pr.plan_revision(service, {
+                "gaps": [{"dimension": "details", "location": "x",
+                          "observation": "y", "fixHint": ""}]})
+
+
 if __name__ == "__main__":
     unittest.main()

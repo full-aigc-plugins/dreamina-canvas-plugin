@@ -22,6 +22,9 @@ wrong by construction.
 
 from __future__ import annotations
 
+import json
+import shlex
+import subprocess
 import uuid
 from collections.abc import Callable, Mapping
 from pathlib import Path
@@ -144,6 +147,67 @@ class HumanJudgeAdapter:
 
     def pending(self) -> JudgeVerdict | None:
         return None
+
+
+def make_shell_judge(cmd: str, *, pass_image_paths: bool = False) -> Callable[..., dict]:
+    """Host-neutral bridge: request JSON on stdin, verdict JSON on stdout.
+
+    The host supplies `cmd`; the plugin never imports a host SDK (JudgePort
+    discipline). `pass_image_paths` appends the target/candidate paths as argv
+    for adapters whose contract is (request, target_path, candidate_path).
+    """
+    tokens = shlex.split(cmd)
+
+    def invoke(*args: Any) -> dict:
+        request = args[0]
+        argv = list(tokens)
+        if pass_image_paths:
+            argv += [str(a) for a in args[1:3] if a is not None]
+        proc = subprocess.run(argv, input=json.dumps(request),
+                              capture_output=True, text=True,
+                              timeout=120, check=False)
+        if proc.returncode != 0:
+            raise JudgeRequestError(
+                f"judge command failed: exit {proc.returncode}")
+        try:
+            return json.loads(proc.stdout)
+        except json.JSONDecodeError as exc:
+            raise JudgeRequestError("judge command did not return JSON") from exc
+
+    return invoke
+
+
+def dispatch_judge(*, adapter: str, request: Mapping[str, Any],
+                   cmd: str | None = None,
+                   target_image: str | None = None,
+                   candidate_image: str | None = None) -> dict:
+    """Route one request to a named adapter. Human parks; the rest bridge.
+
+    The returned payload is a JudgeReceipt-shaped dict — the caller must run it
+    through `judge_exchange.import_judge_receipt` before any consumer trusts it.
+    """
+    if adapter == "human":
+        return {"status": "awaiting_human",
+                "note": "produce a JudgeReceipt and run import-judge"}
+    if not cmd:
+        raise CapabilityUnavailable(
+            f"adapter {adapter!r} requires --cmd; the round stays paused")
+    if adapter == "host-subagent":
+        if not (target_image and candidate_image):
+            raise JudgeRequestError(
+                "host-subagent requires --target-image and --candidate-image")
+        return HostSubagentJudgeAdapter(
+            invoke=make_shell_judge(cmd, pass_image_paths=True),
+            target_path=Path(target_image),
+            candidate_path=Path(candidate_image),
+        ).evaluate(request)
+    if adapter == "design-skill":
+        return DreaminaDesignSkillJudgeAdapter(
+            skill_runner=make_shell_judge(cmd)).evaluate(request)
+    if adapter == "external-mcp":
+        return ExternalMcpJudgeAdapter(
+            server=make_shell_judge(cmd)).evaluate(request)
+    raise JudgeRequestError(f"unknown adapter: {adapter!r}")
 
 
 def _utc_now() -> str:

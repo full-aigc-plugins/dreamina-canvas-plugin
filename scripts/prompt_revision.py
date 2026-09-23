@@ -263,6 +263,51 @@ class PromptRevisionService:
         return path
 
 
+def gaps_from_dicts(raw: Sequence[Mapping[str, Any]]) -> list[VerifiedGap]:
+    """JudgeReceipt gap entries → VerifiedGap (the only change driver)."""
+    out: list[VerifiedGap] = []
+    for entry in raw:
+        out.append(VerifiedGap(
+            dimension=str(entry.get("dimension", "")),
+            location=str(entry.get("location", "")),
+            observation=str(entry.get("observation", "")),
+            fix_hint=str(entry.get("fixHint") or entry.get("fix_hint") or "")))
+    return out
+
+
+def plan_revision(service: PromptRevisionService,
+                  receipt_payload: Mapping[str, Any], *,
+                  constraints: Mapping[str, str] | None = None,
+                  new_refs: Sequence[str] = ()) -> dict:
+    """Build a COMPLETE-block proposal from a judge receipt — propose only."""
+    base_version, base = service.read_live_block()
+    gaps = gaps_from_dicts(receipt_payload.get("gaps") or ())
+    result = propose_revision(base, gaps=gaps,
+                              constraints=dict(constraints or {}),
+                              new_refs=tuple(new_refs))
+    changed = fidelity_check(base, result)
+    block = {k: v for k, v in result.items() if k != "__changedFields"}
+    return {
+        "baseMutationVersion": base_version,
+        "changedFields": changed,
+        "resultBlock": block,
+        "resultFingerprint": fingerprint(block),
+        "judgeReceiptId": receipt_payload.get("judgeId"),
+        "applied": False,
+    }
+
+
+def apply_plan(service: PromptRevisionService, plan: Mapping[str, Any]) -> Path:
+    """Apply a previously printed plan. Concurrent change re-checks live."""
+    _, base = service.read_live_block()
+    result_block = dict(plan["resultBlock"])
+    # The plan strips __changedFields for printing; the receipt needs it back.
+    result_block["__changedFields"] = list(plan.get("changedFields", []))
+    return service.apply(base_version=int(plan["baseMutationVersion"]),
+                         base_block=base,
+                         result_block=result_block)
+
+
 def _utc_now() -> str:
     from datetime import datetime, timezone
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
