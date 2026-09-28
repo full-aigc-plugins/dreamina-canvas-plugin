@@ -20,6 +20,32 @@ present the compatibility overlay is replaced rather than combined. Both
 therefore carry a complete, identical interface block, and
 `tests/test_portable_parity.py` fails the build if they ever drift.
 
+## Client coverage
+
+`skills/` and `mcp.json` are the portable component types, so **every client in
+the [Agent Plugins registry](https://agent-plugins.org/compatible-clients) loads
+this package with no client-specific work**: VS Code, Cursor, GitHub Copilot,
+ChatGPT & Codex, Kiro, Hermes Agent, OpenClaw, Grok Bot, NanoClaw and OpenHands.
+
+Commands, agents and hooks are explicitly *not* portable, so a client reads them
+from the extension directory it owns (§8.2). This package mirrors accordingly:
+
+- `com.github.copilot/` — `hooks/` for VS Code and GitHub Copilot (they share
+  this namespace)
+- `dev.openhands/` — `commands/`, `hooks/` for OpenHands
+- `extensions["com.openai"]` — manifest data for ChatGPT & Codex
+
+The root `commands/` and `hooks/` directories are kept unchanged, so the Codex,
+ZCode and Kimi channels keep working. `scripts/validate_portable_plugin.py`
+fails if a mirror drifts from its root copy.
+
+> **OpenClaw precedence.** OpenClaw checks for a client-specific bundle marker
+> (`.codex-plugin/`) before a root `plugin.json`, and treats the client-specific
+> format as winning so its richer mappings survive. This package ships both, so
+> OpenClaw loads it as a Codex bundle — which keeps its commands and hooks
+> working — rather than as an Agent Plugins bundle. Removing `.codex-plugin/`
+> would change that and break the Codex channel, so it stays.
+
 ## Layout rules honoured
 
 - `plugin.json`, `skills/`, `assets/` all live at the package root.
@@ -85,8 +111,8 @@ The four criteria in the original migration plan are all satisfied:
    materialises with `plugin.json` present, all thirteen Skills discovered,
    and only `dreamina-canvas-use` implicitly invokable. See
    `docs/verification/fresh-installation.md`.
-4. **Identity unchanged** — still `dreamina-canvas`; the current
-   compatibility patch version is `0.1.2`.
+4. **Identity unchanged** — still `dreamina-canvas`; the current base version is
+   `0.3.0`, with `0.3.0+codex.20260923` in the compatibility manifest.
 
 ## Known drift to watch
 

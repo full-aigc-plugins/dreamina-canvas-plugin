@@ -44,6 +44,9 @@
         "logoDark": "./assets/official-logo.png",
         "screenshots": []
       }
+    },
+    "ai.nanoco.nanoclaw": {
+      "agentName": "Dreamina Canvas"
     }
   }
 }
