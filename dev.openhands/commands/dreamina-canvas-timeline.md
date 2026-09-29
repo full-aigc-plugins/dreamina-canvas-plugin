@@ -1,9 +1,9 @@
 ---
-description: 构建/编辑画布时间线（视觉与音频轨道）。
-argument-hint: "[时间线编排]"
-skills: dreamina-canvas-manage-timeline
+description: 编排时间轴轨道、替换剪辑与音轨。
+argument-hint: "[要调整的轨道或片段]"
+skills: dreamina-canvas-cli
 ---
 
-Use the `dreamina-canvas-manage-timeline` skill for this request:
+Use the `dreamina-canvas-cli` skill 的 `references/timeline.md` 处理时间轴编排，参数契约见 `references/timeline-timeline-contract.md`：
 
 $ARGUMENTS

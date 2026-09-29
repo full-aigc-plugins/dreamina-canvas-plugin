@@ -1,5 +1,12 @@
 # Dreamina Canvas CLI runtime evidence
 
+> **Superseded (plugin 0.4.0, 2026-09-29).** This record covers the pre-0.4.0 Skill layout, pinned to the
+> upstream SHA recorded below. The upstream consolidation retired those Skills into
+> operation references under the nine `dreamina-canvas-cli*` entries. Current evidence:
+> [`consolidated-nine-entries.md`](consolidated-nine-entries.md). This file is kept as
+> the historical record for its version and must not be read as current state.
+
+
 Read-only evidence captured after the dreamina-canvas binary was installed
 to `/Users/wandl/.local/bin/dreamina-canvas`. No login was performed; no paid
 generation was attempted. `auth account` was not invoked because the active

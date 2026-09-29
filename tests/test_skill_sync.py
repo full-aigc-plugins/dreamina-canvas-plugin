@@ -20,7 +20,8 @@ class SkillSyncTests(unittest.TestCase):
             lock["repository"],
             "https://github.com/full-aigc-skills/dreamina-skills",
         )
-        self.assertEqual(len(lock["skills"]), 13)
+        # Nine CLI entries plus the implicit orchestrator (2026-09-29)
+        self.assertEqual(len(lock["skills"]), 10)
         # Every packaged skill must have a non-empty file list
         for name, files in lock["skills"].items():
             self.assertGreater(len(files), 0, name)

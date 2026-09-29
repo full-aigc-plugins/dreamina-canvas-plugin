@@ -24,7 +24,7 @@ def _flat(plan) -> str:
 class AtomicSkillScenarios(unittest.TestCase):
     def test_exit_20_routes_to_resume_not_run(self) -> None:
         plan = evaluate_skill(
-            "dreamina-canvas-resume-operation", fixture="resume-required.json"
+            "dreamina-canvas-cli", fixture="resume-required.json"
         )
         self.assertTrue(any("operation wait" in " ".join(c) for c in plan))
         for cmd in plan:
@@ -35,23 +35,23 @@ class AtomicSkillScenarios(unittest.TestCase):
         # Without auth fixture the skill should not produce any plan;
         # the auth Skill distinguishes auth status (local) from auth
         # account (server) and never assumes one implies the other.
-        plan = evaluate_skill("dreamina-canvas-auth")
+        plan = evaluate_skill("dreamina-canvas-cli-auth")
         self.assertEqual(plan, [])
 
     def test_out_of_catalog_model_rejected(self) -> None:
         # The discover-models Skill never recommends or accepts a model
         # not in the live discovery payload; with no fixture (i.e. no
         # discovery has been run) the plan is empty.
-        plan = evaluate_skill("dreamina-canvas-discover-models")
+        plan = evaluate_skill("dreamina-canvas-cli")
         self.assertEqual(plan, [])
 
     def test_concurrent_canvas_creation(self) -> None:
-        plan = evaluate_skill("dreamina-canvas-create")
+        plan = evaluate_skill("dreamina-canvas-cli")
         self.assertEqual(plan, [])
 
     def test_exit_10_approval_pause(self) -> None:
         plan = evaluate_skill(
-            "dreamina-canvas-quote-and-run", fixture="confirm-required.json"
+            "dreamina-canvas-cli", fixture="confirm-required.json"
         )
         # No paid command is issued; the plan is empty until the user
         # supplies an explicit ceiling or token.
@@ -60,7 +60,7 @@ class AtomicSkillScenarios(unittest.TestCase):
 
     def test_verified_download_receipt(self) -> None:
         plan = evaluate_skill(
-            "dreamina-canvas-download-assets", fixture="success.json"
+            "dreamina-canvas-cli", fixture="download-receipt.json"
         )
         self.assertTrue(any("shasum" in " ".join(c) for c in plan))
 

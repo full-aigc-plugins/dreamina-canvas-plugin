@@ -1,9 +1,9 @@
 ---
-description: 生成/运行画布音频节点（TTS/音乐）。
-argument-hint: "[音频节点要求]"
-skills: dreamina-canvas-generate-audio
+description: 文本转语音（tts）：用选定音色生成旁白。
+argument-hint: "[旁白文本与音色偏好]"
+skills: dreamina-canvas-cli-text2voice
 ---
 
-Use the `dreamina-canvas-generate-audio` skill for this request:
+Use the `dreamina-canvas-cli-text2voice` skill for this request:
 
 $ARGUMENTS

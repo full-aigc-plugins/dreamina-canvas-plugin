@@ -1,5 +1,12 @@
 # Canvas Skill TRACE evaluation
 
+> **Superseded (plugin 0.4.0, 2026-09-29).** This record covers the thirteen-Skill atom layout, pinned to the
+> upstream SHA recorded below. The upstream consolidation retired those Skills into
+> operation references under the nine `dreamina-canvas-cli*` entries. Current evidence:
+> [`consolidated-nine-entries.md`](consolidated-nine-entries.md). This file is kept as
+> the historical record for its version and must not be read as current state.
+
+
 Evaluator: `skill-trace-evaluation/scripts/trace_evaluate.py` (static base
 score + evidence packet). Each of the thirteen Canvas Skills was evaluated
 **separately**; no aggregate score is used as evidence for any individual

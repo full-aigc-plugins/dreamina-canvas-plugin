@@ -4,7 +4,7 @@
 >
 > | Field | Value |
 > |---|---|
-> | Status | Core contract, the visual single-round loop, and the library wiring released as `0.3.0` (paid one-round canary + 8/8 cross-host golden samples passed 2026-09-22); multi-round pending |
+> | Status | `0.4.0` re-vendors the consolidated upstream: nine `dreamina-canvas-cli*` entries plus the implicit `dreamina-canvas-use`, with 12 atom Skills retired into operation references (2026-09-29). The visual single-round loop and library wiring are carried forward unchanged from `0.3.0`, whose paid one-round canary and 8/8 cross-host golden samples passed 2026-09-22; multi-round pending |
 > | Scope | The cross-host plugin's CLI adapter, guards, ledger, Skills, and the planned visual-loop extension |
 > | Audience | Plugin maintainers, security reviewers, and integration engineers |
 > | Out of scope | The Dreamina Canvas service itself, the CLI's internals, and the upstream Skill library |

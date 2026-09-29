@@ -1,5 +1,12 @@
 # Fresh Codex installation discovery evidence
 
+> **Superseded (plugin 0.4.0, 2026-09-29).** This record covers the pre-0.4.0 Skill layout, pinned to the
+> upstream SHA recorded below. The upstream consolidation retired those Skills into
+> operation references under the nine `dreamina-canvas-cli*` entries. Current evidence:
+> [`consolidated-nine-entries.md`](consolidated-nine-entries.md). This file is kept as
+> the historical record for its version and must not be read as current state.
+
+
 Executed under explicit user authorization as the final acceptance gate of
 the implementation plan.
 

@@ -1,0 +1,11 @@
+{
+ "schemaVersion": "1",
+ "ok": true,
+ "data": {
+  "resource": {
+   "resourceId": "res_a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+   "sha256": "0f1e2d3c4b5a69788796a5b4c3d2e1f00f1e2d3c4b5a69788796a5b4c3d2e1f0",
+   "bytes": 204800
+  }
+ }
+}

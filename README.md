@@ -6,7 +6,7 @@
 
 > Build, quote, and run structured Dreamina canvases from your supported coding agent — with the free and paid steps kept apart.
 
-[![Version](https://img.shields.io/badge/version-0.3.0-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.3.0)
+[![Version](https://img.shields.io/badge/version-0.4.0-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.4.0)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Operation contract](#operation-contract) · [Troubleshooting](#troubleshooting)
@@ -57,7 +57,7 @@ Canvas project + verified local assets
 |---|---|
 | Plugin ID | `dreamina-canvas` |
 | Host | Codex CLI or ChatGPT desktop app |
-| Current version | `0.3.0` |
+| Current version | `0.4.0` |
 | Plugin manifest | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
 | MCP configuration | none — the plugin drives the local CLI through Skills |
 | Primary language | Python 3.11+ |
@@ -157,12 +157,13 @@ flowchart LR
 | `scripts/approval_guard.py` | Quote binding, credit ceiling, replay rejection | Cost estimation |
 | `scripts/artifact_guard.py` | Download verification and receipts | Remote object lifetime |
 | `scripts/error_router.py` | Mapping CLI exit codes to typed next actions | Retry execution |
-| `skills/` (14) | Routing and per-capability instructions for supported hosts | Runtime enforcement |
+| `skills/` (11) | Routing and per-capability instructions for supported hosts | Runtime enforcement |
 
 ## Compatibility
 
 | Plugin version | Host | CLI | Python | Status |
 |---|---|---|---|---|
+| `0.4.0` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Upstream consolidation: nine `dreamina-canvas-cli*` entries plus the implicit `dreamina-canvas-use`; 12 atom Skills retired into operation references; command surface re-pointed (2026-09-29) |
 | `0.3.0` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Library wiring (`revise`/`judge`/`sample-frames`/`video-verdict`) + budget unification; cross-host golden samples 8/8 PASS (2026-09-22); multi-round pending |
 | `0.2.0` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Visual single-round controller: real paid one-round canary passed (2026-09-22, 1 credit); multi-round and cross-host golden runs pending |
 
@@ -173,7 +174,7 @@ CLI runtime, version, command compatibility, explicitly authorized account authe
 ### From the plugin marketplace
 
 ```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.3.0
+codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.4.0
 codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 
@@ -357,7 +358,7 @@ partme-dreamina-canvas/
 ├── plugin.json                 # portable manifest
 ├── .agents/plugins/marketplace.json
 ├── scripts/                    # adapter, ledger, guards, validators
-├── skills/                     # 13 canvas Skills
+├── skills/                     # 10 vendored canvas Skills + dreamina-canvas-harness
 ├── tests/                      # unit tests plus scenario tests
 ├── upstream/                   # pinned upstream snapshot and lock file
 └── docs/                       # architecture, technical solution, verification

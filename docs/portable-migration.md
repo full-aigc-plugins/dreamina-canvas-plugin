@@ -108,11 +108,11 @@ The four criteria in the original migration plan are all satisfied:
    gate confirm tampering is caught.
 3. **Fresh local installation** — performed via the Codex CLI
    (`codex plugin add dreamina-canvas@personal`); the plugin
-   materialises with `plugin.json` present, all thirteen Skills discovered,
+   materialises with `plugin.json` present, all ten vendored Skills discovered,
    and only `dreamina-canvas-use` implicitly invokable. See
    `docs/verification/fresh-installation.md`.
 4. **Identity unchanged** — still `dreamina-canvas`; the current base version is
-   `0.3.0`, with `0.3.0+codex.20260923` in the compatibility manifest.
+   `0.4.0`, with `0.4.0+codex.20260929` in the compatibility manifest.
 
 ## Known drift to watch
 

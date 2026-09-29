@@ -19,18 +19,17 @@ DOWNSTREAM_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LOCK = DOWNSTREAM_ROOT / "upstream" / "dreamina-skills.lock.json"
 
 CANVAS_SKILLS = [
+    # Nine stable CLI entry skills (2026-09-29 consolidate-canvas-cli-atoms)
     "dreamina-canvas-cli",
-    "dreamina-canvas-auth",
-    "dreamina-canvas-discover-models",
-    "dreamina-canvas-create",
-    "dreamina-canvas-compose",
-    "dreamina-canvas-generate-image",
-    "dreamina-canvas-generate-video",
-    "dreamina-canvas-generate-audio",
-    "dreamina-canvas-manage-timeline",
-    "dreamina-canvas-quote-and-run",
-    "dreamina-canvas-resume-operation",
-    "dreamina-canvas-download-assets",
+    "dreamina-canvas-cli-setup",
+    "dreamina-canvas-cli-auth",
+    "dreamina-canvas-cli-text2image",
+    "dreamina-canvas-cli-image2image",
+    "dreamina-canvas-cli-text2video",
+    "dreamina-canvas-cli-ref2video",
+    "dreamina-canvas-cli-text2voice",
+    "dreamina-canvas-cli-text2audio",
+    # The single implicit orchestrator
     "dreamina-canvas-use",
 ]
 

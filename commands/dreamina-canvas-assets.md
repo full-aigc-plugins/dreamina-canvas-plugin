@@ -1,9 +1,9 @@
 ---
-description: 校验生成资源就绪并下载。
-argument-hint: "[要下载的资源]"
-skills: dreamina-canvas-download-assets
+description: 上传本地素材、查询素材状态并把素材放到画布上。
+argument-hint: "[素材路径或素材问题]"
+skills: dreamina-canvas-cli
 ---
 
-Use the `dreamina-canvas-download-assets` skill for this request:
+Use the `dreamina-canvas-cli` skill 的 `references/resources.md` 处理素材上传与下载，串联准备流程见 `references/preparation.md`：
 
 $ARGUMENTS

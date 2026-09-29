@@ -1,9 +1,9 @@
 ---
-description: 按操作账本恢复中断的画布异步作业。
-argument-hint: "[作业 ID 或账本]"
-skills: dreamina-canvas-resume-operation
+description: 查询、等待或恢复已提交的任务。
+argument-hint: "[submitId 或需要恢复的描述]"
+skills: dreamina-canvas-cli
 ---
 
-Use the `dreamina-canvas-resume-operation` skill for this request:
+Use the `dreamina-canvas-cli` skill 的 `references/recovery.md` 处理任务查询与恢复，状态机见 `references/recovery-recovery-state-machine.md`：
 
 $ARGUMENTS

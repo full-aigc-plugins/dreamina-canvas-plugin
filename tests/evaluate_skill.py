@@ -42,7 +42,7 @@ def evaluate_skill(skill: str, fixture: str | None = None) -> Plan:
     error = payload.get("error") if isinstance(payload, dict) else None
     if error is None:
         # success envelope — Skills that own save/list still surface next steps
-        return _handle_success(skill)
+        return _handle_success(skill, payload)
     required = error.get("requiredAction")
     code = error.get("code")
     if required == "resume":
@@ -123,9 +123,21 @@ def _none_plan(code: str | None) -> Plan:
     return plan
 
 
-def _handle_success(skill: str) -> Plan:
-    """Skills that own success envelopes emit confirmation commands."""
-    if skill == "dreamina-canvas-download-assets":
+def _handle_success(skill: str, payload: dict | None = None) -> Plan:
+    """A resource/download receipt emits the SHA-256 verification command.
+
+    Since the 2026-09-29 consolidation the download operation belongs to the
+    public CLI Skill, so the skill name alone can no longer disambiguate it.
+    The envelope itself is the signal: only a receipt carrying a resource id
+    or a server-side digest means "verify the downloaded bytes".
+    """
+    data = (payload or {}).get("data") if isinstance(payload, dict) else None
+    data = data if isinstance(data, dict) else {}
+    receipt = any(
+        key in data or key in json.dumps(data, ensure_ascii=False)
+        for key in ("resourceId", "sha256")
+    )
+    if receipt:
         plan = Plan(
             [
                 [
