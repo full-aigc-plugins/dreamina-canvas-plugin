@@ -6,7 +6,7 @@
 
 > 在受支持的编码智能体中构建、报价并运行结构化的 Dreamina 画布——免费步骤与付费步骤严格分离。
 
-[![版本](https://img.shields.io/badge/version-0.4.0-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.4.0)
+[![版本](https://img.shields.io/badge/version-0.4.1-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.4.1)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [安装](#安装) · [快速开始](#快速开始) · [操作契约](#操作契约) · [故障排查](#故障排查)
@@ -57,7 +57,7 @@
 |---|---|
 | 插件 ID | `dreamina-canvas` |
 | 宿主 | Codex CLI 或 ChatGPT 桌面应用 |
-| 当前版本 | `0.4.0` |
+| 当前版本 | `0.4.1` |
 | 插件清单 | `.codex-plugin/plugin.json`（兼容）与 `plugin.json`（便携） |
 | MCP 配置 | 无——插件通过 Skills 驱动本地 CLI |
 | 主要语言 | Python 3.11+ |
@@ -161,6 +161,7 @@ flowchart LR
 
 | 插件版本 | 宿主 | CLI | Python | 状态 |
 |---|---|---|---|---|
+| `0.4.1` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 锁工具链现在把未被跟踪的主机/构建噪声（`.DS_Store`、`__pycache__`、`*.pyc`）排除在锁、同步与校验之外，字节一致契约不再依赖某个操作者的工作树 |
 | `0.4.0` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 上游收敛：九个 `dreamina-canvas-cli*` 入口 + 唯一隐式 `dreamina-canvas-use`；12 个原子技能降级为操作参考；命令面改指新入口（2026-09-29） |
 | `0.3.0` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 库面接线（`revise`/`judge`/`sample-frames`/`video-verdict`）+ 预算账本统一；跨宿主黄金样本 8/8 通过（2026-09-22）；多轮待验 |
 | `0.2.0` | Codex CLI 或 ChatGPT 桌面应用 | 由你安装并完成认证的 `dreamina-canvas` | 3.11、3.12、3.13（CI 矩阵） | 视觉单轮控制器：真实付费单轮 Canary 已通过（2026-09-22，1 积分）；多轮与跨宿主黄金样本待验 |
@@ -172,7 +173,7 @@ CLI 运行期、版本、命令兼容性、经明确授权的账号认证，以�
 ### 从插件市场安装
 
 ```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.4.0
+codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.4.1
 codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
 ```
 

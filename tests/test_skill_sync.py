@@ -40,5 +40,28 @@ class SkillSyncTests(unittest.TestCase):
         int(commit, 16)
 
 
+    def test_lock_tools_exclude_untracked_host_noise(self) -> None:
+        """A stray .DS_Store / __pycache__ must never enter the lock or vendor.
+
+        Host metadata is untracked upstream, so letting it into the lock
+        would make the byte-exact contract depend on one operator's working
+        tree (this happened in 0.4.0 and broke parity in the design plugin).
+        """
+        for name in ("build_skill_lock.py", "sync_dreamina_canvas_skills.py",
+                     "verify_dreamina_canvas_skills.py"):
+            text = (ROOT / "scripts" / name).read_text(encoding="utf-8")
+            self.assertIn("__pycache__", text, name)
+            self.assertTrue(
+                'startswith(".")' in text or 'ignore_patterns' in text, name
+            )
+        lock = json.loads(LOCK.read_text(encoding="utf-8"))
+        for skill, files in lock["skills"].items():
+            for rel in files:
+                self.assertFalse(
+                    Path(rel).name.startswith("."), f"{skill}: {rel}"
+                )
+                self.assertNotIn("__pycache__", rel, f"{skill}: {rel}")
+
+
 if __name__ == "__main__":
     unittest.main()

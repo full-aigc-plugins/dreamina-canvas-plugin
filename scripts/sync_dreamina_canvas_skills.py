@@ -57,7 +57,13 @@ def main() -> None:
             sys.exit(1)
         if dst.exists():
             shutil.rmtree(dst)
-        shutil.copytree(src, dst)
+        # Copy content only: untracked host/build noise (e.g. a .DS_Store
+        # dropped by Finder) must not enter a byte-exact vendored skill.
+        shutil.copytree(
+            src,
+            dst,
+            ignore=shutil.ignore_patterns(".git", "__pycache__", ".*"),
+        )
     print(f"OK: synced {len(declared)} skills from {upstream_path}")
 
 

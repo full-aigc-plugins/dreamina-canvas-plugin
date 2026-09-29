@@ -71,9 +71,18 @@ def main() -> None:
             sys.exit(1)
         files: dict[str, str] = {}
         for path in sorted(skill_dir.rglob("*")):
-            if path.is_file():
-                rel = path.relative_to(skill_dir).as_posix()
-                files[rel] = sha256_file(path)
+            if not path.is_file():
+                continue
+            # Lock real package content only. Dot-prefixed host metadata
+            # (e.g. a .DS_Store dropped by Finder) and build caches are
+            # untracked upstream, so they must never enter the lock or the
+            # byte-exact contract would depend on the operator's working tree.
+            if any(part.startswith(".") for part in path.relative_to(skill_dir).parts):
+                continue
+            if path.suffix in {".pyc", ".pyo"} or "__pycache__" in path.parts:
+                continue
+            rel = path.relative_to(skill_dir).as_posix()
+            files[rel] = sha256_file(path)
         skills[name] = files
 
     lock = {

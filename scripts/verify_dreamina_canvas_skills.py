@@ -68,10 +68,17 @@ def main() -> None:
             seen.add(relpath)
         # Detect extra files in the packaged skill not in the lock
         for path in sorted(skill_dir.rglob("*")):
-            if path.is_file():
-                rel = path.relative_to(skill_dir).as_posix()
-                if rel not in seen:
-                    failures.append(f"{name}: undeclared file {rel}")
+            if not path.is_file():
+                continue
+            rel = path.relative_to(skill_dir).as_posix()
+            # Host/build noise is never package content, so a stray .DS_Store
+            # in a checkout is not an undeclared file.
+            if any(part.startswith(".") for part in path.relative_to(skill_dir).parts):
+                continue
+            if path.suffix in {".pyc", ".pyo"} or "__pycache__" in path.parts:
+                continue
+            if rel not in seen:
+                failures.append(f"{name}: undeclared file {rel}")
     if failures:
         for line in failures:
             print(f"FAIL: {line}", file=sys.stderr)

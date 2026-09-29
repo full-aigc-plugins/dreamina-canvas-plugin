@@ -88,7 +88,6 @@
       "references/workflow-contract.md": "ecd3b633c9e7f44af92bbe902e5a7efbced6089ca19d07c83ac230f4f0092e74"
     },
     "dreamina-canvas-cli-image2image": {
-      ".DS_Store": "7d501f662d679fecabbcdddf8675fc5d856f0099cd96722e2e86b9a77640fe3c",
       "SKILL.md": "ddef041b3fdadb66d2c83cf9a9efb6d2409873e360971fdb9488b389cb9e7554",
       "agents/openai.yaml": "9333de8a4c6bcab621acf441033adaa4c7b9b6e5f35da540bc12c4ea40da626c",
       "examples/boundary-refusal.md": "886e38581888ba284eb5809798079aba3b25b20d9cce9308a9651af440a4c535",
