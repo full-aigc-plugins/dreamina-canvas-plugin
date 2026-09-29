@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""SessionStart hook: report Dreamina Canvas readiness. Advisory only."""
+"""SessionStart hook: plugin self-integrity check (advisory).
+
+Contract, identical to the sibling check_*_intent / check_closeout hooks:
+only verifies files shipped with this package (and the interpreter version
+the hook itself needs); external apps, third-party CLIs and credentials are
+first-use setup owned by the skills. Everything intact -> print nothing,
+exit 0. Something missing -> one warning line, still exit 0. Any stdin
+(including malformed) is tolerated and never blocks a session.
+"""
 from __future__ import annotations
 
 import json
-import shutil
 import sys
 from pathlib import Path
 
@@ -11,26 +18,22 @@ ROOT = next((c for c in Path(__file__).resolve().parents if (c / "plugin.json").
 
 
 def main() -> int:
-    lines: list[str] = [f"python3: {sys.version.split()[0]}"]
-
-    cli = shutil.which("dreamina-canvas")
-    lines.append(f"dreamina-canvas CLI: {cli}" if cli else
-                 "dreamina-canvas CLI: 不在 PATH——按 dreamina-canvas-cli 技能指引安装/定位")
-
-    adapter = ROOT / "scripts" / "dreamina_canvas_adapter.py"
-    lines.append("canvas adapter: 就绪" if adapter.is_file() else "canvas adapter: 缺失")
-
+    problems: list[str] = []
+    if not (ROOT / "scripts" / "dreamina_canvas_adapter.py").is_file():
+        problems.append("canvas adapter 脚本缺失（包不完整）")
+    if problems:
+        print("即梦画布环境告警：" + "；".join(problems))
+    # Drain the hook payload so the host never sees a broken pipe.
     try:
         sys.stdin.read()
-    except (ValueError, UnicodeDecodeError, OSError):
+    except (OSError, ValueError, UnicodeDecodeError):
         pass
-    print("即梦画布插件环境：" + "；".join(lines))
     return 0
 
 
 if __name__ == "__main__":
     try:
         json.load(sys.stdin)
-    except (ValueError, UnicodeDecodeError, OSError):
+    except (ValueError, OSError):
         pass
     sys.exit(main())
