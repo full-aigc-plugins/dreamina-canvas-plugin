@@ -299,7 +299,8 @@ class ContractAlignmentTests(unittest.TestCase):
         validator = jsonschema.Draft202012Validator(self._schema())
         for state in ls.STATES:
             with self.subTest(state=state):
-                validator.validate(make_state(state=state).to_dict())
+                validator.validate(make_state(state=state, pending_operations=(
+                    {"nodeId": NODE, "submitId": SUBMIT},)).to_dict())
 
     def test_the_initial_state_is_reachable_from_the_declared_entry(self) -> None:
         """A fresh session starts at CREATED and CREATED must be declared."""

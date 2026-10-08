@@ -17,6 +17,7 @@ the full composition against scripted CLI envelopes without a network.
 from __future__ import annotations
 
 import hashlib
+import json
 import shutil
 import tempfile
 from collections.abc import Callable, Mapping
@@ -107,9 +108,26 @@ class CliCanvasRuntime:
             raise RuntimePortError(
                 f"quote failed: exit={result.exit_code} action={result.required_action}")
         data = _data(result)
-        return Quote(quote_id=str(data.get("quoteId") or node_id),
-                     total_max_credits=int(data.get("totalMaxCredits", 0)),
-                     confirmable=bool(data.get("confirmable")))
+        total = data.get("totalMaxCredits")
+        if type(total) is not int or total < 0 or type(data.get("confirmable")) is not bool:
+            raise RuntimePortError("quote lacks a valid total or confirmable flag")
+        if not data['confirmable']:
+            return Quote(str(data.get('quoteId') or node_id), total, False)
+        view_result = self.runner(["--format", "json", "node", "show",
+                                   "--node-id", node_id, "--project-id", self.project_id])
+        if view_result.exit_code != 0:
+            raise RuntimePortError("cannot bind approval to current node draft")
+        view = _data(view_result)
+        node = view.get('node') or view
+        draft = view.get('generationDraft') or node.get('generationDraft') or view.get('generation') or node.get('generation')
+        if not isinstance(draft, dict) or not draft:
+            raise RuntimePortError("node view lacks a generation draft; approval refused")
+        binding = {'projectId': self.project_id, 'nodeId': node_id,
+                   'generationDraft': draft, 'totalMaxCredits': total,
+                   'mutationVersion': view.get('mutationVersion', node.get('mutationVersion'))}
+        fingerprint = hashlib.sha256(json.dumps(binding, sort_keys=True,
+            ensure_ascii=False, separators=(',', ':')).encode('utf-8')).hexdigest()
+        return Quote(str(data.get('quoteId') or node_id), total, True, fingerprint, self.project_id)
 
 
 class CliExecution:

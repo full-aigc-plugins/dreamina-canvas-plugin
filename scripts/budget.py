@@ -26,6 +26,8 @@ class Quote:
     quote_id: str
     total_max_credits: int
     confirmable: bool
+    request_fingerprint: str = ""
+    project_id: str = ""
 
 
 BudgetPolicy = "PerRoundPolicy | BoundedBatchPolicy"

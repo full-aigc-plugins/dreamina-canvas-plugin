@@ -71,7 +71,6 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "submitId",
           "nodeId"
         ],
         "properties": {
@@ -104,7 +103,9 @@
               "judge_request",
               "judge_receipt",
               "prompt_revision",
-              "budget"
+              "budget",
+              "quote",
+              "approval"
             ]
           },
           "ref": {
@@ -129,6 +130,207 @@
     "updatedAt": {
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "safety": {
+      "description": "Durable budget and request binding. An absent/empty legacy snapshot cannot authorize mid-round execution.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ledger",
+            "reservation",
+            "quote",
+            "policy",
+            "attempted"
+          ],
+          "properties": {
+            "ledger": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "spent",
+                "reserved",
+                "unknown"
+              ],
+              "properties": {
+                "spent": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "reserved": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "unknown": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "reservation": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "quote_id",
+                    "credits",
+                    "settled"
+                  ],
+                  "properties": {
+                    "quote_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "credits": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "settled": {
+                      "const": false
+                    }
+                  }
+                }
+              ]
+            },
+            "quote": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "quote_id",
+                    "total_max_credits",
+                    "confirmable",
+                    "request_fingerprint",
+                    "project_id"
+                  ],
+                  "properties": {
+                    "quote_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "total_max_credits": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "confirmable": {
+                      "const": true
+                    },
+                    "request_fingerprint": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "project_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            },
+            "policy": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "mode"
+                  ],
+                  "properties": {
+                    "mode": {
+                      "const": "per_round"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "mode",
+                    "max_rounds",
+                    "max_total_credits",
+                    "max_per_round",
+                    "deadline_epoch",
+                    "rounds_started"
+                  ],
+                  "properties": {
+                    "mode": {
+                      "const": "bounded_batch"
+                    },
+                    "max_rounds": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "max_total_credits": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "max_per_round": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "deadline_epoch": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "rounds_started": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              ]
+            },
+            "attempted": {
+              "type": "boolean"
+            }
+          }
+        }
+      ]
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "SUBMITTED",
+              "WAITING",
+              "DRAINING_ACCEPTED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pendingOperations": {
+            "minItems": 1,
+            "items": {
+              "required": [
+                "submitId",
+                "nodeId"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }

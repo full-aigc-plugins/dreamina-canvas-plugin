@@ -163,6 +163,7 @@ class LoopState:
     stop_requested: bool = False
     revision_count: int = 0
     updated_at: str = field(default_factory=_utc_now)
+    safety: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.state not in TRANSITIONS:
@@ -170,6 +171,7 @@ class LoopState:
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "safety": self.safety,
             "schemaVersion": SCHEMA_VERSION,
             "sessionId": self.session_id,
             "state": self.state,
@@ -187,13 +189,18 @@ class LoopState:
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> LoopState:
+        if not isinstance(payload, Mapping):
+            raise StateStoreError("state must be an object")
         if payload.get("schemaVersion") != SCHEMA_VERSION:
             raise StateStoreError(
                 f"unsupported state schemaVersion: {payload.get('schemaVersion')!r}")
         if payload.get("remoteCancelled") not in (False, None):
             raise StateStoreError("remoteCancelled must be false: stopping is not a cancel")
         try:
+            from round_safety import validate_snapshot
+            validate_snapshot(payload.get("safety", {}))
             return cls(
+                safety=payload.get("safety", {}),
                 session_id=payload["sessionId"],
                 state=payload["state"],
                 current_round=int(payload.get("currentRound", 0)),
@@ -339,13 +346,31 @@ class LoopStateStore:
             _atomic_write(self.state_path, payload.encode("utf-8"))
         return self.state_path
 
+    def read_or_create(self) -> LoopState:
+        """只初始化没有历史文件的新会话，绝不吞掉损坏或丢失状态。"""
+        existed = self.session_dir.exists()
+        with _exclusive_lock(self.lock_path):
+            if self.state_path.exists():
+                return self.read()
+            if existed or any(p.name != '.lock' for p in self.session_dir.iterdir()):
+                raise StateStoreError('existing session has no state; manual recovery required')
+            state = LoopState(session_id=self.session_id)
+            _atomic_write(self.state_path, json.dumps(state.to_dict()).encode('utf-8'))
+            return state
+
     def read(self) -> LoopState:
         if not self.state_path.is_file():
             raise StateStoreError(f"state file is missing: {self.state_path}")
         try:
             payload = json.loads(self.state_path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError) as exc:
             raise StateStoreError(f"state file is unreadable: {exc}") from exc
+        from jsonschema import Draft202012Validator
+        schema = json.loads((Path(__file__).resolve().parents[1] / 'schemas' /
+                             'visual_loop_state.schema.json').read_text(encoding='utf-8'))
+        error = next(Draft202012Validator(schema).iter_errors(payload), None)
+        if error is not None:
+            raise StateStoreError(f'state violates schema at {list(error.path)}')
         state = LoopState.from_dict(payload)
         if state.session_id != self.session_id:
             raise StateStoreError("state file belongs to a different session")

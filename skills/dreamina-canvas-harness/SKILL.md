@@ -1,75 +1,81 @@
 ---
 name: dreamina-canvas-harness
-description: Dreamina Canvas invocation spec for WorkBuddy - the dreamina-canvas CLI (auth, create/compose, generate image/video/audio, timeline management, quote-and-run, resume), asset download and model discovery. Read this before any canvas creation task.
+description: 在宿主需要编排 Dreamina Canvas 的审批、单轮视觉评估、恢复或交付证据时使用；提供随插件分发的技能路由和控制器边界。
 ---
 
-# 即梦画布调用规范（智能体通用）
+# 即梦画布宿主编排规范
 
-执行通道：`dreamina-canvas` CLI（安装/校验/调用见 `dreamina-canvas-cli` 技能）；本插件随附其脚本与技能。
-画布 = **多模态画布创作**：图、视频、**音频**、时间线与成片。
+执行通道是 `dreamina-canvas` CLI。使用已安装插件根目录的绝对路径定位
+`scripts/visual_loop_cli.py`；不要假定当前目录就是插件根目录。
 
-## 1. 能力族（13 个技能已随插件分发）
+## 随插件分发的入口
 
-| 族 | 技能 |
+本插件包含 10 个上游技能及本地 `dreamina-canvas-harness`，共 11 个：
+
+| 任务 | 交给对应技能 |
 |---|---|
-| 环境与入口 | `dreamina-canvas-auth`（登录授权）、`dreamina-canvas-cli`、`dreamina-canvas-use` |
-| 画布创建与编排 | `dreamina-canvas-create`、`dreamina-canvas-compose`、`dreamina-canvas-manage-timeline` |
-| 生成（图/视频/**音频**） | `dreamina-canvas-generate-image` / `-video` / **`-audio`** |
-| 运营 | `dreamina-canvas-quote-and-run`（报价与执行）、`dreamina-canvas-resume-operation`（断点续作）、`dreamina-canvas-discover-models`、`dreamina-canvas-download-assets` |
+| 编排入口 | `dreamina-canvas-use` |
+| CLI 契约与运行时发现 | `dreamina-canvas-cli` |
+| 安装与环境诊断 | `dreamina-canvas-cli-setup` |
+| 登录授权 | `dreamina-canvas-cli-auth` |
+| 文生图 / 图生图 | `dreamina-canvas-cli-text2image` / `dreamina-canvas-cli-image2image` |
+| 文生视频 / 参考视频 | `dreamina-canvas-cli-text2video` / `dreamina-canvas-cli-ref2video` |
+| 音乐音效 / 人声 | `dreamina-canvas-cli-text2audio` / `dreamina-canvas-cli-text2voice` |
 
-## 2. 硬规则
+上述上游技能已随插件安装；缺失时安装指定技能：
+`npx skills add full-aigc-skills/dreamina-skills --skill <技能名>`。
+创建、编排、时间线、模型发现、报价、恢复与下载由 `dreamina-canvas-cli` 的
+命令契约承载，不派发给已退役的同名领域技能。
 
-- 先 `auth` 后一切；授权态丢失就引导重登，不重试烧配额。
-- `quote-and-run`：先报价后执行，报价/预算超限即停。
-- 长任务断点走 `resume-operation`，不从头重跑。
-- 模型选择用 `discover-models` 实测面（本机 CLI 面可能滞后于主干），不硬编码目录。
+## 执行与交付
 
-## 3. 标准工作流
+1. 检查登录状态；失效时引导重登。模型、引用形式和参数以当前 CLI schema 为准。
+2. 保存草稿后报价，确认报价可审批、项目和节点正确；付费执行须经过
+   quote → 人工授权 → confirm → run，不代替用户批准费用。
+3. 提交身份先落盘。超时、连接异常、未知状态都查询原 `submitId`，不能重发
+   或换新身份。状态损坏、回执丢失时停止并保留原文件供恢复。
+4. 校验下载的字节数与摘要，再交付画布标识、素材、产物路径、费用和未验证项。
 
-1. `auth` 确认授权 → `create` 建画布。
-2. 按需生成：图 / 视频 / 音频（音频是本套件独有能力，设计套件没有）。
-3. `manage-timeline` 编排时间线 → `compose` 合成。
-4. `download-assets` 取产物；交付列出：画布标识、素材清单、时间线摘要、产物路径、配额消耗、未验证项。
+## 单轮视觉控制器
 
-## 4. 纪律
+`visual_loop_cli.py` 提供 `lock-target`、`step`、`status`、`request-judge`、
+`import-judge`、`judge`、`revise`、`stop` 等入口；具体参数读取 `--help`。
+运行时需 `requirements.txt` 的 `jsonschema`；测试额外需 `requirements-dev.txt`。
 
-- CLI 的 stdout/stderr 与标识持久化按 `dreamina-canvas-cli` 技能规范执行。
-- 付费动作同样 submit-once：一次授权一次提交，恢复走 resume 技能。
+流程：目标锁定 → 保存图像草稿 → 报价 → 审批暂停 → 单次提交 → 查询 →
+下载校验 → Judge 回执 → `COMPLETED` / `REVISION_PROPOSED` 等结束态。
+控制器当前保存的是图像 t2i 草稿，不把视频、音频入口当作该控制器已支持的模式。
 
-## 5. 视觉质量闭环（单轮控制器已实现；付费 Canary 与多轮未运行）
+- 审批暂停输出 `requestFingerprint`，绑定项目、节点、生成草稿、版本和报价上限。
+  宿主审核后在 `step` 传入 `--approve-request-fingerprint` 与
+  `--approve-credit-ceiling`，审批凭证通过 `--credit-token-env` 指定的环境变量读取。
+  首次提交前再次核对实时报价；变化时暂停并重新审批，不沿用旧授权。
+- token 不写入状态、回执或控制器输出。外部 CLI 当前需要 `--credit-token`，
+  因而适配器启动子进程时会通过 argv 传递；不能声称它永不进入进程参数。
+- 预算、保留额和策略随状态原子保存；重启不归零，未知状态不释放预算。
+  标记已经尝试提交后，即使缺少 token 也只查询原身份。
+- 旧的中途会话若没有 safety 快照，控制器拒绝自动执行。先用 `status` 检查并按
+  原 `submitId` 人工对账，保留原记录；不要删除状态文件来绕过恢复检查。
+- `judge_only` 目标不上传。`canvas_reference` 缺少 `resourceId` 时返回
+  `register_target`；上传器已可与适配器组合，但 CLI 尚未自动串联上传与注册。
+  禁止将本地 `file://` URI 当成服务端引用。
+- Judge 由宿主、外部命令或人工提供，回执必须通过摘要绑定与结构校验。
+  `revise --apply` 是显式修订入口，不会自动开始下一轮。
+- `stop` 对已提交任务进入 `DRAINING_ACCEPTED`，继续查询并结算，绝不声称远端取消。
+  多轮调度与全流程自动化尚未启用。
 
-单轮视觉闭环控制器已在本仓实现并有测试覆盖：目标锁定 → 草稿 → 报价 →
-**审批暂停** → 单次提交（submitId 先行落盘，重启只对账同一身份）→ 恢复等待 →
-事务下载与校验（摘要不符即隔离）→ Judge 请求/回执文件对 → 停在
-`JUDGED` / `REVISION_PROPOSED`。控制器自身永不报价或提交第二轮。
-
-宿主入口：`scripts/visual_loop_cli.py`（`lock-target` / `step` / `status` /
-`request-judge` / `import-judge` / `stop`）。审批凭证只经环境变量在提交瞬间
-读取，绝不写入 argv、日志或任何持久化文件。
+## 验证边界
 
 ```text
-VISUAL_LOOP_STATUS: SINGLE_ROUND_IMPLEMENTED_PAID_CANARY_NOT_RUN
-VISUAL_TARGET_UPLOAD: IMPLEMENTED_UPLOAD_CANARY_NOT_RUN
-VISUAL_CANDIDATE_POINTER: IMMUTABLE_ROUNDS_PLUS_ATOMIC_LATEST_JSON
+VISUAL_LOOP_STATUS: SINGLE_ROUND_LOCAL_REGRESSION
+VISUAL_TARGET_UPLOAD: ADAPTER_COMPOSITION_TESTED_HOST_REGISTRATION_REQUIRED
 VISUAL_JUDGE_AUTOMATION: HOST_MEDIATED_RECEIPT_IMPORT_IMPLEMENTED
 LOCAL_FILE_URI_REFERENCE: UNSUPPORTED
 PAID_EXECUTION: REQUIRES_THE_STANDARD_QUOTE_CONFIRM_RUN_CHAIN
-WINDOWS_LOCK_SEMANTICS: NOT_VERIFIED
+CURRENT_WINDOWS_AND_PAID_VERIFICATION: NOT_RERUN
 ```
 
-当前边界：
-
-- 不把本地文件 URI 写入节点 prompt 或引用参数；`uri:` / `vid:` 是否受支持必须以
-  当前 CLI schema 和已锁定上游技能为准。
-- **未执行**真实资源上传 Canary 与真实付费单轮 Canary；在此之前不得把上传与
-  付费能力表述为已验收。Windows 上的文件锁与原子替换语义未在真实 Windows 上
-  验证。
-- Judge 由宿主在暂停点之间提供：`request-judge` 落盘请求，宿主子代理 / 兄弟
-  插件 / 人工产出的裁决经 `import-judge` 校验（内容摘要绑定、fresh-context、
-  拒绝秘密字段）后才能被控制器消费；本 Harness 不自动调用任何宿主。
-- 停止语义诚实：已接受的任务进入排空（`DRAINING_ACCEPTED`），继续以原
-  `submitId` 对账；从不声称远端取消。
-- Prompt Revision（change 第 8 节）落地前，修订提案只记录不自动应用。
-
-不要把本节的控制器实现表述为已通过真实付费验收；对应证据等级见
-[`docs/verification/visual-loop-baseline-2026-09-21.md`](../../docs/verification/visual-loop-baseline-2026-09-21.md)。
+仓库保存了 [2026-09-22 付费单轮记录](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/blob/main/docs/verification/visual-loop-paid-canary-2026-09-22.md)
+与 [同日上传记录](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/blob/main/docs/verification/visual-loop-upload-canary-2026-09-22.md)，
+README 也记录过 Windows CI 通过。这些是历史证据，本次安全修复后的真实服务、
+付费执行及 Windows 环境尚未重验；本地回归不能替代这些验收。

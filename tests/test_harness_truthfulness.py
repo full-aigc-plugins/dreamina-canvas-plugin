@@ -21,16 +21,15 @@ CHANGE_ID = "add-canvas-visual-quality-loop"
 
 
 class HarnessTruthfulnessTests(unittest.TestCase):
-    def test_harness_marks_visual_loop_features_as_planned(self) -> None:
+    def test_harness_separates_local_and_historical_evidence(self) -> None:
         content = HARNESS.read_text(encoding="utf-8")
         for marker in (
-            "VISUAL_LOOP_STATUS: SINGLE_ROUND_IMPLEMENTED_PAID_CANARY_NOT_RUN",
-            "VISUAL_TARGET_UPLOAD: IMPLEMENTED_UPLOAD_CANARY_NOT_RUN",
-            "VISUAL_CANDIDATE_POINTER: IMMUTABLE_ROUNDS_PLUS_ATOMIC_LATEST_JSON",
+            "VISUAL_LOOP_STATUS: SINGLE_ROUND_LOCAL_REGRESSION",
+            "VISUAL_TARGET_UPLOAD: ADAPTER_COMPOSITION_TESTED_HOST_REGISTRATION_REQUIRED",
             "VISUAL_JUDGE_AUTOMATION: HOST_MEDIATED_RECEIPT_IMPORT_IMPLEMENTED",
             "LOCAL_FILE_URI_REFERENCE: UNSUPPORTED",
             "PAID_EXECUTION: REQUIRES_THE_STANDARD_QUOTE_CONFIRM_RUN_CHAIN",
-            "WINDOWS_LOCK_SEMANTICS: NOT_VERIFIED",
+            "CURRENT_WINDOWS_AND_PAID_VERIFICATION: NOT_RERUN",
         ):
             self.assertIn(marker, content)
 
@@ -40,6 +39,17 @@ class HarnessTruthfulnessTests(unittest.TestCase):
             "刷新 `latest.png`",
         ):
             self.assertNotIn(retired_claim, content)
+
+    def test_all_named_skill_routes_exist_in_distribution(self):
+        import re
+        content = HARNESS.read_text(encoding="utf-8")
+        routes = set(re.findall(r"`(dreamina-canvas-[a-z0-9-]+)`", content))
+        distributed = {p.parent.name for p in (ROOT / 'skills').glob('*/SKILL.md')}
+        self.assertEqual(routes, distributed)
+        self.assertIn('--approve-request-fingerprint', content)
+        self.assertIn('argv', content)
+        self.assertIn('2026-09-22', content)
+        self.assertIn('register_target', content)
 
     def test_public_docs_link_the_active_visual_loop_change(self) -> None:
         for path in PUBLIC_DOCS:

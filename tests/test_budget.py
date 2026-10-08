@@ -13,7 +13,7 @@ from visual_loop import Quote
 
 
 def quote(credits: int = 40) -> Quote:
-    return Quote(quote_id="q", total_max_credits=credits, confirmable=True)
+    return Quote(quote_id="q", total_max_credits=credits, confirmable=True, request_fingerprint="a" * 64)
 
 
 def score(total: float, *, gaps=("lighting:face",), dims=None, index=1) -> bg.RoundScore:
@@ -190,7 +190,7 @@ class StopGovernanceTests(unittest.TestCase):
                 def quote(self, **kw):
                     runtime_calls.append("quote")
                     return vl.Quote(quote_id="q", total_max_credits=1,
-                                    confirmable=True)
+                                    confirmable=True, request_fingerprint="a" * 64)
 
             class NoApproval:
                 def pending(self):

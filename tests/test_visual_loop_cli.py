@@ -99,6 +99,46 @@ class CliCase(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("lock a target", json.loads(out)["error"])
 
+    def test_step_approval_binding_and_token_free_recovery(self):
+        from unittest.mock import patch
+        from test_visual_loop import FakeRuntime, FakeExecution, FakeArtifacts, SHA
+        runtime, execution = FakeRuntime(), FakeExecution(raise_on_submit=True)
+        self.run_cli('lock-target', *self.base, str(self.png))
+        with patch.object(cli, '_runtime', return_value=runtime), \
+             patch.object(cli, 'CliExecution', return_value=execution), \
+             patch.object(cli, 'CliArtifacts', return_value=FakeArtifacts()):
+            code, output = self.run_cli('step', *self.base, '--project-id', SESSION, '--prompt', 'image')
+            self.assertEqual(code, 0, output)
+            self.assertEqual(json.loads(output)['requestFingerprint'], SHA)
+            with patch.dict('os.environ', {'DREAMINA_CANVAS_CREDIT_TOKEN': 'secret'}):
+                code, output = self.run_cli('step', *self.base, '--project-id', SESSION,
+                    '--approve-request-fingerprint', 'b' * 64, '--approve-credit-ceiling', '100')
+                self.assertEqual(code, 0, output)
+                self.assertFalse(execution.submit_calls)
+                code, output = self.run_cli('step', *self.base, '--project-id', SESSION,
+                    '--approve-request-fingerprint', SHA, '--approve-credit-ceiling', '100')
+                self.assertEqual(code, 0, output)
+                self.assertEqual(json.loads(output)['state'], 'SUBMITTED')
+            with patch.dict('os.environ', {}, clear=True):
+                code, output = self.run_cli('step', *self.base, '--project-id', SESSION)
+            self.assertEqual(code, 0, output)
+            self.assertEqual(json.loads(output)['state'], 'AWAITING_JUDGE')
+        self.assertEqual(len(execution.submit_calls), 1)
+        self.assertEqual(execution.status_calls, execution.submit_calls)
+        for path in (self.ws / '.loop').rglob('*.json'):
+            self.assertNotIn('secret', path.read_text())
+
+    def test_lock_target_preserves_corrupt_state_without_target_writes(self):
+        self.run_cli('lock-target', *self.base, str(self.png))
+        state = self.ws / '.loop' / 'sessions' / SESSION / 'state.json'
+        state.write_text('{broken')
+        before = sorted(p.as_posix() for p in state.parent.rglob('*'))
+        self.png.write_bytes(_minimal_png(seed=b'1'))
+        code, output = self.run_cli('lock-target', *self.base, str(self.png), '--relock')
+        self.assertEqual(code, 1, output)
+        self.assertEqual(state.read_text(), '{broken')
+        self.assertEqual(before, sorted(p.as_posix() for p in state.parent.rglob('*')))
+
 
 class EntryPointsTests(CliCase):
     """New entry points: revise / judge / sample-frames / video-verdict."""

@@ -20,7 +20,6 @@ never fabricates one.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import sys
@@ -39,6 +38,7 @@ from visual_loop_runtime import (
     CliArtifacts,
     CliCanvasRuntime,
     CliExecution,
+    RuntimePortError,
 )
 
 
@@ -59,20 +59,15 @@ def _target_store(args: argparse.Namespace) -> TargetStore:
 
 
 def _ensure_state(store: LoopStateStore) -> LoopState:
-    try:
-        return store.read()
-    except StateStoreError:
-        state = LoopState(session_id=store.session_id)
-        store.write(state)
-        return state
+    return store.read_or_create()
 
 
 def cmd_lock_target(args: argparse.Namespace) -> int:
+    store = _store(args)
+    state = _ensure_state(store)
     tstore = _target_store(args)
     receipt = tstore.lock(Path(args.target).expanduser(),
                           mode=args.mode, source=args.source, relock=args.relock)
-    store = _store(args)
-    state = _ensure_state(store)
     state = store.write(replace(
         state, target_id=receipt.target_id,
         receipt_refs=state.receipt_refs + (
@@ -243,7 +238,7 @@ def cmd_step(args: argparse.Namespace) -> int:
         print(json.dumps({"ok": False,
                           "error": "lock a target first (lock-target)"}))
         return 1
-    if not args.prompt.strip():
+    if state.state in {"CREATED", "TARGET_LOCKED", "TARGET_REGISTERED", "DRAFT_SAVED"} and not args.prompt.strip():
         # The service rejects an empty prompt (params.prompt FIELD_VALUE_INVALID,
         # host-acceptance canary 2026-09-22); fail before any draft is saved.
         print(json.dumps({"ok": False,
@@ -259,8 +254,7 @@ def cmd_step(args: argparse.Namespace) -> int:
               "refs": ([f"res:{target_receipt['resourceId']}"]
                        if target_receipt.get("resourceId") else [])}
 
-    fingerprint = hashlib.sha256(
-        f"{args.session_id}|{state.current_round}".encode()).hexdigest()
+    fingerprint = args.approve_request_fingerprint
     controller = VisualLoopController(
         store=store, target=target,
         runtime=_runtime(args),
@@ -337,12 +331,14 @@ def cmd_stop(args: argparse.Namespace) -> int:
     from loop_state import REMOTE_PENDING_STATES
 
     store = _store(args)
-    state = _ensure_state(store)
-    target = ("DRAINING_ACCEPTED" if state.state in REMOTE_PENDING_STATES
-              else "STOPPED")
-    if state.state != target:
-        state = advance(state, target)
-        store.write(state)
+    from loop_state import _exclusive_lock
+    with _exclusive_lock(store.root / 'controller-locks' / f'{store.session_id}.lock'):
+        state = _ensure_state(store)
+        target = ("DRAINING_ACCEPTED" if state.state in REMOTE_PENDING_STATES
+                  else "STOPPED")
+        if state.state != target:
+            state = advance(state, target)
+            store.write(state)
     print(json.dumps(state.to_dict(), ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 
@@ -373,6 +369,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--model", default="")
     p.add_argument("--ratio", default="1:1")
     p.add_argument("--resolution", default="1K")
+    p.add_argument("--approve-request-fingerprint", default="",
+                   help="requestFingerprint returned by the approval pause")
     p.add_argument("--approve-credit-ceiling", type=int, default=0)
     p.add_argument("--credit-token-env", default="DREAMINA_CANVAS_CREDIT_TOKEN")
     p.set_defaults(func=cmd_step)
@@ -438,7 +436,7 @@ def main(argv: list[str] | None = None) -> int:
     from target_store import TargetError
     try:
         return args.func(args)
-    except (LoopStateError, TargetError, jx.JudgeExchangeError) as exc:
+    except (LoopStateError, TargetError, jx.JudgeExchangeError, RuntimePortError) as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
         return 1
 

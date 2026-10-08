@@ -1,2 +1,2 @@
-jsonschema>=4.21,<5
+-r requirements.txt
 PyYAML>=6,<7

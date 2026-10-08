@@ -53,7 +53,7 @@ class FakeRuntime:
     def quote(self, *, node_id):
         self.quote_calls += 1
         return vl.Quote(quote_id=SESSION, total_max_credits=self.credits,
-                        confirmable=self.confirmable)
+                        confirmable=self.confirmable, request_fingerprint=SHA)
 
 
 class FakeApproval:
@@ -188,7 +188,7 @@ class SingleRoundTests(ControllerCase):
         self.assertEqual(results[-1].decision, "completed")
         self.assertEqual(len(parts["execution"].submit_calls), 1)
         self.assertEqual(len(set(parts["execution"].submit_calls)), 1)
-        self.assertEqual(parts["runtime"].quote_calls, 1)
+        self.assertEqual(parts["runtime"].quote_calls, 3)
         self.assertEqual(parts["revision"].calls, 0)
 
     def test_round_stops_at_a_judge_pause_before_any_verdict(self) -> None:
@@ -213,7 +213,7 @@ class SingleRoundTests(ControllerCase):
         self.assertEqual(final.decision, "revision_proposed")
         self.assertEqual(parts["revision"].calls, 1)
         # The decisive assertion: one round only.
-        self.assertEqual(parts["runtime"].quote_calls, 1)
+        self.assertEqual(parts["runtime"].quote_calls, 3)
         self.assertEqual(len(parts["execution"].submit_calls), 1)
 
     def test_result_payload_is_machine_parseable(self) -> None:
@@ -285,7 +285,7 @@ class StopSemanticsTests(ControllerCase):
             vl.RemoteStatus(submit_id="", state="in_progress"),
             vl.RemoteStatus(submit_id="", state="completed", resource_id=RESOURCE)])
         controller, parts = self.controller(execution=execution)
-        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA)
+        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA, credit_token="memory-only")
         self.assertEqual(controller.run_until_pause().state, "AWAITING_APPROVAL")
         self.assertEqual(controller.run_until_pause().state, "WAITING")
 
@@ -305,7 +305,7 @@ class RestartTests(ControllerCase):
         execution = FakeExecution(statuses=[
             vl.RemoteStatus(submit_id="", state="in_progress")])
         controller, _ = self.controller(execution=execution)
-        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA)
+        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA, credit_token="memory-only")
         controller.run_until_pause()
         result = controller.run_until_pause()
         self.assertEqual(result.state, "WAITING")
@@ -325,7 +325,7 @@ class RestartTests(ControllerCase):
     def test_transport_failure_keeps_the_identity_for_resume(self) -> None:
         controller, parts = self.controller(
             execution=FakeExecution(raise_on_submit=True))
-        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA)
+        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA, credit_token="memory-only")
         controller.run_until_pause()
         result = controller.run_until_pause()
         self.assertEqual(result.state, "SUBMITTED")
@@ -338,7 +338,7 @@ class RestartTests(ControllerCase):
             execution=FakeExecution(statuses=[
                 vl.RemoteStatus(submit_id="", state="failed")]),
             judge=verdict(total=9.0))
-        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA)
+        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA, credit_token="memory-only")
         controller.run_until_pause()                 # -> AWAITING_APPROVAL
         self.assertEqual(controller.run_until_pause().state, "FAILED")
 
@@ -349,7 +349,7 @@ class SafetyTests(ControllerCase):
                                 scores={"total": 9.0}, gaps=(), recommendation="accept")
         object.__setattr__(leaky, "scores", {"total": 9.0, "access_token": 1.0})
         controller, _ = self.controller(judge=leaky)
-        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA)
+        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA, credit_token="memory-only")
         with self.assertRaises(vl.SecretRefused):
             self.drive(controller, approve_after=1, judge_after=1)
 
@@ -397,7 +397,7 @@ class BudgetUnificationTests(ControllerCase):
             execution=FakeExecution(statuses=[
                 vl.RemoteStatus(submit_id="", state="failed")]),
             judge=verdict(total=9.0))
-        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA)
+        controller.approval.value = vl.Approval(ceiling=100, request_fingerprint=SHA, credit_token="memory-only")
         self.assertEqual(controller.run_until_pause().state, "AWAITING_APPROVAL")
         self.assertEqual(controller.run_until_pause().state, "FAILED")
         self.assertEqual((ledger.spent, ledger.reserved, ledger.unknown), (0, 0, 0))

@@ -27,6 +27,7 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
+import round_safety
 from artifact_guard import SECRET_FIELD_NAMES
 from budget import (
     BoundedBatchPolicy,
@@ -155,6 +156,7 @@ class RoundResult:
     revision: Mapping[str, Any] | None = None
     required_action: str = "none"
     paused: bool = False
+    request_fingerprint: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -168,6 +170,7 @@ class RoundResult:
             "revision": dict(self.revision) if self.revision else None,
             "requiredAction": self.required_action,
             "paused": self.paused,
+            "requestFingerprint": self.request_fingerprint,
         }
 
 
@@ -203,15 +206,15 @@ class VisualLoopController:
     policy: PerRoundPolicy | BoundedBatchPolicy = field(default_factory=PerRoundPolicy)
     governor: ExitGovernor = field(default_factory=ExitGovernor)
     reservation: Reservation | None = field(default=None, init=False)
+    _quote: Quote | None = field(default=None, init=False)
+    _attempted: bool = field(default=False, init=False)
 
     # ---- state helpers --------------------------------------------------- #
     def state(self) -> LoopState:
-        try:
-            return self.store.read()
-        except StateStoreError:
-            return LoopState(session_id=self.store.session_id)
+        return self.store.read_or_create()
 
     def _persist(self, state: LoopState) -> LoopState:
+        state = replace(state, safety=round_safety.snapshot(self))
         self.store.write(state)
         return state
 
@@ -223,7 +226,12 @@ class VisualLoopController:
 
     def request_stop(self) -> LoopState:
         """Stop prevents NEW work; it never claims a remote cancellation."""
-        state = self.state()
+        with _exclusive_lock(self.store.root / 'controller-locks' / f'{self.store.session_id}.lock'):
+            state = self.state()
+            self._restore(state)
+            return self._stop(state)
+
+    def _stop(self, state: LoopState) -> LoopState:
         target = ("DRAINING_ACCEPTED" if state.state in REMOTE_PENDING_STATES
                   else "STOPPED")
         if state.state == target:
@@ -232,7 +240,20 @@ class VisualLoopController:
 
     # ---- stepping -------------------------------------------------------- #
     def step(self) -> RoundResult:
-        state = self.state()
+        with _exclusive_lock(self.store.root / 'controller-locks' / f'{self.store.session_id}.lock'):
+            state = self.state()
+            self._restore(state)
+            return self._step(state)
+
+    def _restore(self, state: LoopState) -> None:
+        try:
+            round_safety.restore(self, state)
+            if self._quote and self._quote.project_id and self._quote.project_id != getattr(self.runtime, "project_id", None):
+                raise ValueError("project differs from persisted quote")
+        except (TypeError, ValueError) as exc:
+            raise StateStoreError(str(exc)) from exc
+
+    def _step(self, state: LoopState) -> RoundResult:
         handler = getattr(self, f"_on_{state.state}", None)
         if handler is None:
             return self._result(state, required_action="none", paused=True)
@@ -251,6 +272,7 @@ class VisualLoopController:
     def _result(self, state: LoopState, **over: Any) -> RoundResult:
         pending = state.pending_operations[0] if state.pending_operations else {}
         payload: dict[str, Any] = {
+            "request_fingerprint": self._quote.request_fingerprint if self._quote else None,
             "state": state.state,
             "round_index": state.current_round,
             "submit_id": pending.get("submitId"),
@@ -287,40 +309,41 @@ class VisualLoopController:
         draft = self.runtime.save_draft(target=self.target,
                                         round_index=state.current_round + 1)
         node_id = str(draft["nodeId"])
-        state = self._persist(advance(state, "QUOTED",
-                                      current_round=state.current_round + 1))
-        state = self._with_pending(state, nodeId=node_id)
+        state = self._persist(replace(advance(state, "QUOTED",
+                                      current_round=state.current_round + 1),
+                                      pending_operations=({'nodeId': node_id},)))
         return self._result(state, node_id=node_id)
 
     def _on_QUOTED(self, state: LoopState) -> RoundResult:
         node_id = str(state.pending_operations[0]["nodeId"])
+        if self.reservation is not None:
+            return self._result(self._persist(advance(state, "AWAITING_APPROVAL")),
+                                required_action="request_approval", paused=True)
         quote = self.runtime.quote(node_id=node_id)
-        if not quote.confirmable:
+        if not quote.confirmable or not quote.request_fingerprint:
             return self._result(self._persist(advance(state, "PAUSED")),
                                 node_id=node_id, required_action="fix_draft",
                                 paused=True)
         try:
-            self.policy.check(self.budget, quote)
+            round_safety.check_policy(self, quote)
         except BudgetExceeded:
             return self._result(self._persist(advance(state, "PAUSED")),
                                 node_id=node_id, required_action="raise_budget",
                                 paused=True)
         # Reserved at quote acceptance; only a verified terminal settles it.
+        self._quote = quote
         self.reservation = self.budget.reserve(quote)
         state = self._persist_receipt("quote", {
-            "quoteId": quote.quote_id, "totalMaxCredits": quote.total_max_credits})
+            "quoteId": quote.quote_id, "totalMaxCredits": quote.total_max_credits,
+            "requestFingerprint": quote.request_fingerprint})
         return self._result(self._persist(advance(state, "AWAITING_APPROVAL")),
                             node_id=node_id, required_action="request_approval",
                             paused=True)
 
     def _on_AWAITING_APPROVAL(self, state: LoopState) -> RoundResult:
         approval = self.approval.pending()
-        if approval is None:
+        if not self._valid_approval(approval, state):
             return self._result(state, required_action="request_approval", paused=True)
-        # Non-secret metadata only. `credit_token` is never serialized.
-        state = self._persist_receipt("approval", {
-            "requestFingerprint": approval.request_fingerprint,
-            "ceiling": approval.ceiling})
         node_id = str(state.pending_operations[0]["nodeId"])
         submit_id = (state.pending_operations[0].get("submitId")
                      or str(uuid.uuid4()))
@@ -333,11 +356,50 @@ class VisualLoopController:
                             node_id=node_id, submit_id=submit_id,
                             required_action="submit")
 
+    def _valid_approval(self, approval: Approval | None, state: LoopState) -> bool:
+        quote = self._quote
+        if (approval is None or not approval.credit_token.strip() or quote is None
+                or type(approval.ceiling) is not int or approval.ceiling < 0
+                or approval.request_fingerprint != quote.request_fingerprint):
+            return False
+        latest = self.runtime.quote(node_id=str(state.pending_operations[0]['nodeId']))
+        if not latest.confirmable or not latest.request_fingerprint:
+            return False
+        if (latest.request_fingerprint != quote.request_fingerprint
+                or latest.total_max_credits != quote.total_max_credits):
+            try:
+                round_safety.check_policy(self, latest, reserved=True)
+            except BudgetExceeded:
+                return False
+            self.budget.reserved += latest.total_max_credits - self.reservation.credits
+            self.reservation = Reservation(latest.quote_id, latest.total_max_credits)
+            self._quote = latest
+            self._persist_receipt("quote", {
+                "quoteId": latest.quote_id, "totalMaxCredits": latest.total_max_credits,
+                "requestFingerprint": latest.request_fingerprint})
+            return False
+        try:
+            round_safety.check_policy(self, latest, ceiling=approval.ceiling, reserved=True)
+        except BudgetExceeded:
+            return False
+        return True
+
     def _on_SUBMITTED(self, state: LoopState) -> RoundResult:
         pending = state.pending_operations[0]
         node_id, submit_id = str(pending["nodeId"]), str(pending["submitId"])
+        if self._attempted:
+            return self._on_WAITING(self._persist(advance(state, "WAITING")))
         approval = self.approval.pending()
-        guarantee = approval.credit_token if approval else ""
+        if not self._valid_approval(approval, state):
+            return self._result(state, required_action="request_approval", paused=True)
+        # Non-secret metadata only. `credit_token` is never serialized.
+        state = self._persist_receipt("approval", {
+            "requestFingerprint": approval.request_fingerprint,
+            "ceiling": approval.ceiling})
+        # 标记先于外部调用；异常、崩溃和并发恢复均只能查询同一身份。
+        self._attempted = True
+        state = self._persist(state)
+        guarantee = approval.credit_token
         try:
             submission = self.execution.submit(node_id=node_id, submit_id=submit_id,
                                                credit_token=guarantee)
@@ -358,10 +420,10 @@ class VisualLoopController:
     def _on_WAITING(self, state: LoopState) -> RoundResult:
         submit_id = str(state.pending_operations[0]["submitId"])
         status = self.execution.status(submit_id=submit_id)
-        if status.state in ("in_progress", "unknown", "absent"):
+        if status.state not in ("completed", "failed") or (status.state == "completed" and not status.resource_id):
             return self._result(state, submit_id=submit_id,
                                 required_action="resume", paused=True)
-        if status.state != "completed" or not status.resource_id:
+        if status.state == "failed":
             self._settle("failed")
             return self._result(self._persist(advance(state, "FAILED")),
                                 submit_id=submit_id,
@@ -422,6 +484,9 @@ class VisualLoopController:
         if status.state in ("in_progress", "unknown", "absent"):
             return self._result(state, submit_id=submit_id,
                                 required_action="drain", paused=True)
+        if status.state not in ("completed", "failed"):
+            return self._result(state, submit_id=submit_id, required_action="drain", paused=True)
+        self._settle(status.state)
         return self._result(self._persist(advance(state, "STOPPED")),
                             submit_id=submit_id)
 

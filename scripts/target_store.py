@@ -295,7 +295,8 @@ class TargetStore:
         if not resolved.is_file():
             raise TargetError(f"target is not a readable file: {path}")
 
-        blob_head = resolved.open("rb").read(64)
+        with resolved.open("rb") as handle:
+            blob_head = handle.read(64)
         if not blob_head:
             raise TargetError(f"target is empty: {path}")
         try:
@@ -432,8 +433,6 @@ class ResourceUploader:
                                                 import_kind=import_kind))
         if outcome.exit_code == 0:
             return self._complete(resource_id, import_kind, outcome, reconciled=False)
-        if outcome.error_code() == "cli.resource_already_exists":
-            return self._reconcile(resource_id, import_kind, path=path, allow_upload=False)
         return self._reconcile(resource_id, import_kind, path=path, allow_upload=False)
 
     def _reconcile(self, resource_id: str, import_kind: str, *, path: Path,
@@ -441,7 +440,7 @@ class ResourceUploader:
         """Resolve an ambiguous result with the SAME id. Never mint a new one."""
         for _ in range(self.MAX_RECONCILE_ROUNDS):
             outcome = self.runner(self._get_argv(resource_id))
-            if outcome.exit_code == 0 and outcome.data().get("resourceId"):
+            if outcome.exit_code == 0 and _outcome_data(outcome).get("resourceId"):
                 return self._complete(resource_id, import_kind, outcome,
                                       reconciled=True)
         raise UploadUnresolved(
@@ -451,11 +450,11 @@ class ResourceUploader:
 
     def _complete(self, resource_id: str, import_kind: str,
                   outcome: CommandOutcome, *, reconciled: bool) -> UploadOutcome:
-        data = outcome.data()
-        confirmed = str(data.get("resourceId") or resource_id)
+        data = _outcome_data(outcome)
+        confirmed = str(data.get("resourceId") or "")
         if not _is_canonical_uuid(confirmed):
             raise TargetError(
-                f"CLI returned a non-canonical resourceId: {confirmed!r}")
+                f"CLI returned a missing or malformed resourceId: {confirmed!r}")
         evidence = _sha256_bytes(json.dumps(
             {"resourceId": confirmed, "importKind": import_kind,
              "requestedId": resource_id}, sort_keys=True).encode("utf-8"))

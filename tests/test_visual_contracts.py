@@ -313,7 +313,8 @@ class VisualContractTests(unittest.TestCase):
                       "REVISION_PROPOSED", "COMPLETED", "PAUSED", "STALLED",
                       "STOP_REQUESTED", "DRAINING_ACCEPTED", "STOPPED", "FAILED"):
             with self.subTest(state=state):
-                v.validate(loop_state(state=state))
+                v.validate(loop_state(state=state, pendingOperations=[
+                    {"nodeId": "node_x", "submitId": UUID_A}]))
         for bogus in ("RUNNING", "done", "TARGET_LOCKED "):
             with self.subTest(state=bogus), self.assertRaises(jsonschema.ValidationError):
                 v.validate(loop_state(state=bogus))

@@ -109,7 +109,7 @@ class QuoteTests(CompositionCase):
     def test_quote_maps_the_envelope(self) -> None:
         runner = ScriptedRunner([envelope({"quoteId": SESSION,
                                            "totalMaxCredits": 40,
-                                           "confirmable": True})])
+                                           "confirmable": True}), envelope({"generationDraft": {"prompt": "test", "model": "m"}, "mutationVersion": 1})])
         runtime = vlr.CliCanvasRuntime(runner=runner, probe=self._probe(),
                                         project_id=SESSION)
         quote = runtime.quote(node_id=NODE)
@@ -120,6 +120,29 @@ class QuoteTests(CompositionCase):
         from target_store import CapabilityProbe
         return CapabilityProbe(runner=ScriptedRunner([envelope({"referenceForms": []})]),
                                root=self.store.session_dir)
+
+    def test_fingerprint_binds_project_node_full_draft_and_version(self):
+        def quote(project=SESSION, node=NODE, prompt='one', version=1):
+            runner = ScriptedRunner([
+                envelope({'quoteId': SESSION, 'totalMaxCredits': 40, 'confirmable': True}),
+                envelope({'node': {'generationDraft': {'prompt': prompt, 'model': 'm'},
+                                   'mutationVersion': version}})])
+            runtime = vlr.CliCanvasRuntime(runner=runner, probe=self._probe(), project_id=project)
+            return runtime.quote(node_id=node)
+        initial = quote()
+        self.assertEqual(initial.request_fingerprint, quote().request_fingerprint)
+        for changed in (quote(project=RESOURCE), quote(node='node_other'),
+                        quote(prompt='two'), quote(version=2)):
+            self.assertNotEqual(initial.request_fingerprint, changed.request_fingerprint)
+        self.assertEqual(initial.project_id, SESSION)
+
+    def test_malformed_quote_is_not_assumed_free(self):
+        for data in ({'confirmable': True}, {'totalMaxCredits': -1, 'confirmable': True},
+                     {'totalMaxCredits': 40, 'confirmable': 'false'}):
+            runtime = vlr.CliCanvasRuntime(runner=ScriptedRunner([envelope(data)]),
+                                          probe=self._probe(), project_id=SESSION)
+            with self.assertRaises(vlr.RuntimePortError):
+                runtime.quote(node_id=NODE)
 
 
 class ExecutionTests(CompositionCase):

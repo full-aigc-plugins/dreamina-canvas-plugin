@@ -27,7 +27,8 @@ def png_shape(relative: str) -> tuple[int, int, int]:
 class DistributionTests(unittest.TestCase):
     def test_production_readiness_files(self) -> None:
         requirements = (ROOT / "requirements-dev.txt").read_text(encoding="utf-8")
-        self.assertIn("jsonschema>=4.21,<5", requirements)
+        self.assertIn("-r requirements.txt", requirements)
+        self.assertIn("jsonschema>=4.21,<5", (ROOT / "requirements.txt").read_text())
         self.assertIn("PyYAML>=6,<7", requirements)
 
         workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
@@ -70,7 +71,7 @@ class DistributionTests(unittest.TestCase):
     def test_manifest_and_marketplace(self) -> None:
         manifest = load_json(".codex-plugin/plugin.json")
         self.assertEqual(manifest["name"], PLUGIN_ID)
-        self.assertEqual(manifest["version"].split("+", 1)[0], "0.4.2")
+        self.assertEqual(manifest["version"].split("+", 1)[0], load_json("plugin.json")["version"])
         self.assertEqual(manifest["repository"], REPOSITORY)
         self.assertEqual(manifest["skills"], "./skills/")
         self.assertNotIn("mcpServers", manifest)
@@ -85,7 +86,7 @@ class DistributionTests(unittest.TestCase):
         marketplace = load_json(".agents/plugins/marketplace.json")
         entries = [entry for entry in marketplace["plugins"] if entry["name"] == PLUGIN_ID]
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0]["source"], {"source": "url", "url": REPOSITORY + ".git", "ref": "v0.4.2"})
+        self.assertEqual(entries[0]["source"], {"source": "url", "url": REPOSITORY + ".git", "ref": "v" + load_json("plugin.json")["version"]})
         self.assertEqual(entries[0]["policy"], {"installation": "AVAILABLE", "authentication": "ON_USE"})
 
     def test_structure_legal_and_brand_assets(self) -> None:
