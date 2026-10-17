@@ -22,7 +22,7 @@
       "interface": {
         "displayName": "Dreamina Canvas",
         "shortDescription": "Build and run structured Dreamina canvases",
-        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.4.3/assets/official-logo.png"
+        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.5.0/assets/official-logo.png"
       }
     }
   ]
