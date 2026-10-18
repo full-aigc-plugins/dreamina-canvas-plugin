@@ -1,4 +1,4 @@
-# Dreamina Canvas Plugin
+# Dreamina Canvas
 
 ## Plugin marketplaces
 
@@ -9,388 +9,162 @@ This plugin belongs to **AIGC content creation**.
 | Full-stack development | [Full Stack Plugins](https://github.com/partme-ai/full-stack-plugins) | Architecture and UI design, code understanding, quality checks, code review, workflow governance, and server operations |
 | AIGC content creation | [Full AIGC Plugins](https://github.com/partme-ai/full-aigc-plugins) | Image, video, audio, music, 3D, and multimodal content creation |
 
-![Dreamina Canvas — Shape ideas on an intelligent canvas](assets/dreamina-canvas-hero.png)
+![Dreamina Canvas — shape ideas on a structured canvas](assets/official-logo.png)
 
-<img src="assets/logo.png" alt="Dreamina Canvas logo" width="128">
+> Build Dreamina canvases from typed nodes and a timeline, keep the free save step separate from the quoted run, and download assets with byte counts and SHA-256 receipts.
 
-> Build, quote, and run structured Dreamina canvases from your supported coding agent — with the free and paid steps kept apart.
+[![Version](https://img.shields.io/badge/release-0.5.1%2Bcodex.20261018-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![Skills](https://img.shields.io/badge/skills-11-00A67E)](#skills) [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
-[![Version](https://img.shields.io/badge/version-0.4.3-blue)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases/tag/v0.4.3)
-[![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
-
-[English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Operation contract](#operation-contract) · [Troubleshooting](#troubleshooting)
+[English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Skills](#skills) · [Architecture](docs/Dreamina-Canvas-Plugin-Architecture.md) · [Troubleshooting](#troubleshooting)
 
 ## Positioning
 
-`dreamina-canvas` turns an idea into a structured Dreamina canvas: typed nodes, a timeline, capability discovery at runtime, a free save step, then a quoted run that only executes after you approve it. Results are downloaded with byte counts and SHA-256 receipts.
+`dreamina-canvas` turns a brief into a structured Dreamina canvas: typed nodes, a timeline, capability discovery at run time, a free draft save, then a quoted run that only executes after you approve it. The plugin never hard-codes catalog values, never merges the save step with the run step, and never mints a replacement `submitId` to recover from a timeout.
 
-The plugin is a strict wrapper around the installed `dreamina-canvas` CLI. It never hard-codes catalog values, never merges the save step with the run step, and never mints a replacement `submitId` to recover from a timeout.
-
-### Who it is for
-
-- Creators who want image, video, and audio nodes composed on one canvas without spending credits by accident.
-- Engineers who need a scriptable, auditable adapter over the Dreamina Canvas CLI.
-- Reviewers who need a quote, an approval record, and a verified artifact for every paid run.
-
-### What problem it solves
-
-| Problem | What this plugin provides | Verifiable entry point |
-|---|---|---|
-| Catalog values drift | Models, voices, ratios, and resolutions are discovered at runtime | `scripts/dreamina_canvas_adapter.py` |
-| Saving silently costs money | Save and run are separate operations with a quote between them | `scripts/approval_guard.py` |
-| A timeout invites double spending | Resume by the existing `submitId`; never mint a new one | `scripts/operation_ledger.py` |
-| Downloads are unverified | Byte count and SHA-256 receipts | `scripts/artifact_guard.py` |
-
-## At a glance
-
-```text
-Idea / brief
-      │
-      ▼
-┌──────────────────────────────────────────────────────────┐
-│ dreamina-canvas                                    │
-│  ① discover   live models, voices, ratios, resolutions   │
-│  ② compose    typed nodes and a timeline on the canvas   │
-│  ③ save       draft, no charge                           │
-│  ④ quote      authoritative cost for the planned run     │
-│  ⑤ approve    explicit user decision, credit ceiling     │
-│  ⑥ run        execute once, then query by submitId       │
-│  ⑦ download   assets with byte and SHA-256 receipts      │
-└──────────────────────────────────────────────────────────┘
-      │
-      ▼
-Canvas project + verified local assets
-```
-
-| Property | Value |
-|---|---|
-| Plugin ID | `dreamina-canvas` |
-| Host | Codex CLI or ChatGPT desktop app |
-| Current version | `0.4.3` |
-| Plugin manifest | `.codex-plugin/plugin.json` (compatibility) and `plugin.json` (portable) |
-| MCP configuration | none — the plugin drives the local CLI through Skills |
-| Primary language | Python 3.11+ |
-| License | Apache-2.0 |
-
-## Capabilities and boundaries
-
-### Supported
-
-| Capability | Input | Output | Limit | Status |
-|---|---|---|---|---|
-| Capability discovery | A live CLI session | Models, voices, ratios, resolutions | Read-only, never cached into source | Stable |
-| Canvas composition | Brief plus discovered capabilities | Typed nodes and a timeline | Node set is fixed before quoting | Stable |
-| Draft save | A composed canvas | Saved draft | Never charges credits | Stable |
-| Quote | A planned run | Authoritative cost for the exact node set | Required before every paid run | Stable |
-| Approved run | Quote plus explicit approval | One execution, then queryable state | One approval, one run, replay rejected | Stable |
-| Asset download | Completed operations | Local files with byte and SHA-256 receipts | — | Stable |
-| Operation resume | An existing `submitId` | Continued observation or a converged result | Never resubmits a paid run with a new identifier | Stable |
-
-### Not responsible for
-
-- Owning authentication. The `dreamina-canvas` CLI owns login and session state; this repository must not persist credentials.
-- Choosing a model for you. Catalog values come from the live CLI, never from a hard-coded list.
-- Installing or logging in to the CLI without your authorization.
-- Retrying a paid operation on your behalf. An ambiguous submission escalates to a human decision instead.
-
-### Maturity
-
-| Status | Meaning |
-|---|---|
-| Stable | Automated tests plus recorded runtime evidence |
-| Experimental | Behaviour may change; pin the version and verify |
-| Blocked / NOT_RUN | Not verified; never present it as available |
-
-### Visual-quality loop: current local regression and historical canaries
-
-The visual single-round controller is included in this release: target locking,
-draft → quote → **approval pause** → one submission (submitId persisted
-first, restart reconciles the same identity) → resume-wait → transactional
-download + verification → judge request/receipt file pair → stop at
-`JUDGED` / `REVISION_PROPOSED`. The controller never quotes or submits a
-second round on its own. Host entry: `scripts/visual_loop_cli.py`.
-
-Safety fixes in 0.4.3 have current local regression coverage. Live service, paid,
-Windows and host evidence below comes from earlier versions and has not been rerun
-for this version. See [the current verification record](docs/verification/round-safety-2026-10-08.md).
-
-| Evidence layer | Visual-loop status | What it does not prove |
-|---|---|---|
-| OpenSpec plan | Implemented (sections 1-10) | Release readiness beyond this RC |
-| Local unit/contract tests (345) | Passing | Real-host behaviour |
-| Real target upload canary | **PASS** (2026-09-22) | Multi-round behaviour |
-| Real paid single-round canary | **PASS** (2026-09-22, 1 credit; stopped at `REVISION_PROPOSED`) | Multi-round, other accounts |
-| Windows CI (real runner) | **PASS** | macOS/Windows GUI hosts |
-| Cross-host golden samples (Codex/Claude/ZCode/Kimi) | **PASS** (2026-09-22, 8/8 gates; [report](docs/verification/golden-hosts-2026-09-22.md)) | Consistency beyond these 4 hosts |
-| Multi-round + prompt-revision auto-apply | Not implemented by design | Anything beyond round 1 |
-
-Specified by the archived OpenSpec change
-[`add-canvas-visual-quality-loop`](openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md).
-See the [visual-loop baseline](docs/verification/visual-loop-baseline-2026-09-21.md),
-the [upload canary](docs/verification/visual-loop-upload-canary-2026-09-22.md) and
-the [paid canary](docs/verification/visual-loop-paid-canary-2026-09-22.md) for the
-exact facts.
-
-### Library entry points
-
-Wired by the active OpenSpec change
-[`wire-library-capabilities`](openspec/changes/archive/2026-09-24-wire-library-capabilities/proposal.md):
-
-| Capability | Library | CLI entry |
-|---|---|---|
-| Budget + exit governance | `scripts/budget.py` | inside `step` (quote reserves, terminal outcome settles) |
-| Prompt revision (propose-only by default) | `scripts/prompt_revision.py` | `visual_loop_cli.py revise [--apply]` |
-| Judge dispatch (human parks / shell adapters) | `scripts/judge_adapters.py` | `visual_loop_cli.py judge --adapter …` |
-| Video temporal gate | `scripts/video_judge.py` | `visual_loop_cli.py sample-frames` / `video-verdict` |
-
-## Architecture and core flow
-
-```mermaid
-flowchart LR
-    A[Brief] --> B[Capability discovery]
-    B --> C[Compose nodes and timeline]
-    C --> D[Save draft - no charge]
-    D --> E[Quote]
-    E --> F{User approval}
-    F -->|approved| G[Run once]
-    F -->|rejected| C
-    G --> H[Query by submitId]
-    H --> I[Download assets]
-    I --> J[Byte and SHA-256 receipts]
-    H -->|interrupted| K[(Operation ledger)]
-    K --> H
-```
-
-### Component responsibilities
-
-| Component | Owns | Does not own |
-|---|---|---|
-| `scripts/dreamina_canvas_adapter.py` | argv-only CLI invocation and typed errors | Business approval |
-| `scripts/operation_ledger.py` | Non-secret operation receipts keyed by `submitId` | Authentication |
-| `scripts/approval_guard.py` | Quote binding, credit ceiling, replay rejection | Cost estimation |
-| `scripts/artifact_guard.py` | Download verification and receipts | Remote object lifetime |
-| `scripts/error_router.py` | Mapping CLI exit codes to typed next actions | Retry execution |
-| `skills/` (11) | Routing and per-capability instructions for supported hosts | Runtime enforcement |
-
-## Compatibility
-
-| Plugin version | Host | CLI | Python | Status |
-|---|---|---|---|---|
-| `0.4.3` | Host CLI | Existing authenticated `dreamina-canvas` | Local Python 3.13 | Approval binding, durable budget, corrupt-state refusal and query-only recovery; current live/Windows checks not rerun |
-| `0.4.2` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Lock tooling now excludes untracked host/build noise (`.DS_Store`, `__pycache__`, `*.pyc`) from the lock, sync and verify paths, so the byte-exact contract no longer depends on one operator's working tree |
-| `0.4.0` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Upstream consolidation: nine `dreamina-canvas-cli*` entries plus the implicit `dreamina-canvas-use`; 12 atom Skills retired into operation references; command surface re-pointed (2026-09-29) |
-| `0.3.0` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Library wiring (`revise`/`judge`/`sample-frames`/`video-verdict`) + budget unification; cross-host golden samples 8/8 PASS (2026-09-22); multi-round pending |
-| `0.2.0` | Codex CLI or ChatGPT desktop app | `dreamina-canvas` installed and authenticated by you | 3.11, 3.12, 3.13 (CI matrix) | Visual single-round controller: real paid one-round canary passed (2026-09-22, 1 credit); multi-round and cross-host golden runs pending |
-
-CLI runtime, version, command compatibility, explicitly authorized account authentication, and the separately approved paid canary are recorded as **PASS** in the [runtime evidence](docs/verification/dreamina-canvas-runtime.md).
+It is a strict wrapper around the installed `dreamina-canvas` CLI and ships no MCP server: the eleven Skills drive the CLI through an argv-only adapter. Authentication and canvas state stay with the CLI; the plugin persists only non-secret operation identifiers.
 
 ## Installation
-
-### From the plugin marketplace
-
-```bash
-codex plugin marketplace add full-aigc-plugins/dreamina-canvas-plugin --ref v0.4.3
-codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
-```
-
-Restart Codex or the ChatGPT desktop app, then open a new task so the Skills load.
 
 ### Prerequisites
 
 - Python 3.11 or newer on `PATH`.
-- The `dreamina-canvas` CLI installed on this machine. The plugin does not install it for you.
-- Visual-loop runtime dependencies: `jsonschema` from `requirements.txt`. Test gates additionally use `PyYAML` through `requirements-dev.txt`. Install into your chosen environment with `python -m pip install -r requirements.txt`.
+- The `dreamina-canvas` CLI, installed and authenticated before first use. The setup and auth Skills can run the official installer and login, but only after explicit authorization, and the binary is never bundled.
+- Visual-loop runtime dependency: `jsonschema` from `requirements.txt`. Install with `python -m pip install -r requirements.txt`.
+- Development and test gates additionally use `requirements-dev.txt`.
 
-### Confirm it loaded
+### From the plugin marketplace
 
 ```bash
-codex plugin list
+codex plugin marketplace add partme-ai/full-aigc-plugins
+codex plugin add dreamina-canvas@full-aigc-plugins
 ```
 
-Expected entry:
-
-```text
-dreamina-canvas@partme-ai-dreamina-canvas  installed, enabled
-```
-
-Then verify the packaged Skills still match their upstream lock file:
+Restart the host and open a new task so the Skills load. Then verify the packaged Skills still match the upstream lock file:
 
 ```bash
 python scripts/verify_dreamina_canvas_skills.py
 ```
 
-### China mirror (AtomGit)
-
-If GitHub is slow or unreachable, install from the AtomGit mirror instead. The
-commands are identical apart from the marketplace URL:
-
-```bash
-codex plugin marketplace add https://atomgit.com/partme-ai/partme-dreamina-canvas.git --ref main
-codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
-```
-
-To install the whole partme-ai plugin catalog from the mirror in one step:
-
-```bash
-codex plugin marketplace add https://atomgit.com/partme-ai/plugins.git
-codex plugin add dreamina-canvas@partme-ai-dreamina-canvas
-```
-
-Notes:
-
-- The AtomGit source and the GitHub source share marketplace names, so adding
-  one replaces the other. Switch back with
-  `codex plugin marketplace add https://github.com/partme-ai/plugins.git`.
-- For ZCode or Kimi, clone the mirror repository and register the local
-  directory in the respective marketplace configuration.
-
 ## Quick start
 
-### 1. Prerequisites
-
-- An authenticated `dreamina-canvas` CLI session.
-- A project or canvas you are allowed to modify.
-- A clear brief: what the canvas should contain and which output you want.
-
-### 2. Ask for a canvas draft
-
-```text
-Create a Dreamina canvas for a 15-second product teaser. Draft the nodes and do not run anything yet.
+```mermaid
+flowchart LR
+    A[Brief] --> B[Discover live models and voices]
+    B --> C[Compose nodes and timeline]
+    C --> D[Save draft, no charge]
+    D --> E[Quote the exact node set]
+    E --> F{Approval}
+    F -->|approved| G[Run once]
+    F -->|rejected| C
+    G --> H[Query by submitId]
+    H --> I[Download with byte and SHA-256 receipts]
 ```
 
-Expected observation: the plugin discovers live capabilities, composes typed nodes, saves a draft, and reports that nothing has been charged.
-
-### 3. Quote the run and approve it
-
 ```text
-Quote this canvas run and wait for my approval.
+Create a Dreamina canvas for a 15-second product teaser. Draft the nodes and
+do not run anything yet.
 ```
 
-Expected observation: a quote for the exact node set, with the credit total. Only after you approve does the run execute, once.
+Expected observation: live capabilities are discovered, typed nodes are composed, a draft is saved, and the plugin confirms that nothing was charged. Ask for a quote next; the run happens once, after you approve the credit total.
 
-### 4. Resume or download
+## What you can build
 
-```text
-Resume my Dreamina canvas operation and download the assets.
-```
+| Workflow | Built-in path | Verifiable output |
+| --- | --- | --- |
+| Image nodes | `dreamina-canvas-cli-text2image`, `dreamina-canvas-cli-image2image` | Saved draft, quoted run, verified image assets |
+| Video nodes | `dreamina-canvas-cli-text2video`, `dreamina-canvas-cli-ref2video` | First/last-frame or reference-driven video assets |
+| Audio nodes | `dreamina-canvas-cli-text2voice`, `dreamina-canvas-cli-text2audio` | Narration or music assets with the chosen voice |
+| Canvas composition | `dreamina-canvas-cli`, `/dreamina-canvas-compose`, `/dreamina-canvas-timeline` | Node graph, timeline tracks, replaced clips and audio |
+| Operate and recover | `dreamina-canvas-cli-auth`, `/dreamina-canvas-run`, `/dreamina-canvas-resume` | Approval record, quote, ledger entry and resumed operation |
 
-Expected observation: the operation is queried by its existing `submitId`; downloaded files come with byte counts and SHA-256 receipts.
+## Skills
+
+| Skill | What it does |
+| --- | --- |
+| `dreamina-canvas-cli` | Shared canvas operations: model and voice discovery, canvas and asset management, node editing, timeline, quote-bound run, resume and verified download. |
+| `dreamina-canvas-cli-setup` | Installs, updates or verifies the CLI, including PATH troubleshooting. |
+| `dreamina-canvas-cli-auth` | Login, device authorization, account check, credential refresh and logout. |
+| `dreamina-canvas-cli-text2image` | Text-to-image mode: inputs, validation, draft and scene acceptance. |
+| `dreamina-canvas-cli-image2image` | Image-to-image and upscale mode. |
+| `dreamina-canvas-cli-text2video` | Text-to-video mode. |
+| `dreamina-canvas-cli-ref2video` | Reference-media video, including `m2v` and first/last-frame modes. |
+| `dreamina-canvas-cli-text2voice` | Text-to-speech mode. |
+| `dreamina-canvas-cli-text2audio` | Music generation mode. |
+| `dreamina-canvas-harness` | Routing and controller boundary for approvals, one-round visual evaluation, recovery and delivery evidence. |
+| `dreamina-canvas-use` | Routes an unspecified image, video, voice or music request to the right entry point. |
+
+## Slash commands
+
+| Command | What it does |
+| --- | --- |
+| `/dreamina-canvas` | Entry point; routes canvas creation, composition and generation. |
+| `/dreamina-canvas-setup` | Install, upgrade or verify the CLI, including PATH fixes. |
+| `/dreamina-canvas-auth` | Check, refresh or recover the login state. |
+| `/dreamina-canvas-create` | Create or switch a canvas and confirm the `projectId`. |
+| `/dreamina-canvas-image` | Text-to-image: draft, approved run, verified output. |
+| `/dreamina-canvas-image2image` | Image-to-image and upscale. |
+| `/dreamina-canvas-video` | Text-to-video: draft, approved run, verified output. |
+| `/dreamina-canvas-ref2video` | Reference-media or first/last-frame video. |
+| `/dreamina-canvas-audio` | Text-to-speech with a selected voice. |
+| `/dreamina-canvas-music` | Music generation by style and duration. |
+| `/dreamina-canvas-assets` | Upload assets, check status and place them on the canvas. |
+| `/dreamina-canvas-compose` | Compose text, element and generation nodes in dependency order. |
+| `/dreamina-canvas-timeline` | Arrange tracks, replace clips and audio. |
+| `/dreamina-canvas-run` | Quote saved nodes, obtain credit approval and submit once. |
+| `/dreamina-canvas-resume` | Query, wait for or resume a submitted operation. |
 
 ## Configuration
 
 There is no plugin configuration file and no credential in this repository. Behaviour is driven by CLI arguments plus your explicit approval.
 
 | Setting | Where it lives | Notes |
-|---|---|---|
+| --- | --- | --- |
 | CLI binary | `dreamina-canvas` on `PATH` | Overridable through the adapter for controlled deployments |
 | Authentication | The CLI's own store | The plugin never reads or writes it |
 | Operation ledger | `<root>/operations/<profile-and-environment>/<submitId>.json` | Mode `0600`; non-secret fields only |
 | Credit ceiling | Supplied with the approval | A ceiling below the latest authoritative total is refused |
 
-## Operation contract
+## Architecture and security
 
-### Stable CLI exit codes and routed actions
+`dreamina-canvas-plugin` owns the adapter, the approval guard, the operation ledger and the artifact guard. The CLI owns login and remote state; Dreamina owns the canvas service. The authors receive no asset.
 
-| Exit code | Meaning | Routed action |
-|---|---|---|
-| `0` | Success | `continue` |
-| `1` | Uncategorized internal failure | `alert` |
-| `2` | Invalid command, argument, or schema | `fix_and_retry` |
-| `10` | Structured credit approval required | `approval_pause` |
-| `11` | Login required or session expired | `reauth_and_retry` |
-| `12` | Permission, capability, or entitlement denied | `escalate` |
-| `13` | Environment or release compatibility blocked | `upgrade_cli` |
-| `20` | Operation recoverable, not yet converged | `resume_operation` |
-| `21` | Retryable service or transport failure | `bounded_backoff_retry` |
-| `22` | Human intervention required | `hand_to_human` |
+- Save and run are separate operations; no quote means no approval is possible.
+- An approval is bound to the quoted node set and its project, and a consumed approval is rejected as a replay.
+- Timeouts resume through the existing `submitId`; a missing ledger record escalates to a human instead of retrying.
+- Only non-secret identifiers are persisted, and credential-like field names are rejected before anything is written.
 
-### Approval rules
-
-- No quote means no approval is possible; the guard refuses.
-- An approval is bound to the quoted node set and its project.
-- A credit ceiling below the latest authoritative total is refused.
-- Consuming an approval twice is rejected as a replay.
-
-## Retry, idempotency, and recovery
-
-- A timeout or ambiguous submission is resumed through the existing `submitId`; a replacement identifier is never minted automatically.
-- A missing ledger record for a resubmittable operation escalates to a human rather than retrying.
-- An operation that is in progress or completed is observed, never re-run.
-- Retryable transport failures use bounded backoff; approval, permission, and compatibility failures do not retry at all.
-- Only non-secret identifiers are persisted: the ledger stores project, node, and submit identifiers, state, fingerprints, exit codes, and timestamps.
-
-## Data and state
-
-| Data | Location | Lifecycle | Secrets |
-|---|---|---|---|
-| Operation receipt | `<root>/operations/<profile-and-environment>/<submitId>.json` | Until you delete it | None; non-secret fields only |
-| Downloaded assets | Your chosen download directory | Until you delete them | None |
-| Canvas project | Dreamina's own service | Owned by the service | Managed by the CLI |
-
-Ledger files are written with mode `0600`, and credential-like fields are rejected before anything is persisted.
-
-## Security
-
-- Authentication stays with the CLI; this repository must not persist credentials.
-- Only non-secret operation fields are written to the ledger, and credential-like field names are rejected outright.
-- Paid execution requires a fresh quote plus an explicit approval bound to that quote.
-- A consumed approval cannot be replayed.
-- The adapter invokes the CLI through argv arrays only; it never builds a shell string.
-- The plugin does not install the CLI or authenticate on your behalf without authorization.
-
-## Development and verification
-
-```bash
-python -m unittest discover -s tests -v
-python -m unittest discover -s tests/scenarios -v
-python scripts/verify_dreamina_canvas_skills.py
-python scripts/validate_distribution.py
-```
-
-Recorded evidence:
-
-- [Offline verification](docs/verification/offline.md) — the offline gate result for this revision.
-- [Runtime evidence](docs/verification/dreamina-canvas-runtime.md) — CLI runtime, version, and command compatibility.
-- [Production readiness](docs/verification/production-readiness.md) and [real-environment acceptance](docs/verification/real-environment-acceptance-2026-09-13.md).
-- [Atomic Skills](docs/verification/atomic-skills.md) — packaged Skills match the upstream lock file byte for byte.
+| Evidence | Status |
+| --- | --- |
+| Offline, unit and scenario gates | Current local regression record in `docs/verification/round-safety-2026-10-08.md` |
+| Visual single-round controller | Target upload and one-credit paid canary recorded for the 2026-09-22 controller |
+| Live, paid and Windows reruns for 0.5.0 | Not claimed by this README; see `docs/verification/` for the dated records |
 
 ## Troubleshooting
 
 | Symptom | Check first | Resolution |
-|---|---|---|
-| Tools or Skills are missing | Plugin status | Restart Codex and open a new task |
-| The CLI is not found | `dreamina-canvas` on `PATH` | Install the CLI; the plugin will not do it silently |
-| A run pauses with an approval request | The pending quote | Review the credit total, then approve or reject |
+| --- | --- | --- |
+| Skills are missing | Plugin status | Restart the host and open a new task |
+| The CLI is not found | `dreamina-canvas` on `PATH` | Run `/dreamina-canvas-setup` and approve the install, or install it manually |
+| A run pauses for approval | The pending quote | Review the credit total, then approve or reject |
 | A run times out | The ledger entry | Resume by the existing `submitId`; do not re-quote blindly |
 | A download fails verification | The receipt | Re-download; a mismatched byte count or digest is a hard failure |
 | Login is required | The CLI session | Authenticate with the CLI, then retry |
 
-## Project structure
+## Upgrade
 
-```text
-partme-dreamina-canvas/
-├── .codex-plugin/plugin.json   # compatibility manifest
-├── plugin.json                 # portable manifest
-├── .agents/plugins/marketplace.json
-├── scripts/                    # adapter, ledger, guards, validators
-├── skills/                     # 10 vendored canvas Skills + dreamina-canvas-harness
-├── tests/                      # unit tests plus scenario tests
-├── upstream/                   # pinned upstream snapshot and lock file
-└── docs/                       # architecture, technical solution, verification
+```bash
+codex plugin marketplace upgrade full-aigc-plugins
+codex plugin add dreamina-canvas@full-aigc-plugins
 ```
 
-## Deep links
+Re-run `python scripts/verify_dreamina_canvas_skills.py` after upgrading: the packaged Skills are pinned to an upstream snapshot, and the ledger format is versioned.
 
-- [Architecture](docs/Dreamina-Canvas-Plugin-Architecture.md) · [架构文档](docs/Dreamina-Canvas-Plugin-Architecture.zh_CN.md)
-- [Technical solution](docs/Dreamina-Canvas-Plugin-Technical-Solution.md) · [技术方案](docs/Dreamina-Canvas-Plugin-Technical-Solution.zh_CN.md)
-- [Design spec](docs/superpowers/specs/2026-09-11-dreamina-canvas-plugin-design.md)
-- [Implementation plan](docs/superpowers/plans/2026-09-11-dreamina-canvas-plugin-implementation.md)
-- [Contributing](CONTRIBUTING.md) · [Security policy](SECURITY.md)
+Current packaged version: `0.5.1+codex.20261018` (development preview).
 
 ## Contributing and support
 
-Open functional issues at <https://github.com/full-aigc-plugins/dreamina-canvas-plugin/issues>. Before proposing a change, state the CLI version you verified against, whether it alters the approval binding or the ledger format, and include the affected tests.
+Open functional issues at <https://github.com/full-aigc-plugins/dreamina-canvas-plugin/issues>. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) first, and state the CLI version you verified against, whether the change alters approval binding or the ledger format, and include the affected tests.
 
 ## License
 
-Apache-2.0 — see [LICENSE](LICENSE).
+Apache-2.0 — see [LICENSE](LICENSE), [NOTICE](NOTICE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
