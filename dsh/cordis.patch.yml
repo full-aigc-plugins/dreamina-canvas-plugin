@@ -4,4 +4,4 @@
 # for the other hosts.
 - insert:
     - id: dreamina-canvas-plugin
-      name: '@partme-dsh/dreamina-canvas'
+      name: 'dreamina-canvas'
