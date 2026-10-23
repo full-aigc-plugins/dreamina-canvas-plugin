@@ -1,7 +1,7 @@
 {
   "name": "dreamina-canvas",
-  "version": "0.5.1",
-  "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets.",
+  "version": "0.4.3",
+  "description": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI"
   },
@@ -13,8 +13,8 @@
     "timeline"
   ],
   "interface": {
-    "displayName": "Dreamina Canvas",
-    "shortDescription": "Build and run structured Dreamina canvases",
+    "displayName": "Canvas Orchestration · Dreamina Canvas",
+    "shortDescription": "Node graphs and timelines with save/run separation",
     "longDescription": "Operate Dreamina Canvas from your coding agent: create canvases, compose node graphs, generate image/video/audio nodes, manage timelines, quote-and-run with approval, resume operations, and download verified assets.",
     "developerName": "Full Stack Skills / PartMe.AI",
     "websiteURL": "https://github.com/full-aigc-plugins/dreamina-canvas-plugin"
