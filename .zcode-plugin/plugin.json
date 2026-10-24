@@ -1,13 +1,15 @@
 {
   "name": "dreamina-canvas",
-  "displayName": "Dreamina Canvas · Canvas Orchestration",
+  "displayName": "Dreamina Canvas（即梦画布编排）",
   "displayName_i18n": {
-    "en": "Dreamina Canvas · Canvas Orchestration"
+    "en": "Dreamina Canvas · Canvas Orchestration",
+    "zh-CN": "Dreamina Canvas（即梦画布编排）"
   },
   "version": "0.4.3",
-  "description": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",
+  "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
   "description_i18n": {
-    "en": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification."
+    "en": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",
+    "zh-CN": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。"
   },
   "author": {
     "name": "Full Stack Skills / PartMe.AI",

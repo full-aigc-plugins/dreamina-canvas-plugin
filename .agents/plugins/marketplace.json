@@ -17,13 +17,14 @@
       },
       "category": "Creativity",
       "version": "0.4.3",
-      "description": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",
+      "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
       "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.4.3/assets/official-logo.png",
       "interface": {
-        "displayName": "Dreamina Canvas · Canvas Orchestration",
-        "shortDescription": "Node graphs and timelines with save/run separation",
+        "displayName": "Dreamina Canvas（即梦画布编排）",
+        "shortDescription": "节点画布与时间线，保存与计费运行分离",
         "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.4.3/assets/official-logo.png"
-      }
+      },
+      "displayName": "Dreamina Canvas（即梦画布编排）"
     }
   ]
 }

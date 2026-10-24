@@ -1,7 +1,7 @@
 {
   "name": "dreamina-canvas",
   "version": "0.4.3",
-  "description": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",
+  "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
     "url": "https://github.com/partme-ai"
@@ -42,5 +42,12 @@
     "logoDark": "./assets/official-logo.png",
     "screenshots": [],
     "composerIconDark": "./assets/official-logo.png"
+  },
+  "displayName": "Dreamina Canvas（即梦画布编排）",
+  "displayName_i18n": {
+    "zh-CN": "Dreamina Canvas（即梦画布编排）"
+  },
+  "description_i18n": {
+    "zh-CN": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。"
   }
 }

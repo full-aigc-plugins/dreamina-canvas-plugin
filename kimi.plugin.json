@@ -1,7 +1,7 @@
 {
   "name": "dreamina-canvas",
   "version": "0.4.3",
-  "description": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",
+  "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
   "author": {
     "name": "Full Stack Skills / PartMe.AI"
   },
@@ -13,8 +13,8 @@
     "timeline"
   ],
   "interface": {
-    "displayName": "Dreamina Canvas · Canvas Orchestration",
-    "shortDescription": "Node graphs and timelines with save/run separation",
+    "displayName": "Dreamina Canvas（即梦画布编排）",
+    "shortDescription": "节点画布与时间线，保存与计费运行分离",
     "longDescription": "Operate Dreamina Canvas from your coding agent: create canvases, compose node graphs, generate image/video/audio nodes, manage timelines, quote-and-run with approval, resume operations, and download verified assets.",
     "developerName": "Full Stack Skills / PartMe.AI",
     "websiteURL": "https://github.com/full-aigc-plugins/dreamina-canvas-plugin"
@@ -32,5 +32,11 @@
       "command": "python3 ./hooks/check_canvas_intent.py",
       "timeout": 15
     }
-  ]
+  ],
+  "displayName_i18n": {
+    "zh-CN": "Dreamina Canvas（即梦画布编排）"
+  },
+  "description_i18n": {
+    "zh-CN": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。"
+  }
 }
