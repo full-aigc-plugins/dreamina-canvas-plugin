@@ -1,8 +1,8 @@
 {
   "name": "dreamina-canvas",
-  "displayName": "Canvas Orchestration · Dreamina Canvas",
+  "displayName": "Dreamina Canvas · Canvas Orchestration",
   "displayName_i18n": {
-    "en": "Canvas Orchestration · Dreamina Canvas"
+    "en": "Dreamina Canvas · Canvas Orchestration"
   },
   "version": "0.4.3",
   "description": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",

@@ -1,7 +1,7 @@
 {
   "name": "partme-ai-dreamina-canvas",
   "interface": {
-    "displayName": "Canvas Orchestration · Dreamina Canvas"
+    "displayName": "Dreamina Canvas · Canvas Orchestration"
   },
   "plugins": [
     {
@@ -20,7 +20,7 @@
       "description": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",
       "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.4.3/assets/official-logo.png",
       "interface": {
-        "displayName": "Canvas Orchestration · Dreamina Canvas",
+        "displayName": "Dreamina Canvas · Canvas Orchestration",
         "shortDescription": "Node graphs and timelines with save/run separation",
         "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.4.3/assets/official-logo.png"
       }

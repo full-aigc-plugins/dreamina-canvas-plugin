@@ -20,7 +20,7 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Canvas Orchestration · Dreamina Canvas",
+        "displayName": "Dreamina Canvas · Canvas Orchestration",
         "shortDescription": "Node graphs and timelines with save/run separation",
         "longDescription": "Build Dreamina canvases from typed nodes and timelines, discover live capabilities, separate free saves from quoted runs, resume stable operations, and download verified assets.",
         "developerName": "Full Stack Skills / PartMe.AI",

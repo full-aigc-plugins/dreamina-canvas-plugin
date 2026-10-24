@@ -13,7 +13,7 @@
     "timeline"
   ],
   "interface": {
-    "displayName": "Canvas Orchestration · Dreamina Canvas",
+    "displayName": "Dreamina Canvas · Canvas Orchestration",
     "shortDescription": "Node graphs and timelines with save/run separation",
     "longDescription": "Operate Dreamina Canvas from your coding agent: create canvases, compose node graphs, generate image/video/audio nodes, manage timelines, quote-and-run with approval, resume operations, and download verified assets.",
     "developerName": "Full Stack Skills / PartMe.AI",
