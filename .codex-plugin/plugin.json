@@ -18,7 +18,7 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Dreamina Canvas · Canvas Orchestration",
+    "displayName": "Dreamina Canvas",
     "shortDescription": "Node graphs and timelines with save/run separation",
     "longDescription": "Build Dreamina canvases from typed nodes and timelines, discover live capabilities, separate free saves from quoted runs, resume stable operations, and download verified assets.",
     "developerName": "Full Stack Skills / PartMe.AI",
@@ -37,11 +37,11 @@
       "Quote this canvas run and wait for my approval"
     ],
     "brandColor": "#25E1FB",
-    "composerIcon": "./assets/official-logo.png",
+    "composerIcon": "./assets/composer-icon.png",
     "logo": "./assets/official-logo.png",
     "logoDark": "./assets/official-logo.png",
     "screenshots": [],
-    "composerIconDark": "./assets/official-logo.png"
+    "composerIconDark": "./assets/composer-icon.png"
   },
   "displayName": "Dreamina Canvas（即梦画布编排）",
   "displayName_i18n": {
