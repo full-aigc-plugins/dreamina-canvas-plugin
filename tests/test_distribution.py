@@ -25,6 +25,16 @@ def png_shape(relative: str) -> tuple[int, int, int]:
     return width, height, data[25]
 
 class DistributionTests(unittest.TestCase):
+    def test_readme_versions_follow_current_manifests(self) -> None:
+        plugin_version = load_json('plugin.json')['version']
+        package_version = load_json('package.json')['version']
+        self.assertEqual(load_json('.codex-plugin/plugin.json')['version'], plugin_version)
+        for filename, label in (('README.md', 'Current plugin manifest version: '),
+                                ('README.zh-CN.md', '当前插件清单版本：')):
+            content = (ROOT / filename).read_text(encoding='utf-8')
+            self.assertIn(f'{label}`{plugin_version}`', content)
+            self.assertIn(f'`{package_version}`', content)
+            self.assertNotIn('0.5.1+codex.20261018', content)
     def test_production_readiness_files(self) -> None:
         requirements = (ROOT / "requirements-dev.txt").read_text(encoding="utf-8")
         self.assertIn("-r requirements.txt", requirements)

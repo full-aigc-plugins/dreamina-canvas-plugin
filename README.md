@@ -161,7 +161,7 @@ codex plugin add dreamina-canvas@full-aigc-plugins
 
 Re-run `python scripts/verify_dreamina_canvas_skills.py` after upgrading: the packaged Skills are pinned to an upstream snapshot, and the ledger format is versioned.
 
-Current packaged version: `0.5.1+codex.20261018` (development preview).
+Current plugin manifest version: `0.4.3` (development preview). The npm package metadata is `0.5.0`; neither value claims new host or paid visual-loop acceptance.
 
 ## Contributing and support
 

@@ -160,7 +160,7 @@ codex plugin add dreamina-canvas@full-aigc-plugins
 
 升级后重新运行 `python scripts/verify_dreamina_canvas_skills.py`：随包技能钉在上游快照上，账本格式也是版本化的。
 
-当前打包版本：`0.5.1+codex.20261018`（开发预览）。
+当前插件清单版本：`0.4.3`（开发预览）。npm 包元数据为 `0.5.0`；这两个版本均不表示新增宿主或付费视觉闭环验收。
 
 ## 贡献与支持
 
