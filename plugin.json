@@ -20,7 +20,7 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Dreamina Canvas · Canvas Orchestration",
+        "displayName": "Dreamina Canvas",
         "shortDescription": "Node graphs and timelines with save/run separation",
         "longDescription": "Build Dreamina canvases from typed nodes and timelines, discover live capabilities, separate free saves from quoted runs, resume stable operations, and download verified assets.",
         "developerName": "Full Stack Skills / PartMe.AI",
@@ -39,22 +39,24 @@
           "Quote this canvas run and wait for my approval"
         ],
         "brandColor": "#25E1FB",
-        "composerIcon": "./assets/official-logo.png",
+        "composerIcon": "./assets/composer-icon.png",
         "logo": "./assets/official-logo.png",
         "logoDark": "./assets/official-logo.png",
         "screenshots": [],
-        "composerIconDark": "./assets/official-logo.png"
+        "composerIconDark": "./assets/composer-icon.png"
       }
     },
     "ai.nanoco.nanoclaw": {
       "agentName": "Dreamina Canvas"
+    },
+    "ai.partme.localization": {
+      "displayName": "Dreamina Canvas（即梦画布编排）",
+      "displayName_i18n": {
+        "zh-CN": "Dreamina Canvas（即梦画布编排）"
+      },
+      "description_i18n": {
+        "zh-CN": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。"
+      }
     }
-  },
-  "displayName": "Dreamina Canvas（即梦画布编排）",
-  "displayName_i18n": {
-    "zh-CN": "Dreamina Canvas（即梦画布编排）"
-  },
-  "description_i18n": {
-    "zh-CN": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。"
   }
 }
