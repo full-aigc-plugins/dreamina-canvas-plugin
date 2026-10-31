@@ -13,7 +13,7 @@ This plugin belongs to **AIGC content creation**.
 
 > Build Dreamina canvases from typed nodes and a timeline, keep the free save step separate from the quoted run, and download assets with byte counts and SHA-256 receipts.
 
-[![Version](https://img.shields.io/badge/release-0.5.1%2Bcodex.20261018-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![Skills](https://img.shields.io/badge/skills-11-00A67E)](#skills) [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![Version](https://img.shields.io/badge/release-0.4.3-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![Skills](https://img.shields.io/badge/skills-11-00A67E)](#skills) [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Skills](#skills) · [Architecture](docs/Dreamina-Canvas-Plugin-Architecture.md) · [Troubleshooting](#troubleshooting)
 
@@ -22,6 +22,8 @@ This plugin belongs to **AIGC content creation**.
 `dreamina-canvas` turns a brief into a structured Dreamina canvas: typed nodes, a timeline, capability discovery at run time, a free draft save, then a quoted run that only executes after you approve it. The plugin never hard-codes catalog values, never merges the save step with the run step, and never mints a replacement `submitId` to recover from a timeout.
 
 It is a strict wrapper around the installed `dreamina-canvas` CLI and ships no MCP server: the eleven Skills drive the CLI through an argv-only adapter. Authentication and canvas state stay with the CLI; the plugin persists only non-secret operation identifiers.
+
+The [historical real-environment acceptance](docs/verification/real-environment-acceptance-2026-09-13.md) records PASS for its listed CLI workflows. Current Windows and paid visual-loop verification were not rerun. The [add-canvas-visual-quality-loop change](openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md) documents the single-round local regression and remaining multi-round scope.
 
 ## Installation
 
