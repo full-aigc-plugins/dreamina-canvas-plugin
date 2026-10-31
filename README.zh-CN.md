@@ -13,7 +13,7 @@
 
 > 用类型化节点与时间轴搭建即梦画布，把免费保存与报价运行严格分开，下载素材时附带字节数与 SHA-256 回执。
 
-[![版本](https://img.shields.io/badge/release-0.5.1%2Bcodex.20261018-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![技能](https://img.shields.io/badge/skills-11-00A67E)](#技能) [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![版本](https://img.shields.io/badge/release-0.4.3-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![技能](https://img.shields.io/badge/skills-11-00A67E)](#技能) [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [安装](#安装) · [快速开始](#快速开始) · [技能](#技能) · [架构文档](docs/Dreamina-Canvas-Plugin-Architecture.zh_CN.md) · [故障排查](#故障排查)
 
@@ -22,6 +22,8 @@
 `dreamina-canvas` 把一段需求变成结构化即梦画布：类型化节点、时间轴、运行时能力发现、免费草稿保存，然后在费用报价之后、由你批准才执行一次。插件不硬编码目录取值，不把保存与运行合成一步，也不会为恢复超时另造一个 `submitId`。
 
 它是已安装 `dreamina-canvas` CLI 的严格包装，不提供 MCP server：十一个技能通过仅接受 argv 的适配器驱动 CLI。鉴权与画布状态留在 CLI，插件只持久化非密钥的操作标识。
+
+此前的[真实环境验收](docs/verification/real-environment-acceptance-2026-09-13.md)对所列 CLI 流程记录了 PASS；当前 Windows 与付费视觉闭环未重新验收。[add-canvas-visual-quality-loop 变更](openspec/changes/archive/2026-09-22-add-canvas-visual-quality-loop/proposal.md)记录单轮本地回归与尚未完成的多轮范围。
 
 ## 安装
 
@@ -125,7 +127,7 @@ flowchart LR
 
 ## 架构与安全
 
-本插件负责适配器、审批守卫、操作账本与产物校验；CLI 负责登录与远端状态，即梦负责画布服务，作者不接收任何素材。
+`dreamina-canvas-plugin` 负责适配器、审批守卫、操作账本与产物校验；CLI 负责登录与远端状态，即梦负责画布服务，作者不接收任何素材。
 
 - 保存与运行是两步操作；没有报价就无法批准。
 - 批准绑定到报价的节点集与其工程，已消费的批准会被当作重放拒绝。
