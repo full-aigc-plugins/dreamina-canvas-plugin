@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "dreamina-canvas",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
@@ -20,8 +20,8 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Dreamina Canvas",
-        "shortDescription": "Node graphs and timelines with save/run separation",
+        "displayName": "Dreamina Canvas（即梦画布编排）",
+        "shortDescription": "在即梦画布上编排节点与时间线：免费保存和付费运行分开，产物下载带校验。",
         "longDescription": "Build Dreamina canvases from typed nodes and timelines, discover live capabilities, separate free saves from quoted runs, resume stable operations, and download verified assets.",
         "developerName": "Full Stack Skills / PartMe.AI",
         "category": "Creativity",
