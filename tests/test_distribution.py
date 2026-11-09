@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_ID = "dreamina-canvas"
-DISPLAY_NAME = "Dreamina Canvas"
+DISPLAY_NAME = "Dreamina Canvas（即梦画布编排）"
 REPOSITORY = "https://github.com/full-aigc-plugins/dreamina-canvas-plugin"
 BRAND_COLOR = "#25E1FB"
 

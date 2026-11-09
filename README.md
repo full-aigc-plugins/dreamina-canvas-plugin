@@ -13,7 +13,7 @@ This plugin belongs to **AIGC content creation**.
 
 > Build Dreamina canvases from typed nodes and a timeline, keep the free save step separate from the quoted run, and download assets with byte counts and SHA-256 receipts.
 
-[![Version](https://img.shields.io/badge/release-0.6.0+codex.20261109-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![Skills](https://img.shields.io/badge/skills-11-00A67E)](#skills) [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![Version](https://img.shields.io/badge/release-0.6.1+codex.20261109-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![Skills](https://img.shields.io/badge/skills-11-00A67E)](#skills) [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Skills](#skills) · [Architecture](docs/Dreamina-Canvas-Plugin-Architecture.md) · [Troubleshooting](#troubleshooting)
 
@@ -161,7 +161,7 @@ codex plugin add dreamina-canvas@full-aigc-plugins
 
 Re-run `python scripts/verify_dreamina_canvas_skills.py` after upgrading: the packaged Skills are pinned to an upstream snapshot, and the ledger format is versioned.
 
-Current plugin manifest version: `0.6.0` (Codex build: `0.6.0+codex.20261109`). The npm package metadata is `0.6.0`. This release bundles dreamina-skills v1.7.2 for dreamina-canvas CLI 1.3.0, including workflow, template, and node deletion guidance. Host and paid visual-loop acceptance remain tracked in dated verification records.
+Current plugin manifest version: `0.6.1` (Codex build: `0.6.1+codex.20261109`). The npm package metadata is `0.6.1`. This release bundles dreamina-skills v1.7.2 for dreamina-canvas CLI 1.3.0, including workflow, template, and node deletion guidance. Host and paid visual-loop acceptance remain tracked in dated verification records.
 
 ## Contributing and support
 
