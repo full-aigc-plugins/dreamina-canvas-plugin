@@ -1,13 +1,13 @@
 ---
 name: dreamina-canvas-cli-text2voice
-description: 当用户要求即梦画布文本转语音时使用；仅负责 tts 模式的输入、参数校验、草稿与场景验收，公共画布素材、付费运行和恢复由 dreamina-canvas-cli 维护。
+description: 当用户要求即梦画布文本转语音、朗读或全能配音（选音色或参考素材）时使用；仅负责 tts 模式的输入、参数校验、草稿与场景验收，公共画布素材、付费运行和恢复由 dreamina-canvas-cli 维护。
 license: Complete terms in LICENSE
 ---
 
 # 即梦画布文本转语音
 
 ## When to use
-仅处理 文本转语音。输入：逐字确认的朗读文本；通过 voice list 选择 --voice-name；不传 --model 或 --count。
+仅处理 文本转语音（tts）。输入：逐字确认的朗读文本；通过 voice list 选择 --voice-name；legacy 形态不传 --model 和 --count。公开版 1.0.3 起，带 --scenario 的场景形态（text-reading 朗读、omni-dubbing 全能配音）允许并要求显式 --model，全能配音可选一个音色或改用 --ref 参考音频。
 
 ## 操作契约
 
@@ -24,8 +24,15 @@ license: Complete terms in LICENSE
 ### Step 3：保存草稿，记录返回的 nodeId；修改已有节点时先读取当前状态，完整替换生成参数和引用，元数据才是稀疏更新。
 
 ```bash
+# legacy：音色驱动，不传模型
 dreamina-canvas --format json node create audio --project-id <projectId> \
   --prompt "<narration>" --mode tts --voice-name <voice-name>
+
+# 全能配音（公开版 1.0.3 起）：显式模型 + 场景，可选音色或参考素材
+dreamina-canvas --format json node create audio --project-id <projectId> \
+  --prompt "<dubbing script>" --mode tts \
+  --model <scenario-capable-model> --scenario omni-dubbing \
+  --voice-name <optional-voice> --ref "node:<audioNodeId>"
 ```
 
 ### Step 4：需要生成时交给 `dreamina-canvas-cli` 的 execution 操作：node quote → node confirm → node run。提交前记录稳定 submitId；任务技能不自行批准预算。
@@ -40,6 +47,7 @@ dreamina-canvas --format json node create audio --project-id <projectId> \
 ## Progressive disclosure（按需读取）
 
 - 需要逐 flag 的必填/取值/冲突规则时，读取 [参数规范](references/parameter-reference.md)。
+- 需要 Seed Audio 1.0 的参考素材配音时，先检查当前 `node create audio` schema 与模型/音色能力；`--ref` 和音色是不同输入，不把普通 tts 示例直接套用到参考配音。
 - 需要从当前 discovery 结果选模型、比例、分辨率或时长时，读取 [模型或音色选择](references/model-guide.md)。
 - 需要批量、异步、多项目、迭代等成段工作流时，读取 [常用场景组合](references/workflow-patterns.md)。
 - 遇到超时、部分成功或恢复场景时，读取 [异常处理](references/error-recovery.md)。

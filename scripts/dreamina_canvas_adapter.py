@@ -137,7 +137,11 @@ def _parse_failure(exit_code: int, stdout: str, stderr: str) -> CommandResult:
             if action not in REQUIRED_ACTIONS:
                 action = "none"
             required_action = action
-            partial_data = error.get("partialData")
+            # CLI schemaVersion 2 puts recoverable identities beside `error`.
+            # Older releases nested them in `error`; preserve either shape.
+            partial_data = data.get("partialData")
+            if partial_data is None:
+                partial_data = error.get("partialData")
             if partial_data is not None and not isinstance(partial_data, dict):
                 partial_data = None
             break
