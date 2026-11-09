@@ -1,6 +1,6 @@
 ---
 name: dreamina-canvas-cli
-description: 当需要调用即梦画布 dreamina-canvas 的公共操作时使用，包括模型音色发现、画布与素材管理、节点编辑、时间轴、报价确认运行、状态恢复和下载校验；具体生成模式、安装和登录分别交给对应 CLI 技能。
+description: 当需要调用即梦画布 dreamina-canvas 的公共操作时使用，包括空间与画布、素材、导演台、节点编辑、后处理、工作流发现、报价运行和恢复；具体生成模式、安装和登录分别交给对应 CLI 技能。
 license: Complete terms in LICENSE
 ---
 
@@ -14,7 +14,7 @@ license: Complete terms in LICENSE
 | 项目 | 标准 |
 |---|---|
 | 输入与前置 | 已选择的公共命令与其所需身份 |
-| 副作用 | 模型查询只读；画布/上传/编辑写入；运行可能计费 |
+| 副作用 | 模型查询只读；画布/上传/编辑/删除写入；运行可能计费 |
 | 输出交接 | JSON data / error、projectId、nodeId、resourceId、submitId |
 | 恢复规则 | 未知写入先核对身份，不能用新 ID 绕过结果不明 |
 
@@ -34,6 +34,7 @@ license: Complete terms in LICENSE
 - 编辑视频节点或处理模式与引用时，读取 [视频节点共享机制与编辑](references/video-node.md)。
 - 创建/编辑音频节点（tts、music 字段互斥）时，读取 [音频节点共享机制与编辑](references/audio-node.md)。
 - 需要 Text/Element 节点、节点查找或 DAG 依赖顺序时，读取 [Text、Element、节点查找及依赖顺序](references/composition.md)。
+- 删除节点（含删除确认令牌与批次恢复）或调整节点位置（`--x`/`--y`）时，读取 [节点删除与位置](references/node-deletion.md)。
 - 排时间轴、替换轨道或装配音视频时，读取 [时间轴及轨道替换](references/timeline.md)。
 - 需要报价、用户批准、提交生成或批量身份时，读取 [报价、确认、运行与批次身份](references/execution.md)。
 - 任务在跑、本地等待超时或需要按原身份恢复时，读取 [查询、等待与恢复](references/recovery.md)。
@@ -48,6 +49,7 @@ license: Complete terms in LICENSE
 - [查询恢复](examples/recovery-happy-path.md)
 - [图文元素组合](examples/composition-happy-path.md)
 - [时间轴](examples/timeline-happy-path.md)
+- [删除节点](examples/node-deletion-happy-path.md)
 
 ## Rules
 - 一个命令的规范只维护在对应 references；示例用于组合，不定义第二套参数契约。
@@ -77,6 +79,7 @@ license: Complete terms in LICENSE
 - 需要产物字节数与 SHA-256 验证细则时，读取 [resources-artifact-verification](references/resources-artifact-verification.md)。
 - 需要 resource upload 标志位与幂等细节时，读取 [resources-resource-upload](references/resources-resource-upload.md)。
 - 需要时间轴轨道与剪辑参数完整契约时，读取 [timeline-timeline-contract](references/timeline-timeline-contract.md)。
+- 需要团队空间、节点删除/位置、导演台、样片、后处理或 1.3.0 工作流与模板能力时，读取 [新版能力与版本边界](references/new-capabilities.md)。
 - 交付前逐项核对时，读取 [validation-checklist](references/validation-checklist.md)。
 - 需要 video 节点模式与引用机制的完整契约时，读取 [video-node-video-node-contract](references/video-node-video-node-contract.md)。
 - 需要本技能级工作流契约（状态、交接、授权）时，读取 [workflow-contract](references/workflow-contract.md)。

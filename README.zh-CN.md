@@ -13,7 +13,7 @@
 
 > 用类型化节点与时间轴搭建即梦画布，把免费保存与报价运行严格分开，下载素材时附带字节数与 SHA-256 回执。
 
-[![版本](https://img.shields.io/badge/release-0.4.3-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![技能](https://img.shields.io/badge/skills-11-00A67E)](#技能) [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![版本](https://img.shields.io/badge/release-0.6.0+codex.20261109-1A73E8)](https://github.com/full-aigc-plugins/dreamina-canvas-plugin/releases) [![技能](https://img.shields.io/badge/skills-11-00A67E)](#技能) [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [安装](#安装) · [快速开始](#快速开始) · [技能](#技能) · [架构文档](docs/Dreamina-Canvas-Plugin-Architecture.zh_CN.md) · [故障排查](#故障排查)
 
@@ -160,7 +160,7 @@ codex plugin add dreamina-canvas@full-aigc-plugins
 
 升级后重新运行 `python scripts/verify_dreamina_canvas_skills.py`：随包技能钉在上游快照上，账本格式也是版本化的。
 
-当前插件清单版本：`0.4.3`（开发预览）。npm 包元数据为 `0.5.0`；这两个版本均不表示新增宿主或付费视觉闭环验收。
+当前插件清单版本：`0.6.0`（Codex 构建：`0.6.0+codex.20261109`），npm 包元数据为 `0.6.0`。本版内置适配 dreamina-canvas CLI 1.3.0 的 dreamina-skills v1.7.2，包含工作流、模板和节点删除指南。宿主与付费视觉闭环验收仍以带日期的验证记录为准。
 
 ## 贡献与支持
 
