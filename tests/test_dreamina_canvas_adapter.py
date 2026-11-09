@@ -95,6 +95,24 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(result.required_action, "resume")
         self.assertEqual(result.error["code"], "cli.node_run_unknown")
 
+    def test_v2_confirmation_preserves_top_level_partial_data(self) -> None:
+        items = [{"nodeId": "node_saved", "submitId": "original-submit-id"}]
+        envelope = {
+            "schemaVersion": "2",
+            "ok": False,
+            "error": {"code": 40018, "message": "approval required"},
+            "partialData": {"items": items},
+        }
+        with mock.patch.object(
+            subprocess,
+            "run",
+            lambda *a, **kw: FakeProc(returncode=10, stderr=json.dumps(envelope)),
+        ):
+            result = adapter.run_dreamina_canvas(["node", "create", "image", "--run"])
+        self.assertEqual(result.exit_code, 10)
+        self.assertEqual(result.error["code"], 40018)
+        self.assertEqual(result.partial_data, {"items": items})
+
     def test_stdout_on_error_is_not_treated_as_payload(self) -> None:
         envelope = {"ok": False, "error": {"code": "x", "requiredAction": "human_intervention"}}
         with mock.patch.object(

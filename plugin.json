@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "dreamina-canvas",
-  "version": "0.4.3",
+  "version": "0.6.0",
   "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
