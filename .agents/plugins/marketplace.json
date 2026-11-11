@@ -9,20 +9,20 @@
       "source": {
         "source": "url",
         "url": "https://github.com/full-aigc-plugins/dreamina-canvas-plugin.git",
-        "ref": "v0.6.1"
+        "ref": "v0.6.2"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Creativity",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
-      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.6.1/assets/official-logo.png",
+      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.6.2/assets/official-logo.png",
       "interface": {
         "displayName": "Dreamina Canvas",
         "shortDescription": "节点画布与时间线，保存与计费运行分离",
-        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.6.1/assets/official-logo.png"
+        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/dreamina-canvas-plugin@v0.6.2/assets/official-logo.png"
       },
       "displayName": "Dreamina Canvas"
     }

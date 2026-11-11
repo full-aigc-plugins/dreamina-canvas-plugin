@@ -5,7 +5,7 @@
     "en": "Dreamina Canvas",
     "zh-CN": "Dreamina Canvas（即梦画布编排）"
   },
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "类型化节点与时间线编排；免费保存与计费运行分离，产物下载带校验。",
   "description_i18n": {
     "en": "Typed canvas nodes and timelines for Dreamina. Free saves are separated from quoted runs, and assets download with verification.",

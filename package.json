@@ -1,13 +1,14 @@
 {
-  "name": "dreamina-canvas-plugin",
-  "version": "0.6.1",
+  "name": "dreamina-canvas",
+  "version": "0.6.2",
   "private": true,
   "type": "module",
   "main": "./dsh/lib/index.js",
   "dsh": {
     "bundle": {
-      "patch": "./cordis.patch.yml"
+      "patch": "./dsh/cordis.patch.yml"
     }
   },
-  "icon": "./dsh/icon.png"
+  "icon": "./dsh/icon.png",
+  "description": "Build and run Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, and verified assets."
 }
