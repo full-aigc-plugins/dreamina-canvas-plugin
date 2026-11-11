@@ -1,11 +1,13 @@
 {
   "name": "dreamina-canvas-plugin",
-  "owner": {"name": "full-aigc-plugins"},
+  "owner": {
+    "name": "full-aigc-plugins"
+  },
   "plugins": [
     {
       "name": "dreamina-canvas",
       "description": "Dreamina Canvas node graphs and timelines with approval-aware execution, recovery, verified assets, and a visual single-round quality loop.",
-      "version": "0.4.2",
+      "version": "0.6.2",
       "source": "./"
     }
   ]
